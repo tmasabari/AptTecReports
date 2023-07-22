@@ -1,0 +1,98 @@
+{
+    "ReportTemplate": "table.html",
+    "DataSource": "../Data/Samples/jobs.json",
+    "DataParams": {
+        "PaperSize-Width": "216mm",
+        "PaperSize-Height": "355mm",
+        "Report-Top-Margin": "6.5mm", 
+        "Report-Bottom-Margin": "6.5mm", 
+        "Report-Left-Margin": "6.5mm",
+        "Report-Right-Margin": "6.5mm",
+
+        "Page-Header-Height": "20mm",
+        "Page-Footer-Height": "10mm",
+
+        "Content-Table-Border": "0.25mm",
+
+        "ReportTitle": "Task Queue",
+        "OrgTitle": "Company Name Here, State",
+        "ReportSubTitle": "Analysis From 01/01/2022 to 31/12/2022",
+        "OrgAddress1": "Door #, Street name",
+        "OrgAddress2": "Village",
+        "OrgAddress3": "City, Pin#",
+
+        "HeaderMiddleText1": "{OrgTitle}",
+        "HeaderMiddleText1Style": "font-size:11pt; font-weight: bold; margin-bottom:3mm;",
+        "HeaderMiddleText2": "{ReportTitle}",
+        "HeaderMiddleText2Style": "font-size:14pt; font-weight: bold; margin-bottom:2mm;",
+        "HeaderMiddleText3": "{ReportSubTitle}",
+        "HeaderMiddleText3Style": "font-size:12pt; font-weight: bold; margin-bottom:1mm;",
+        "HeaderMiddleText4": "",
+        "HeaderMiddleText5": "",
+        "HeaderLeftText": "{OrgAddress1}<br/>{OrgAddress2}<br/>{OrgAddress3}",
+        "HeaderRightText": "{@TodayDate('mm/dd/yyyy')@}",
+        "FooterMiddleText1": "© 2023 AptTec.com. All rights reserved.",
+        "FooterMiddleText1Style": "font-size:9pt; margin-bottom:1mm;",
+        "FooterMiddleText2": "Line 2",
+        "FooterMiddleText2Style": "font-size:10pt; margin-bottom:1mm;",
+        "FooterMiddleText3": "Line 3",
+        "FooterMiddleText4": "Line 4",
+        "FooterMiddleText5": "Line 5",
+        "FooterLeftText": "left footer line 1<br/>left footer line 2",
+        "FooterRightText": "right footer line 1<br/>{PageNumber}"
+    },
+    "TableParams": {
+        "properties": [
+            {
+                "field": "SubmitedDate",
+                "displayName": "Submit Date",
+                "columnSize": "10ch",
+                "Converter": "msDateToJsDate",
+                "format": "m/d/yyyy HH:MM:ss"
+            },
+            {
+                "field": "SubmittedBy",
+                "displayName": "Submitted By"
+            },
+            {
+                "field": "PrintJobName",
+                "columnSize": "13em",
+                "displayName": "Job Name"
+            },
+            {
+                "field": "Status",
+                "columnSize": "5em",
+                "displayName": "Status"
+            },
+            {
+                "field": "FileName",
+                "displayName": "File Name"
+            },
+            {
+                "field": "FileSize",
+                "columnSize": "10ch",
+                "displayName": "Size"
+            },
+            {
+                "field": "SubmitedDate",
+                "displayName": "Created",
+                "columnSize": "10ch",
+                "Converter": "msDateToJsDate",
+                "format": "m/d/yyyy HH:MM:ss"
+            },
+            {
+                "field": "JobType",
+                "displayName": "Job Type"
+            },
+            {
+                "field": "ErrorDescription",
+                "columnSize": "5ch",
+                "displayName": "Error"
+            }
+        ],
+        "type": "json",
+        "gridHeaderStyle": "font-weight: bold; ",
+        "gridStyle": " margin-bottom: -1px;",
+        "repeatTableHeader": true
+    }
+}

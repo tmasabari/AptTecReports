@@ -1,0 +1,33 @@
+
+/* only for preview purposes ================================================================
+https://css-tricks.com/more-control-over-css-borders-with-background-image/
+ 
+    background-image: url("data:image/svg+xml,%3csvg width='1%25' height='100%25' xmlns='http://www.w3.org/2000/svg'%3e%3crect width='100%25' height='1%25' fill='none' stroke='grey' stroke-width='4' stroke-dasharray='6%2c 14' stroke-dashoffset='0' stroke-linecap='square'/%3e%3c/svg%3e"); 
+    display: inline-block;
+ */
+  .footer, .header {
+    background-image: repeating-linear-gradient(120deg, #c5dddd, #c5dddd 2.34px, transparent 3px, transparent 26.4px, #c5dddd 33px), repeating-linear-gradient(210deg, #c5dddd, #c5dddd 2.34px, transparent 3px, transparent 26.4px, #c5dddd 33px), repeating-linear-gradient(-60deg, #c5dddd, #c5dddd 2.34px, transparent 3px, transparent 26.4px, #c5dddd 33px), repeating-linear-gradient(30deg, #c5dddd, #c5dddd 2.34px, transparent 3px, transparent 26.4px, #c5dddd 33px);
+    background-size: 2px calc(100% + 66px), calc(100% + 66px) 2px, 2px calc(100% + 66px) , calc(100% + 66px) 2px;
+    background-position: 0 0, 0 0, 100% 0, 0 100%;
+    background-repeat: no-repeat;
+    animation: borderAnimation 1s infinite linear;
+  } 
+
+  @keyframes borderAnimation {
+    from { background-position: 0 0, -66px 0, 100% -66px, 0 100%; }
+    to { background-position: 0 -66px, 0 0, 100% 0, -66px 100%; }
+  }
+
+  html {
+background-image: repeating-linear-gradient(-47deg, #b17c7c, #b17c7c 0px, transparent 10px, transparent 10px, #b17c7c 60px), repeating-linear-gradient(43deg, #b17c7c, #b17c7c 0px, transparent 10px, transparent 10px, #b17c7c 60px), repeating-linear-gradient(133deg, #b17c7c, #b17c7c 0px, transparent 10px, transparent 10px, #b17c7c 30px), repeating-linear-gradient(223deg, #b17c7c, #b17c7c 0px, transparent 10px, transparent 10px, #b17c7c 10px);
+background-size: 2px calc(100% + 87.98px), calc(100% + 87.98px) 2px, 2px calc(100% + 87.98px) , calc(100% + 87.98px) 2px;
+background-position: 0 0, 0 0, 100% 0, 0 100%;
+background-repeat: no-repeat;
+animation: borderAnimation 1s infinite linear;
+}
+
+  @keyframes borderAnimation2 {
+    from { background-position: 0 0, -87.98px 0, 100% -87.98px, 0 100%; }
+    to { background-position: 0 -87.98px, 0 0, 100% 0, -87.98px 100%; }
+  }
+}

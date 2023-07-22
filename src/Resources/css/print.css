@@ -1,0 +1,191 @@
+/* 
+1. Pagination fix
+  https://medium.com/@Idan_Co/the-ultimate-print-html-template-with-header-footer-568f415f6d2a
+  https://www.geeksforgeeks.org/css-box-model/
+  https://www.freecodecamp.org/news/how-to-use-the-position-property-in-css-to-align-elements-d8f49c403a26/
+  https://stackoverflow.com/questions/41778117/set-margin-padding-for-each-page-to-print-html-css/55682653#55682653
+Single page method:
+    Elements with css property POSITIOM set to FIXED will “stick” to the edges of the page 
+      by setting top or bottom to 0. They will also REPEAT on each printed page.
+    FIXED elements are also removed from the normal document flow. They are only relative to the <html> document, not any other parents. They are not affected by SCROLLING.
+    But if your content is longer than a single page, the header and footer will overlap the content on consecutive pages:
+Multi page Method II — Table: By default thead and tfoot repeat on each printed page.
+        disadvantage in this method is that the footer part will “stick” to the bottom of every page except the last page, where it will “stick” to the bottom of the content
+Combine both of them.
+        <THEAD> <TFoot> are going to be a single space and will have fixed heights just to provide cover up space for actual headers and footers which are using FIXED positions.
+
+2. Paper diminesions
+  check Data/Master/paperSizes.json
+
+3. Variable, Calc, and debugging
+  https://developer.mozilla.org/en-US/docs/Web/CSS/Using_CSS_custom_properties
+  https://developer.mozilla.org/en-US/docs/Web/CSS/calc
+  https://stackoverflow.com/questions/2434602/setting-width-height-as-percentage-minus-pixels
+  Console debug commands https://stackoverflow.com/questions/53364174/how-do-i-debug-css-calc-value
+
+  print original definition (variables replaced with values)
+    window.getComputedStyle(document.querySelector(":root"),null).getPropertyValue("--header-height-margin")
+  print computed value via dom
+    window.getComputedStyle(document.querySelector(".header"),null).getPropertyValue("width")
+
+  adhoc variables
+    document.querySelector(":root").style.setProperty( '--testvar', 'calc(216mm - 6.5mm - 6.5mm) ')
+    window.getComputedStyle(document.querySelector(":root"),null).getPropertyValue("--testvar")
+
+4. Content and counters
+  https://developer.mozilla.org/en-US/docs/Web/CSS/content
+  https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_counter_styles/Using_CSS_counters
+
+5. Font selection
+  https://web.mit.edu/jmorzins/www/fonts.html
+  https://www.typismcommunity.com/blog/10-system-fonts
+  https://blog.hubspot.com/website/web-safe-html-css-fonts
+  serif fonts       Times New Roman / Times / Georgia
+    serif fonts - easier to read in physical, printed formats, they lead the viewer’s eyes from character to character
+    Times New Roman if you are designing for a newspaper or have narrow columns. 
+    Georgia - if you need a serif heading 
+
+  sans-serif fonts  Arial / Helvetica
+    Sans-serif fonts are easier to read on screens
+    Helvetica has become one of the most widely used typefaces in the world. 
+    Arial if you don't have Helvetica and cannot install it.
+
+  monospace fonts   Courier New / Courier
+*/
+:root {
+  counter-reset: printedPageIndex 0;
+
+  --header-height-margin: calc( var(--header-height) + var(--report-top-margin));
+  --footer-height-margin: calc( var(--footer-height) + var(--report-bottom-margin));
+
+  --page-width: calc( var(--report-width) - var(--report-left-margin) - var(--report-right-margin) );
+  --page-height: calc( var(--report-height) - var(--report-top-margin) - var(--report-bottom-margin) ); 
+  --content-table-width: calc( var(--page-width) - ( var(--content-table-border) * 2) );
+}
+
+@page  
+{
+    /* this affects the margin in the printer settings */ 
+    size: var(--report-width) var(--report-height); /* auto is the initial value */ 
+    margin: 25mm 25mm 25mm 25mm;  
+} 
+
+html,
+body,
+.printWrapperTable {
+  border: 0;
+  margin: 0;
+  padding: 0;
+}
+html,
+body,
+Iframe,
+.printWrapperTable,
+.printWrapperTable thead,
+.printWrapperTable tbody,
+.printWrapperTable tfoot {
+  border-spacing: 0px;
+}
+
+/* preview tested=> do not set top/bottom margin for body which applies for first/last page alone.
+    set the top margin within header and bottom margin within footer so that they will be applied in all pages.
+    Do not set the height for html and body which calculates incorrectly when content more than a page */
+html {
+  width: var(--report-width);
+}
+body {
+  margin-left: var(--report-left-margin);
+  margin-right: var(--report-right-margin);
+
+  width: var(--page-width);
+}
+
+.header {
+  position: fixed;
+  top: 0;
+  margin-top: var(--report-top-margin);
+  height: var(--header-height);
+}
+.footer {
+  position: fixed;
+  bottom: 0;
+  margin-bottom: var(--report-bottom-margin);
+  height: var(--footer-height);
+}
+
+.header-space {
+  height: var(--header-height-margin);
+}
+
+.footer-space {
+  height: var(--footer-height-margin);
+}
+
+.header,
+.header-space,
+.footer,
+.footer-space{
+  width: var(--page-width);
+  min-width: var(--page-width);
+  overflow-x: hidden;
+}
+
+.content {
+  width: var(--content-table-width);
+  min-width: var(--content-table-width);
+  overflow-x: hidden;
+}
+
+/* printWrapperTable class is the table fix applied all over the page. So do not apply the border for that
+apply only the content portion table */
+.content table,
+.content th,
+.content td {
+  border: 0.25mm solid black;
+  border-collapse: collapse;
+  /* avoid page break inside row of table */
+  page-break-inside: avoid;
+  word-break: break-word;
+  border-spacing: 0px;
+}
+
+/* position the elements relative to the parent
+so that these elements will not interfere in center aligning the middle text
+=============================================== */
+.header-left,
+.footer-left {
+  position: absolute;   
+  text-align: left;
+  left: 0;
+}
+.header-right,
+.footer-right {
+  position: absolute; 
+  text-align: right;
+  right: 0;
+}
+/* =============================================== */
+/* You need to have different element for each increment. so the element has to be recreated for every page.
+Dont use any element or its childern that is set as a fixed position for increment or content purpose
+*/
+.footer-space {
+  counter-increment: pageNumber;
+}
+.currentPageNumber:after {
+  content: "Page " counter(pageNumber); /* Display counter value in default style (decimal) " of " counter(pages) */
+}
+
+html,
+body {
+  font-family: 'Times New Roman', Times, Georgia, serif;
+  font-size: 10pt;
+  font-weight: normal;
+  text-align: justify;
+}
+
+.header,
+.footer {
+  text-align: center;
+  display: block; /* must have block to have overflow */
+  overflow-y: hidden;
+}

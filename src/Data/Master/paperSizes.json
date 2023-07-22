@@ -1,0 +1,74 @@
+{
+    "paper_sizes": [
+        {
+            "name": "Letter",
+            "width_mm": 215.9,
+            "height_mm": 279.4
+        },
+        {
+            "name": "Legal",
+            "width_mm": 215.9,
+            "height_mm": 355.6
+        },
+        {
+            "name": "Tabloid",
+            "width_mm": 279.4,
+            "height_mm": 431.8
+        },
+        {
+            "name": "A0",
+            "width_mm": 841,
+            "height_mm": 1189
+        },
+        {
+            "name": "A1",
+            "width_mm": 594,
+            "height_mm": 841
+        },
+        {
+            "name": "A2",
+            "width_mm": 420,
+            "height_mm": 594
+        },
+        {
+            "name": "A3",
+            "width_mm": 297,
+            "height_mm": 420
+        },
+        {
+            "name": "A4",
+            "width_mm": 210,
+            "height_mm": 297
+        },
+        {
+            "name": "A5",
+            "width_mm": 148,
+            "height_mm": 210
+        },
+        {
+            "name": "A6",
+            "width_mm": 105,
+            "height_mm": 148
+        },
+        {
+            "name": "A7",
+            "width_mm": 74,
+            "height_mm": 105
+        },
+        {
+            "name": "A8",
+            "width_mm": 52,
+            "height_mm": 74
+        },
+        {
+            "name": "A9",
+            "width_mm": 37,
+            "height_mm": 52
+        },
+        {
+            "name": "A10",
+            "width_mm": 26,
+            "height_mm": 37
+        }
+    ]
+}

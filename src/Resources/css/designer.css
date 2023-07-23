@@ -1,0 +1,33 @@
+#reportIframe {
+  position: absolute;
+  top: 10mm;
+  left: 10mm;
+  width: calc(100% - 10mm);
+  height: calc(100vh - 10mm);
+  border: 1px solid black;
+  margin-left: -1px;
+  margin-top: -1px;
+}
+#stickyRow {
+  position: absolute;
+  top: 0px;
+  left: calc(100% - 320px);
+  z-index: 999;
+}
+#stickyRow,
+#stickyRow input {
+  font-size: 8pt;
+}
+
+@media print {
+  .ruler-x,
+  .ruler-y,
+  label,
+  .ruleEditor {
+    display: none;
+  }
+
+  body {
+    background-image: none;
+  }
+}

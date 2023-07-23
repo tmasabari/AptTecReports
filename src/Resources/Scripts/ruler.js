@@ -1,7 +1,6 @@
 //from ruler library
-app.addEventListener('input', (e) =>
-{
-	const input = e.target;
-	const value = input.type === 'checkbox' ? (input.checked ? 1 : 0) : input.value;
-	document.body.style.setProperty(input.name, value + (input.dataset.suffix || ''));
-})
+$(document).on('input', '.ruleEditor', function (eventData) { 
+	const element = eventData.target;
+	const value = element.type === 'checkbox' ? (element.checked ? 1 : 0) : element.value;
+	document.body.style.setProperty(element.name, value + (element.dataset.suffix || ''));
+});

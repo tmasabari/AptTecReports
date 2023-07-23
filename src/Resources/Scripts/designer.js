@@ -87,6 +87,20 @@ function PrintReport(event)
 {
     document.getElementById('reportIframe').contentWindow.print();
 }
+function ShowRuler(event) {
+    ShowPopup('designerModal', 'Ruler Settings', '.ruleEditor');
+}
+
+function ToCanvas(event)
+{
+    childWindow=document.getElementById('reportIframe').contentWindow;
+    childWindow.html2canvas(document.querySelector("html")).then(canvas =>
+    {
+        document.body.appendChild(canvas)
+    });
+
+}
+
 
 function TodayDate(format)
 {

@@ -32,7 +32,7 @@ function jsonToHTML(params)
       displayName: typeof property === 'object'
         ? property.displayName : property,
       columnSize: typeof property === 'object' && property.columnSize
-        ? property.columnSize + ';' : 100 / properties.length + '%;',
+        ? property.columnSize + ';' : 100 / properties.length + '%;', //'unset;', // 
       Converter: property.Converter,
       format: property.format
     }
@@ -53,7 +53,7 @@ function jsonToHTML(params)
   // Add the table header columns
   for (let a = 0; a < properties.length; a++)
   {
-    htmlData += '<th style="width:' + properties[a].columnSize + ';' + params.gridHeaderStyle + '">' + capitalizePrint(properties[a].displayName) + '</th>'
+    htmlData += '<th style="min-width:' + properties[a].columnSize + ';' + params.gridHeaderStyle + '">' + capitalizePrint(properties[a].displayName) + '</th>'
   }
 
   // Add the closing tag for the table header row
@@ -100,7 +100,7 @@ function jsonToHTML(params)
       }
 
       // Add the row contents and styles
-      htmlData += '<td style="width:' + properties[n].columnSize + params.gridStyle + '">' + stringData + '</td>'
+      htmlData += '<td style="min-width:' + properties[n].columnSize + params.gridStyle + '">' + stringData + '</td>'
     }
 
     // Add the row closing tag

@@ -1,0 +1,228 @@
+/* this is taken from https://github.com/cognitom/paper-css/blob/master/paper.css
+and use AI to generate for all ISO sizes */
+@page { margin: 0 }
+body { margin: 0 }
+
+:root {
+  
+}
+
+/** Paper sizes **/
+
+.letter           { width: 216mm; height: 279mm }
+.letter.landscape { width: 280mm; height: 215mm }
+.legal            { width: 216mm; height: 356mm }
+.legal.landscape  { width: 357mm; height: 215mm }
+.tabloid            { width: 279.4mm; height: 431.8mm }
+.tabloid.landscape  { width: 431.8mm; height: 279.4mm }
+
+/* ISO Paper Sizes in mm (Portrait) */
+
+/* A series */
+.A0 { width: 841mm; height: 1189mm; }
+.A1 { width: 594mm; height: 841mm; }
+.A2 { width: 420mm; height: 594mm; }
+.A3 { width: 297mm; height: 420mm; }
+.A4 { width: 210mm; height: 297mm; }
+.A5 { width: 148mm; height: 210mm; }
+.A6 { width: 105mm; height: 148mm; }
+.A7 { width: 74mm; height: 105mm; }
+.A8 { width: 52mm; height: 74mm; }
+.A9 { width: 37mm; height: 52mm; }
+.A10 { width: 26mm; height: 37mm; }
+
+/* B series */
+.B0 { width: 1000mm; height: 1414mm; }
+.B1 { width: 707mm; height: 1000mm; }
+.B2 { width: 500mm; height: 707mm; }
+.B3 { width: 353mm; height: 500mm; }
+.B4 { width: 250mm; height: 353mm; }
+.B5 { width: 176mm; height: 250mm; }
+.B6 { width: 125mm; height: 176mm; }
+.B7 { width: 88mm; height: 125mm; }
+.B8 { width: 62mm; height: 88mm; }
+.B9 { width: 44mm; height: 62mm; }
+.B10 { width: 31mm; height: 44mm; }
+
+/* C series */
+.C0 { width: 917mm; height: 1297mm; }
+.C1 { width: 648mm; height: 917mm; }
+.C2 { width: 458mm; height: 648mm; }
+.C3 { width: 324mm; height: 458mm; }
+.C4 { width: 229mm; height: 324mm; }
+.C5 { width: 162mm; height: 229mm; }
+.C6 { width: 114mm; height: 162mm; }
+.C7 { width: 81mm; height: 114mm; }
+.C8 { width: 57mm; height: 81mm; }
+.C9 { width: 40mm; height: 57mm; }
+.C10 { width: 28mm; height: 40mm; }
+
+/* DL Envelope */
+.dl { width: 110mm; height: 220mm; }
+
+/* ISO Paper Sizes in mm (Landscape) */
+
+/* A series */
+.A0.landscape { width: 1189mm; height: 841mm; }
+.A1.landscape { width: 841mm; height: 594mm; }
+.A2.landscape { width: 594mm; height: 420mm; }
+.A3.landscape { width: 420mm; height: 297mm; }
+.A4.landscape { width: 297mm; height: 210mm; }
+.A5.landscape { width: 210mm; height: 148mm; }
+.A6.landscape { width: 148mm; height: 105mm; }
+.A7.landscape { width: 105mm; height: 74mm; }
+.A8.landscape { width: 74mm; height: 52mm; }
+.A9.landscape { width: 52mm; height: 37mm; }
+.A10.landscape { width: 37mm; height: 26mm; }
+
+/* B series */
+.B0.landscape { width: 1414mm; height: 1000mm; }
+.B1.landscape { width: 1000mm; height: 707mm; }
+.B2.landscape { width: 707mm; height: 500mm; }
+.B3.landscape { width: 500mm; height: 353mm; }
+.B4.landscape { width: 353mm; height: 250mm; }
+.B5.landscape { width: 250mm; height: 176mm; }
+.B6.landscape { width: 176mm; height: 125mm; }
+.B7.landscape { width: 125mm; height: 88mm; }
+.B8.landscape { width: 88mm; height: 62mm; }
+.B9.landscape { width: 62mm; height: 44mm; }
+.B10.landscape { width: 44mm; height: 31mm; }
+
+/* C series */
+.C0.landscape { width: 1297mm; height: 917mm; }
+.C1.landscape { width: 917mm; height: 648mm; }
+.C2.landscape { width: 648mm; height: 458mm; }
+.C3.landscape { width: 458mm; height: 324mm; }
+.C4.landscape { width: 324mm; height: 229mm; }
+.C5.landscape { width: 229mm; height: 162mm; }
+.C6.landscape { width: 162mm; height: 114mm; }
+.C7.landscape { width: 114mm; height: 81mm; }
+.C8.landscape { width: 81mm; height: 57mm; }
+.C9.landscape { width: 57mm; height: 40mm; }
+.C10.landscape { width: 40mm; height: 28mm; }
+
+/* DL Envelope */
+.dl.landscape { width: 220mm; height: 110mm; }
+
+/** Fix for Chrome issue #273306 **/
+@media print {
+  .letter, .legal    { width: 216mm }
+  .letter.landscape      { width: 280mm }
+  .legal.landscape       { width: 357mm }
+  .tabloid               { width: 279.4mm; }
+  .tabloid.landscape     { width: 431.8mm; }
+
+  /* A series */
+    .A0 { width: 841mm; }
+    .A0.landscape { width: 1189mm; }
+    .A1 { width: 594mm; }
+    .A1.landscape { width: 841mm; }
+    .A2 { width: 420mm; }
+    .A2.landscape { width: 594mm; }
+    .A3 { width: 297mm; }
+    .A3.landscape { width: 420mm; }
+    .A4 { width: 210mm; }
+    .A4.landscape { width: 297mm; }
+    .A5 { width: 148mm; }
+    .A5.landscape { width: 210mm; }
+    .A6 { width: 105mm; }
+    .A6.landscape { width: 148mm; }
+    .A7 { width: 74mm; }
+    .A7.landscape { width: 105mm; }
+    .A8 { width: 52mm; }
+    .A8.landscape { width: 74mm; }
+    .A9 { width: 37mm; }
+    .A9.landscape { width: 52mm; }
+    .A10 { width: 26mm; }
+    .A10.landscape { width: 37mm; }
+
+    /* B series */
+    .B0 { width: 1000mm; }
+    .B0.landscape { width: 1414mm; }
+    .B1 { width: 707mm; }
+    .B1.landscape { width: 1000mm; }
+    .B2 { width: 500mm; }
+    .B2.landscape { width: 707mm; }
+    .B3 { width: 353mm; }
+    .B3.landscape { width: 500mm; }
+    .B4 { width: 250mm; }
+    .B4.landscape { width: 353mm; }
+    .B5 { width: 176mm; }
+    .B5.landscape { width: 250mm; }
+    .B6 { width: 125mm; }
+    .B6.landscape { width: 176mm; }
+    .B7 { width: 88mm; }
+    .B7.landscape { width: 125mm; }
+    .B8 { width: 62mm; }
+    .B8.landscape { width: 88mm; }
+    .B9 { width: 44mm; }
+    .B9.landscape { width: 62mm; }
+    .B10 { width: 31mm; }
+    .B10.landscape { width: 44mm; }
+
+    /* C series */
+    .C0 { width: 917mm; }
+    .C0.landscape { width: 1297mm; }
+    .C1 { width: 648mm; }
+    .C1.landscape { width: 917mm; }
+    .C2 { width: 458mm; }
+    .C2.landscape { width: 648mm; }
+    .C3 { width: 324mm; }
+    .C3.landscape { width: 458mm; }
+    .C4 { width: 229mm; }
+    .C4.landscape { width: 324mm; }
+    .C5 { width: 162mm; }
+    .C5.landscape { width: 229mm; }
+    .C6 { width: 114mm; }
+    .C6.landscape { width: 162mm; }
+    .C7 { width: 81mm; }
+    .C7.landscape { width: 114mm; }
+    .C8 { width: 57mm; }
+    .C8.landscape { width: 81mm; }
+    .C9 { width: 40mm; }
+    .C9.landscape { width: 57mm; }
+    .C10 { width: 28mm; }
+    .C10.landscape { width: 40mm; }
+
+    /* DL Envelope */
+    .dl { width: 110mm; }
+    .dl.landscape { width: 220mm; } 
+}
+
+/* overrided above values below */
+
+.nowidth {
+    width: unset ! important; 
+}
+.noheight {
+    height: unset ! important; 
+}
+/* dummy classes */
+.portrait {
+  
+}
+
+
+
+.sheet {
+  margin: 0;
+  overflow: hidden;
+  position: relative;
+  box-sizing: border-box;
+  page-break-after: always;
+}
+/** Padding area **/
+.sheet.padding-10mm { padding: 10mm }
+.sheet.padding-15mm { padding: 15mm }
+.sheet.padding-20mm { padding: 20mm }
+.sheet.padding-25mm { padding: 25mm }
+
+/** For screen preview **/
+@media screen {
+  /* body { background: #e0e0e0 } */
+  .sheet {
+    background: white;
+    box-shadow: 0 .5mm 2mm rgba(0,0,0,.3);
+    margin: 5mm auto;
+  }
+}

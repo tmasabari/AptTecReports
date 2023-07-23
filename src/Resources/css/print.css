@@ -14,15 +14,17 @@ Multi page Method II — Table: By default thead and tfoot repeat on each printe
 Combine both of them.
         <THEAD> <TFoot> are going to be a single space and will have fixed heights just to provide cover up space for actual headers and footers which are using FIXED positions.
 
-2. Paper diminesions
-  check Data/Master/paperSizes.json
+Additional
+  Paper.css is included to set the width and height for all iso standards paper sizes
+  header-wrapper and footer-wrapper divs are included to set the page widths automatically without calc. but more analysis are needed so the classes are removed as of now  {PaperSize} noheight
+  
 
 3. Variable, Calc, and debugging
   https://developer.mozilla.org/en-US/docs/Web/CSS/Using_CSS_custom_properties
   https://developer.mozilla.org/en-US/docs/Web/CSS/calc
   https://stackoverflow.com/questions/2434602/setting-width-height-as-percentage-minus-pixels
   Console debug commands https://stackoverflow.com/questions/53364174/how-do-i-debug-css-calc-value
-
+  https://maximorlov.com/why-your-calc-function-in-css-might-be-broken/
   print original definition (variables replaced with values)
     window.getComputedStyle(document.querySelector(":root"),null).getPropertyValue("--header-height-margin")
   print computed value via dom
@@ -51,53 +53,64 @@ Combine both of them.
     Arial if you don't have Helvetica and cannot install it.
 
   monospace fonts   Courier New / Courier
+  
+  html width is set using the paper.css
+  Do not set the height for html and body which calculates incorrectly when content more than a page 
+  html {  width: var(--report-width); }
+  --page-height: calculate similar to width and not needed so removed report height is also not needed 
 */
 :root {
   counter-reset: printedPageIndex 0;
 
   --header-height-margin: calc( var(--header-height) + var(--report-top-margin));
   --footer-height-margin: calc( var(--footer-height) + var(--report-bottom-margin));
-
   --page-width: calc( var(--report-width) - var(--report-left-margin) - var(--report-right-margin) );
-  --page-height: calc( var(--report-height) - var(--report-top-margin) - var(--report-bottom-margin) ); 
   --content-table-width: calc( var(--page-width) - ( var(--content-table-border) * 2) );
 }
 
 @page  
-{
-    /* this affects the margin in the printer settings */ 
-    size: var(--report-width) var(--report-height); /* auto is the initial value */ 
-    margin: 25mm 25mm 25mm 25mm;  
-} 
-
+{ 
+    /* https://stackoverflow.com/questions/1960939/disabling-browser-print-options-headers-footers-margins-from-page/2780518#2780518 
+    https://stackoverflow.com/questions/1542320/margin-while-printing-html-page */ 
+    size: var(--paper-size) var(--paper-layout); /* auto is the initial value */ 
+    margin: 0mm;   /* this affects the margin in the printer settings 
+    In Chrome newer versions, the browser header and footer is hidden if the @page margin is set so small that the header/footer position conflicts with content. In my opinion, this is exactly how this should behave.
+    */
+}
 html,
 body,
-.printWrapperTable {
+.printTable {
   border: 0;
-  margin: 0;
+  margin: 0;  /* html margin affects before sending to printer */
   padding: 0;
 }
 html,
 body,
 Iframe,
-.printWrapperTable,
-.printWrapperTable thead,
-.printWrapperTable tbody,
-.printWrapperTable tfoot {
+.printTable,
+.printTable thead,
+.printTable tbody,
+.printTable tfoot {
   border-spacing: 0px;
 }
 
-/* preview tested=> do not set top/bottom margin for body which applies for first/last page alone.
+/* preview tested=> set report margin using the body element.
+    do not set top/bottom margin for body which applies for first/last page alone.
     set the top margin within header and bottom margin within footer so that they will be applied in all pages.
-    Do not set the height for html and body which calculates incorrectly when content more than a page */
-html {
-  width: var(--report-width);
-}
+*/
 body {
   margin-left: var(--report-left-margin);
   margin-right: var(--report-right-margin);
+}
 
+body,
+.header,
+.header-space,
+.footer,
+.footer-space{
   width: var(--page-width);
+  min-width: var(--page-width); 
+  overflow-x: hidden;
 }
 
 .header {
@@ -121,22 +134,13 @@ body {
   height: var(--footer-height-margin);
 }
 
-.header,
-.header-space,
-.footer,
-.footer-space{
-  width: var(--page-width);
-  min-width: var(--page-width);
-  overflow-x: hidden;
-}
-
 .content {
   width: var(--content-table-width);
   min-width: var(--content-table-width);
   overflow-x: hidden;
 }
 
-/* printWrapperTable class is the table fix applied all over the page. So do not apply the border for that
+/* printTable class is the table fix applied all over the page. So do not apply the border for that
 apply only the content portion table */
 .content table,
 .content th,

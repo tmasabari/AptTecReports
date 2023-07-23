@@ -1,21 +1,29 @@
 <!DOCTYPE html>
-<html>
+<html class="{PaperSize} {PaperLayout} noheight">
 
 <head>
     <!-- media="print" can also be used-->
+    <link rel="stylesheet" href="../Resources/css/paper.css" type="text/css">
     <link rel="stylesheet" href="../Resources/css/preview.css" type="text/css">
     <link rel="stylesheet" href="../Resources/css/print.css" type="text/css">
     <link rel="stylesheet" href="../Resources/css/previewOverride.css" type="text/css">
+    
     <script src="https://code.jquery.com/jquery-3.7.0.min.js"
         integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g="
         crossorigin="anonymous"></script>
     <script src="../Resources/Scripts/date.format.js"></script>
     <script src="../Resources/Scripts/jsonToHtml.js"></script>
+    <script src="../Resources/Scripts/html2canvas.min.js"></script>
     <style>
         :root {
-            --report-width: {PaperSize-Width};
-            --report-height: {PaperSize-Height};
-            /* 0.25in = 6.35mm */
+            --paper-size: {PaperSize};
+            --paper-layout: {PaperLayout};
+            --report-width: 0; 
+            /* dummy --report-width must be defined here to initialize the derived variables.
+             0.25in = 6.35mm 
+            report height is not needed
+            set ch unit for column widths most appropriate
+            */
             --report-top-margin: {Report-Top-Margin};
             --report-bottom-margin: {Report-Bottom-Margin};
             --report-left-margin: {Report-Left-Margin};
@@ -33,21 +41,23 @@
 </head>
 
 <body>
-    <div class="header">
-        <div class="header-left">{HeaderLeftText}</div>
-        <div class="header-right">{HeaderRightText}</div>
-        <div class="header-middle-text1" style="{HeaderMiddleText1Style}">
-            {HeaderMiddleText1}</div>
-        <div class="header-middle-text2" style="{HeaderMiddleText2Style}">
-            {HeaderMiddleText2}</div>
-        <div class="header-middle-text3" style="{HeaderMiddleText3Style}">
-            {HeaderMiddleText3}</div>
-        <div class="header-middle-text4" style="{HeaderMiddleText4Style}">
-            {HeaderMiddleText4}</div>
-        <div class="header-middle-text5" style="{HeaderMiddleText5Style}">
-            {HeaderMiddleText5}</div>
+    <div class="header-wrapper">
+        <div class="header">
+            <div class="header-left">{HeaderLeftText}</div>
+            <div class="header-right">{HeaderRightText}</div>
+            <div class="header-middle-text1" style="{HeaderMiddleText1Style}">
+                {HeaderMiddleText1}</div>
+            <div class="header-middle-text2" style="{HeaderMiddleText2Style}">
+                {HeaderMiddleText2}</div>
+            <div class="header-middle-text3" style="{HeaderMiddleText3Style}">
+                {HeaderMiddleText3}</div>
+            <div class="header-middle-text4" style="{HeaderMiddleText4Style}">
+                {HeaderMiddleText4}</div>
+            <div class="header-middle-text5" style="{HeaderMiddleText5Style}">
+                {HeaderMiddleText5}</div>
+        </div>
     </div>
-    <table class="printWrapperTable">
+    <table class="printTable">
         <thead>
             <tr>
                 <td>
@@ -70,21 +80,22 @@
             </tr>
         </tfoot>
     </table>
-    <div class="footer">
-        <div class="footer-left">{FooterLeftText}</div>
-        <div class="footer-right">{FooterRightText}</div>
-        <div class="footer-middle-text1" style="{FooterMiddleText1Style}">
-            {FooterMiddleText1}</div>
-        <div class="footer-middle-text2" style="{FooterMiddleText2Style}">
-            {FooterMiddleText2}</div>
-        <div class="footer-middle-text3" style="{FooterMiddleText3Style}">
-            {FooterMiddleText3}</div>
-        <div class="footer-middle-text4" style="{FooterMiddleText4Style}">
-            {FooterMiddleText4}</div>
-        <div class="footer-middle-text5" style="{FooterMiddleText5Style}">
-            {FooterMiddleText5}</div>
+    <div class="footer-wrapper">
+        <div class="footer">
+            <div class="footer-left">{FooterLeftText}</div>
+            <div class="footer-right">{FooterRightText}</div>
+            <div class="footer-middle-text1" style="{FooterMiddleText1Style}">
+                {FooterMiddleText1}</div>
+            <div class="footer-middle-text2" style="{FooterMiddleText2Style}">
+                {FooterMiddleText2}</div>
+            <div class="footer-middle-text3" style="{FooterMiddleText3Style}">
+                {FooterMiddleText3}</div>
+            <div class="footer-middle-text4" style="{FooterMiddleText4Style}">
+                {FooterMiddleText4}</div>
+            <div class="footer-middle-text5" style="{FooterMiddleText5Style}">
+                {FooterMiddleText5}</div>
+        </div>
     </div>
-
     <script src="../Resources/Scripts/report.js"></script>
 </body>
 

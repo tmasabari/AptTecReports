@@ -2,8 +2,8 @@
     "ReportTemplate": "table.html",
     "DataSource": "../Data/Samples/jobs.json",
     "DataParams": {
-        "PaperSize-Width": "216mm",
-        "PaperSize-Height": "355mm",
+        "PaperSize": "legal",
+        "PaperLayout": "landscape",
         "Report-Top-Margin": "6.5mm", 
         "Report-Bottom-Margin": "6.5mm", 
         "Report-Left-Margin": "6.5mm",

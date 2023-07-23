@@ -34,6 +34,18 @@
 
             --content-table-border: {Content-Table-Border};
         } 
+
+        @page  
+        { 
+            /* https://stackoverflow.com/questions/1960939/disabling-browser-print-options-headers-footers-margins-from-page/2780518#2780518 
+            https://stackoverflow.com/questions/1542320/margin-while-printing-html-page 
+            variables are not working in Edge so place the values directly. 
+            TESTED: the below code hides the Edge/Chrome page size, layout and margin drop downs */ 
+            size: {PaperSize} {PaperLayout}; /* auto is the initial value it supports both portrait and landscape*/ 
+            margin: 0mm;   /* this affects the margin in the printer settings 
+            In Chrome newer versions, the browser header and footer is hidden if the @page margin is set so small that the header/footer position conflicts with content. In my opinion, this is exactly how this should behave.
+            */
+        }
     </style>
     <title>
         {ReportTitle}

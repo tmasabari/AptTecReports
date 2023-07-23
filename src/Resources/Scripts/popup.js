@@ -18,6 +18,7 @@ $(document).on('click', 'hidden.bs.modal', function () {
     $(".modal .modal-body").html('');
 })
 // Hide the modal when the close button on top is clicked
+// https://stackoverflow.com/questions/22119673/find-the-closest-ancestor-element-that-has-a-specific-class
 $(document).on('click', ".modal .close", function () {
     const modalElement = $(this).closest(".modal");
     modalElement.modal("hide");

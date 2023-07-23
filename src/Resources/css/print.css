@@ -57,7 +57,11 @@ Additional
   html width is set using the paper.css
   Do not set the height for html and body which calculates incorrectly when content more than a page 
   html {  width: var(--report-width); }
-  --page-height: calculate similar to width and not needed so removed report height is also not needed 
+  --page-height: calculate similar to width and not needed so removed report height is also not needed
+
+printer settings
+  https://stackoverflow.com/questions/138422/landscape-printing-from-html
+  https://developer.mozilla.org/en-US/docs/Web/CSS/@page/size
 */
 :root {
   counter-reset: printedPageIndex 0;
@@ -68,15 +72,6 @@ Additional
   --content-table-width: calc( var(--page-width) - ( var(--content-table-border) * 2) );
 }
 
-@page  
-{ 
-    /* https://stackoverflow.com/questions/1960939/disabling-browser-print-options-headers-footers-margins-from-page/2780518#2780518 
-    https://stackoverflow.com/questions/1542320/margin-while-printing-html-page */ 
-    size: var(--paper-size) var(--paper-layout); /* auto is the initial value */ 
-    margin: 0mm;   /* this affects the margin in the printer settings 
-    In Chrome newer versions, the browser header and footer is hidden if the @page margin is set so small that the header/footer position conflicts with content. In my opinion, this is exactly how this should behave.
-    */
-}
 html,
 body,
 .printTable {
@@ -192,4 +187,20 @@ body {
   text-align: center;
   display: block; /* must have block to have overflow */
   overflow-y: hidden;
+}
+
+/* letter writing 
+https://www.smashingmagazine.com/2015/01/designing-for-print-with-css/
+NOT WORKING CSS gives us a predefined page counter; it starts at 1 and increments with every new page.
+*/ 
+@page :blank {
+  @top-center { content: "This page is intentionally left blank." }
+}
+
+h1, h2, h3, h4, h5 {
+  page-break-after: avoid;
+}
+
+figure {
+  page-break-inside: avoid;
 }

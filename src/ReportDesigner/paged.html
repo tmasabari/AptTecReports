@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html class="{PaperSize} {PaperLayout} noheight">
+
+<head>
+    <link rel="stylesheet" href="../Resources/css/paper.css" type="text/css">
+    <link rel="stylesheet" href="../Resources/css/pagedjs.css" type="text/css">
+    <link rel="stylesheet" href="../Resources/css/print.css" type="text/css">
+    
+    <script src="https://code.jquery.com/jquery-3.7.0.min.js"
+        integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g="
+        crossorigin="anonymous"></script>
+    <script src="../Resources/Scripts/date.format.js"></script>
+    <script src="../Resources/Scripts/jsonToHtml.js"></script>
+    <script src="../Resources/Scripts/pagedjsAdapter.js"></script>  
+    <script src="https://unpkg.com/pagedjs/dist/paged.polyfill.js"></script>
+    <script src="../Resources/Scripts/pagedjs-repeat-table-header.js"></script>
+    <style>
+        :root {
+            --report-width: 0;
+            --total-pages: 0;
+
+            --paper-size: {PaperSize};
+            --paper-layout: {PaperLayout};
+            /* dummy --report-width must be defined here to initialize the derived variables.
+             0.25in = 6.35mm 
+            report height is not needed
+            set ch unit for column widths most appropriate
+            */
+            --report-top-margin: {Report-Top-Margin};
+            --report-bottom-margin: {Report-Bottom-Margin};
+            --report-left-margin: {Report-Left-Margin};
+            --report-right-margin: {Report-Right-Margin};
+
+            --header-height: {Page-Header-Height};
+            --footer-height: {Page-Footer-Height};
+
+            --content-table-border: {Content-Table-Border};
+
+        } 
+
+ 
+        @page  
+        {   
+            /* https://stackoverflow.com/questions/1960939/disabling-browser-print-options-headers-footers-margins-from-page/2780518#2780518 
+            https://stackoverflow.com/questions/1542320/margin-while-printing-html-page 
+            variables are not working in Edge so place the values directly. 
+            TESTED: the below code hides the Edge/Chrome page size, layout and margin drop downs */ 
+            size: {PaperSize} {PaperLayout}; /* auto is the initial value it supports both portrait and landscape*/ 
+            margin: 30mm 10mm 17mm 10mm;   /* this affects the margin in the printer settings 
+            In Chrome newer versions, the browser header and footer is hidden if the @page margin is set so small that the header/footer position conflicts with content. In my opinion, this is exactly how this should behave.
+            counter-reset: page;
+            counter-increment: page;
+            */ 
+
+
+            @bottom-center {
+                content: counter(page);
+            }
+
+            @top-center {
+                content: element(headerMiddle); 
+            }
+            @top-left {
+                content: element(headerLeft); 
+            }
+            @top-right {
+                content: element(headerRight); 
+            }
+
+            @bottom-center {
+                content: element(footerMiddle); 
+            }
+            @bottom-left {
+                content: element(footerLeft); 
+            }
+            @bottom-right {
+                content: element(footerRight); 
+            }
+        } 
+
+        .headerLeft{
+            position: running(headerLeft);
+            {HeaderLeftStyle};
+        }
+        .headerRight{
+            position: running(headerRight);
+            {HeaderRightStyle};
+        }
+        .headerMiddle{
+            position: running(headerMiddle);
+        }
+
+        .footerLeft{
+            position: running(footerLeft);
+            {FooterLeftStyle};
+        }
+        .footerRight{
+            position: running(footerRight);
+            {FooterRightStyle};
+        }
+        .footerMiddle{
+            position: running(footerMiddle);
+        }
+
+        .headerMiddleText1 {
+            {HeaderMiddleText1Style};
+        }
+        .headerMiddleText2 {
+            {HeaderMiddleText2Style};
+        }
+        .headerMiddleText3 {
+            {HeaderMiddleText3Style};
+        }
+        .headerMiddleText4 {
+            {HeaderMiddleText4Style};
+        }
+        .headerMiddleText5 {
+            {HeaderMiddleText5Style};
+        }
+        .footerMiddleText1 {
+            {FooterMiddleText1Style};
+        }
+        .footerMiddleText2 {
+            {FooterMiddleText2Style};
+        }
+        .footerMiddleText3 {
+            {FooterMiddleText3Style};
+        }
+        .footerMiddleText4 {
+            {FooterMiddleText4Style};
+        }
+        .footerMiddleText5 {
+            {FooterMiddleText5Style};
+        }
+    </style>
+    <title>
+        {ReportTitle}
+    </title>
+</head>
+
+<body> 
+    
+    <div class="headerLeft">
+        <div>{HeaderLeftText}</div>
+    </div>
+    <div class="headerMiddle">
+        <div class="headerMiddleText1">{HeaderMiddleText1}</div>
+        <div class="headerMiddleText2">{HeaderMiddleText2}</div>
+        <div class="headerMiddleText3">{HeaderMiddleText3}</div>
+        <div class="headerMiddleText4">{HeaderMiddleText4}</div>
+        <div class="headerMiddleText5">{HeaderMiddleText5}</div>
+    </div>
+    <div class="headerRight">
+        <div>{HeaderRightText}</div>
+    </div>
+    <div class="footerLeft">
+        <div>{FooterLeftText}</div>
+    </div>
+    <div class="footerRight">
+        <div>{FooterRightText}</div>
+    </div>
+    <div class="footerMiddle">
+        <div class="footerMiddleText1">{FooterMiddleText1}</div>
+        <div class="footerMiddleText2">{FooterMiddleText2}</div>
+        <div class="footerMiddleText3">{FooterMiddleText3}</div>
+        <div class="footerMiddleText4">{FooterMiddleText4}</div>
+        <div class="footerMiddleText5">{FooterMiddleText5}</div>
+    </div>
+    <div class="content"> </div> 
+
+    <script src="../Resources/Scripts/report.js"></script>
+</body>
+
+</html>

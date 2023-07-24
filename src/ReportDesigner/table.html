@@ -14,11 +14,14 @@
     <script src="../Resources/Scripts/date.format.js"></script>
     <script src="../Resources/Scripts/jsonToHtml.js"></script>
     <script src="../Resources/Scripts/html2canvas.min.js"></script>
+    <!-- <script src="https://unpkg.com/pagedjs/dist/paged.polyfill.js"></script> -->
     <style>
         :root {
+            --report-width: 0;
+            --total-pages: 0;
+
             --paper-size: {PaperSize};
             --paper-layout: {PaperLayout};
-            --report-width: 0; 
             /* dummy --report-width must be defined here to initialize the derived variables.
              0.25in = 6.35mm 
             report height is not needed
@@ -33,18 +36,26 @@
             --footer-height: {Page-Footer-Height};
 
             --content-table-border: {Content-Table-Border};
+
         } 
 
         @page  
-        { 
+        {   
             /* https://stackoverflow.com/questions/1960939/disabling-browser-print-options-headers-footers-margins-from-page/2780518#2780518 
             https://stackoverflow.com/questions/1542320/margin-while-printing-html-page 
             variables are not working in Edge so place the values directly. 
             TESTED: the below code hides the Edge/Chrome page size, layout and margin drop downs */ 
             size: {PaperSize} {PaperLayout}; /* auto is the initial value it supports both portrait and landscape*/ 
-            margin: 0mm;   /* this affects the margin in the printer settings 
+            margin: 0mm 0mm 10mm 0mm;   /* this affects the margin in the printer settings 
             In Chrome newer versions, the browser header and footer is hidden if the @page margin is set so small that the header/footer position conflicts with content. In my opinion, this is exactly how this should behave.
+            counter-reset: page;
+            counter-increment: page;
             */
+            @bottom-right-corner {
+                padding-right:20px;
+                content: "Page ";
+            }
+
         }
     </style>
     <title>
@@ -93,6 +104,7 @@
         </tfoot>
     </table>
     <div class="footer-wrapper">
+        <div id="pageFooter"></div>
         <div class="footer">
             <div class="footer-left">{FooterLeftText}</div>
             <div class="footer-right">{FooterRightText}</div>

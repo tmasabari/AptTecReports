@@ -1,5 +1,5 @@
 {
-    "ReportTemplate": "table.html",
+    "ReportTemplate": "paged.html",
     "DataSource": "../Data/Samples/jobs.json",
     "DataParams": {
         "PaperSize": "legal",
@@ -13,6 +13,11 @@
         "Page-Footer-Height": "10mm",
 
         "Content-Table-Border": "0.25mm",
+        "PageNumberLeft": "",
+        "PageNumberTop": "",
+        "PageNumberBottom": "",
+        "PageNumberRight": "",
+
 
         "ReportTitle": "Task Queue",
         "OrgTitle": "Company Name Here, State",
@@ -30,16 +35,20 @@
         "HeaderMiddleText4": "",
         "HeaderMiddleText5": "",
         "HeaderLeftText": "{OrgAddress1}<br/>{OrgAddress2}<br/>{OrgAddress3}",
+        "HeaderLeftStyle": "",
         "HeaderRightText": "{@TodayDate('mm/dd/yyyy')@}",
+        "HeaderRightStyle": "",
         "FooterMiddleText1": "© 2023 AptTec.com. All rights reserved.",
         "FooterMiddleText1Style": "font-size:9pt; margin-bottom:1mm;",
-        "FooterMiddleText2": "Line 2",
+        "FooterMiddleText2": "",
         "FooterMiddleText2Style": "font-size:10pt; margin-bottom:1mm;",
-        "FooterMiddleText3": "Line 3",
-        "FooterMiddleText4": "Line 4",
-        "FooterMiddleText5": "Line 5",
+        "FooterMiddleText3": "",
+        "FooterMiddleText4": "",
+        "FooterMiddleText5": "",
         "FooterLeftText": "left footer line 1<br/>left footer line 2",
-        "FooterRightText": "right footer line 1<br/>{PageNumber}"
+        "FooterLeftStyle": "",
+        "FooterRightText": "right footer line 1<br/>",
+        "FooterRightStyle": ""
     },
     "TableParams": {
         "properties": [

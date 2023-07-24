@@ -26,7 +26,7 @@ Additional
   Console debug commands https://stackoverflow.com/questions/53364174/how-do-i-debug-css-calc-value
   https://maximorlov.com/why-your-calc-function-in-css-might-be-broken/
   print original definition (variables replaced with values)
-    window.getComputedStyle(document.querySelector(":root"),null).getPropertyValue("--header-height-margin")
+    window.getComputedStyle(document.querySelector(":root"),null).getPropertyValue("--page-width")
   print computed value via dom
     window.getComputedStyle(document.querySelector(".header"),null).getPropertyValue("width")
 
@@ -74,7 +74,8 @@ printer settings
 
 html,
 body,
-.printTable {
+.printTable,
+.pageNumberDiv {
   border: 0;
   margin: 0;  /* html margin affects before sending to printer */
   padding: 0;
@@ -85,7 +86,8 @@ Iframe,
 .printTable,
 .printTable thead,
 .printTable tbody,
-.printTable tfoot {
+.printTable tfoot,
+.pageNumberDiv {
   border-spacing: 0px;
 }
 
@@ -166,13 +168,35 @@ so that these elements will not interfere in center aligning the middle text
 /* =============================================== */
 /* You need to have different element for each increment. so the element has to be recreated for every page.
 Dont use any element or its childern that is set as a fixed position for increment or content purpose
-*/
-.footer-space {
-  counter-increment: pageNumber;
+https://bugs.chromium.org/p/chromium/issues/detail?id=740496 https://github.com/w3c/csswg-drafts/issues/1879
+ Getting total number of pages doesn't work either target-counter("url(#ENDID),countername) or any variant.
+
+ pseudo can use only counters so assign variable as counter.
+ DONOT use element within Fixed position.
+body {
+  counter-reset: page;
 }
 .currentPageNumber:after {
-  content: "Page " counter(pageNumber); /* Display counter value in default style (decimal) " of " counter(pages) */
+  counter-reset: total-pages var(--total-pages);
+  content: "Page " counter(page) " of " counter(total-pages); 
 }
+*/
+body {
+  counter-reset: page;
+}
+@Page{
+  @bottom {
+    /* counter-reset: total-pages var(--total-pages); workaround not required anymore */
+    content: "Page " counter(page) " of " counter(pages); 
+  }
+}
+
+
+/* general report writing 
+https://www.smashingmagazine.com/2015/01/designing-for-print-with-css/
+NOT WORKING CSS gives us a predefined page counter; it starts at 1 and increments with every new page.
+*/ 
+
 
 html,
 body {
@@ -188,11 +212,6 @@ body {
   display: block; /* must have block to have overflow */
   overflow-y: hidden;
 }
-
-/* letter writing 
-https://www.smashingmagazine.com/2015/01/designing-for-print-with-css/
-NOT WORKING CSS gives us a predefined page counter; it starts at 1 and increments with every new page.
-*/ 
 @page :blank {
   @top-center { content: "This page is intentionally left blank." }
 }

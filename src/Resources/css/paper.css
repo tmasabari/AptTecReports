@@ -10,11 +10,11 @@ body { margin: 0 }
 /** Paper sizes **/
 
 .letter , .Letter   { width: 216mm; height: 279mm }
-.letter.landscape .Letter.landscape { width: 280mm; height: 215mm }
+.letter.landscape , .Letter.landscape { width: 280mm; height: 215mm }
 .legal  , .Legal    { width: 216mm; height: 356mm }
-.legal.landscape .Legal.landscape  { width: 357mm; height: 215mm }
+.legal.landscape , .Legal.landscape  { width: 357mm; height: 215mm }
 .tabloid  , .Tabloid          { width: 279.4mm; height: 431.8mm }
-.tabloid.landscape .Tabloid.landscape  { width: 431.8mm; height: 279.4mm }
+.tabloid.landscape , .Tabloid.landscape  { width: 431.8mm; height: 279.4mm }
 
 /* ISO Paper Sizes in mm (Portrait) */
 
@@ -107,10 +107,10 @@ body { margin: 0 }
 /** Fix for Chrome issue #273306 **/
 @media print {
   .letter , .Letter , .legal  , .Legal  { width: 216mm }
-  .letter.landscape .Letter.landscape   { width: 280mm }
-  .legal.landscape .Legal.landscape     { width: 357mm }
+  .letter.landscape , .Letter.landscape   { width: 280mm }
+  .legal.landscape , .Legal.landscape     { width: 357mm }
   .tabloid , .Tabloid                   { width: 279.4mm; }
-  .tabloid.landscape .Tabloid.landscape { width: 431.8mm; }
+  .tabloid.landscape , .Tabloid.landscape { width: 431.8mm; }
 
   /* A series */
     .A0 { width: 841mm; }

@@ -5,6 +5,7 @@
     <link rel="stylesheet" href="../Resources/css/paper.css" type="text/css">
     <link rel="stylesheet" href="../Resources/css/pagedjs.css" type="text/css">
     <link rel="stylesheet" href="../Resources/css/print.css" type="text/css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.5/css/jquery.dataTables.min.css" type="text/css">
     
     <script src="https://code.jquery.com/jquery-3.7.0.min.js"
         integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g="
@@ -14,6 +15,7 @@
     <script src="../Resources/Scripts/pagedjsAdapter.js"></script>  
     <script src="https://unpkg.com/pagedjs/dist/paged.polyfill.js"></script>
     <script src="../Resources/Scripts/pagedjs-repeat-table-header.js"></script>
+    <script src="https://cdn.datatables.net/1.13.5/js/jquery.dataTables.min.js"></script>
     <style>
         :root {
             --report-width: 0;
@@ -51,11 +53,6 @@
             counter-reset: page;
             counter-increment: page;
             */ 
-
-
-            @bottom-center {
-                content: counter(page);
-            }
 
             @top-center {
                 content: element(headerMiddle); 

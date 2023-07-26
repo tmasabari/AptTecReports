@@ -18,6 +18,8 @@ Additional
   Paper.css is included to set the width and height for all iso standards paper sizes
   header-wrapper and footer-wrapper divs are included to set the page widths automatically without calc. but more analysis are needed so the classes are removed as of now  {PaperSize} noheight
   
+Running headers
+https://printcss.net/articles/running-headers-and-footers
 
 3. Variable, Calc, and debugging
   https://developer.mozilla.org/en-US/docs/Web/CSS/Using_CSS_custom_properties
@@ -95,18 +97,25 @@ Iframe,
     do not set top/bottom margin for body which applies for first/last page alone.
     set the top margin within header and bottom margin within footer so that they will be applied in all pages.
 */
+/* the margins are applied by pagedjs library to set here. But for custom logic you have to do this
 body {
   margin-left: var(--report-left-margin);
   margin-right: var(--report-right-margin);
 }
-
+.footer-space{
+  width: var(--page-width);
+  min-width: var(--page-width); 
+}
+.content {
+  width: var(--content-table-width);
+  min-width: var(--content-table-width);
+}
+*/
 body,
 .header,
 .header-space,
 .footer,
 .footer-space{
-  width: var(--page-width);
-  min-width: var(--page-width); 
   overflow-x: hidden;
 }
 
@@ -132,8 +141,6 @@ body,
 }
 
 .content {
-  width: var(--content-table-width);
-  min-width: var(--content-table-width);
   overflow-x: hidden;
 }
 
@@ -191,6 +198,13 @@ body {
   }
 }
 
+/* https://stackoverflow.com/questions/7846346/how-to-avoid-extra-blank-page-at-end-while-printing */
+.print:last-child {
+     page-break-after: auto;
+}
+html, body {
+  overflow-x: hidden;
+}
 
 /* general report writing 
 https://www.smashingmagazine.com/2015/01/designing-for-print-with-css/
@@ -222,4 +236,9 @@ h1, h2, h3, h4, h5 {
 
 figure {
   page-break-inside: avoid;
+}
+
+.empty-page-div {   
+  page-break-after: always; 
+  display: block;
 }

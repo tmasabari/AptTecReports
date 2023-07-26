@@ -106,3 +106,14 @@ function TodayDate(format)
 {
     return (format) ? dateFormat(Date.now(), format) : dateFormat(Date.now());
 }
+
+//Page ===================================================
+function addTags(document, parentSelector, tag, pagesCount)
+{
+    var content='';
+    for (var i = 1; i <= pagesCount; i++)
+    {
+        content += tag;
+    }
+    document.querySelector(parentSelector).innerHTML += content;
+}

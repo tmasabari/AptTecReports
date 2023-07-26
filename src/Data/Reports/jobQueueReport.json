@@ -35,20 +35,20 @@
         "HeaderMiddleText4": "",
         "HeaderMiddleText5": "",
         "HeaderLeftText": "{OrgAddress1}<br/>{OrgAddress2}<br/>{OrgAddress3}",
-        "HeaderLeftStyle": "",
+        "HeaderLeftStyle": "font-size:11pt; font-weight: bold;",
         "HeaderRightText": "{@TodayDate('mm/dd/yyyy')@}",
-        "HeaderRightStyle": "",
+        "HeaderRightStyle": "font-size:11pt; font-weight: bold;",
         "FooterMiddleText1": "© 2023 AptTec.com. All rights reserved.",
-        "FooterMiddleText1Style": "font-size:9pt; margin-bottom:1mm;",
+        "FooterMiddleText1Style": "font-size:11pt; margin-bottom:1mm;",
         "FooterMiddleText2": "",
         "FooterMiddleText2Style": "font-size:10pt; margin-bottom:1mm;",
         "FooterMiddleText3": "",
         "FooterMiddleText4": "",
         "FooterMiddleText5": "",
         "FooterLeftText": "left footer line 1<br/>left footer line 2",
-        "FooterLeftStyle": "",
+        "FooterLeftStyle": "font-size:11pt;",
         "FooterRightText": "right footer line 1<br/>",
-        "FooterRightStyle": ""
+        "FooterRightStyle": "font-size:11pt;"
     },
     "TableParams": {
         "properties": [
@@ -56,8 +56,7 @@
                 "field": "SubmitedDate",
                 "displayName": "Submit Date",
                 "columnSize": "10ch",
-                "Converter": "msDateToJsDate",
-                "format": "m/d/yyyy HH:MM:ss"
+                "format": "USShortDateTime"
             },
             {
                 "field": "SubmittedBy",
@@ -86,17 +85,11 @@
                 "field": "SubmitedDate",
                 "displayName": "Created",
                 "columnSize": "10ch",
-                "Converter": "msDateToJsDate",
-                "format": "m/d/yyyy HH:MM:ss"
+                "format": "USShortDateTime"
             },
             {
                 "field": "JobType",
                 "displayName": "Job Type"
-            },
-            {
-                "field": "ErrorDescription",
-                "columnSize": "5ch",
-                "displayName": "Error"
             }
         ],
         "type": "json",

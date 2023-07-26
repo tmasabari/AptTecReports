@@ -15,15 +15,35 @@ function TodayDate(format)
 {
   return (format) ? dateFormat(Date.now(), format) : dateFormat(Date.now());
 }
+function jsonToHTMLAdvanced(params,selector)
+{
+  var tableTag = '<table id="tblReport" class="display" width="100%"></table>';
+  window.parent.addTags($(document)[0], selector, tableTag, 1);
+
+  var properties = mapProperties(params.properties);
+  var oTblReport = $("#tblReport");
+  oTblReport.DataTable({
+
+    info: false, //hide footer Showing 1 to 79 of 79 entries
+    ordering: false,
+    paging: false,
+    searching: false,
+    data: params.printable,
+    columns: properties
+  });
+}
+
+function usShortDateTime(value)
+{
+  if (value === null) return "";
+  return msDateToJsDate(value, 'm/d/yyyy HH:MM:ss');
+}
 // https://printjs.crabbly.com/#cdn
 // taken from https://github.com/crabbly/Print.js/blob/master/src/js/json.js
-function jsonToHTML(params)
-{
-  // Get the row and column data
-  const data = params.printable
-  var properties = params.properties
 
-  // We will format the property objects to keep the JSON api compatible with older releases
+
+function mapProperties(properties)
+{
   properties = properties.map(property =>
   {
     return {
@@ -32,11 +52,40 @@ function jsonToHTML(params)
       displayName: typeof property === 'object'
         ? property.displayName : property,
       columnSize: typeof property === 'object' && property.columnSize
-        ? property.columnSize + ';' : 100 / properties.length + '%;', //'unset;', // 
-      Converter: property.Converter,
-      format: property.format
+        ? property.columnSize + ';' : 100 / properties.length + '%;', 
+      format: typeof property === 'object' && property.format
+        ? property.format : ''
+
     }
   });
+  for (let i = 0; i < properties.length; i++)
+  {
+    //for data table 
+    const prop = properties[i];
+    prop.data = prop.field;
+    prop.title = prop.displayName;
+    prop.width= prop.columnSize;
+    if ((typeof prop) === 'object' && (prop.format))
+    {
+      switch (prop.format.toLowerCase())
+      {
+        case 'usshortdatetime':
+          prop.render = usShortDateTime;
+          break;
+      }
+    }
+  }
+
+  return properties;
+}
+
+function jsonToHTML(params)
+{
+  // Get the row and column data
+  const data = params.printable;
+
+  // We will format the property objects to keep the JSON api compatible with older releases
+  var properties = mapProperties(params.properties);
 
   // Create a html table
   let htmlData = '<table>'
@@ -53,7 +102,7 @@ function jsonToHTML(params)
   // Add the table header columns
   for (let a = 0; a < properties.length; a++)
   {
-    htmlData += '<th style="min-width:' + properties[a].columnSize + ';' + params.gridHeaderStyle + '">' + capitalizePrint(properties[a].displayName) + '</th>'
+    htmlData += '<th style="width:' + properties[a].columnSize + ';' + params.gridHeaderStyle + '">' + capitalizePrint(properties[a].displayName) + '</th>'
   }
 
   // Add the closing tag for the table header row
@@ -91,16 +140,17 @@ function jsonToHTML(params)
       {
         stringData = stringData[properties[n].field]
       }
-      //report can use custom Converter function
-      if (properties[n].Converter)
+      //report can use custom render function
+      if (properties[n].render)
       {
-        let functionObj = window[properties[n].Converter];
-        stringData = functionObj(stringData, properties[n].format);
+        let functionObj = window[properties[n].render];
+        stringData = functionObj(stringData);
         //if format in not defined then undefined will be passed.
       }
+      if (!(stringData)) stringData = "";
 
       // Add the row contents and styles
-      htmlData += '<td style="min-width:' + properties[n].columnSize + params.gridStyle + '">' + stringData + '</td>'
+      htmlData += '<td style="width:' + properties[n].columnSize + params.gridStyle + '">' + stringData + '</td>'
     }
 
     // Add the row closing tag

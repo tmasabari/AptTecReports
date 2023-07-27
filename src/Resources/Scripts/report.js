@@ -1,28 +1,25 @@
 // Call the loadAndReplace function when the page loads
 window.onload = function ()
 {
-    $.getJSON(window.parent.ReportParams.DataSource, function (data)
-    { 
-        // JSON result in `data` variable
-        var params = window.parent.ReportParams.TableParams;
-        params.printable = data.Data;
-        // Build the printable html data
-        //$('.content')[0].innerHTML = jsonToHTML(params);
-        params.properties = mapProperties(params.properties);
-        jsonToHTMLAdvanced(params, '.content');
+    // JSON result in `data` variable
+    var params = window.parent.ReportParams;
+    params.printable = window.parent.reportData.Data;//table content
+    // Build the printable html data
+    //$('.content')[0].innerHTML = jsonToHTML(params);
+    params.Columns = mapProperties(params.Columns);
+    jsonToHTMLAdvanced(params, '.content');
 
-        window.htmlWidth = Math.ceil($("html").width() / getDeviceDPI() * 25.4); 
-        window.htmlHeight = $("html").height() / getDeviceDPI() * 25.4; 
-        //do not use Math.ceil creates problem in page detection
-        document.querySelector(":root").style.setProperty('--report-width', htmlWidth + 'mm');
-        //window.TotalPages = getPageCount();  
-        //document.querySelector(":root").style.setProperty('--total-pages', window.TotalPages);
-        //addPageNumbers(window.TotalPages);
+    window.htmlWidth = Math.ceil($("html").width() / getDeviceDPI() * 25.4); 
+    window.htmlHeight = $("html").height() / getDeviceDPI() * 25.4; 
+    //do not use Math.ceil creates problem in page detection
+    document.querySelector(":root").style.setProperty('--report-width', htmlWidth + 'mm');
+    //window.TotalPages = getPageCount();  
+    //document.querySelector(":root").style.setProperty('--total-pages', window.TotalPages);
+    //addPageNumbers(window.TotalPages);
 
-        //window.parent.addTags($(document)[0], 'body', '<div class="empty-page-div">&nbsp;</div>', 50);
+    //window.parent.addTags($(document)[0], 'body', '<div class="empty-page-div">&nbsp;</div>', 50);
 
-        window.PagedPolyfill.preview();
-    });
+    window.PagedPolyfill.preview();
 };
 
 // Function to get the device DPI

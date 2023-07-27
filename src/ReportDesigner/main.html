@@ -7,8 +7,15 @@
         href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css"
         integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65"
         crossorigin="anonymous">
+    <link rel="stylesheet"
+        href="https://use.fontawesome.com/releases/v5.6.1/css/all.css" 
+        crossorigin="anonymous">
     <link rel="stylesheet" href="../Resources/css/ruler.css" type="text/css">
     <link rel="stylesheet" href="../Resources/css/designer.css" type="text/css">
+    <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.2/font/bootstrap-icons.css"
+        integrity="sha384-b6lVK+yci+bfDmaY1u0zE8YYJt0TZxLEAFyYSLHId4xoVvsrQu3INevFKo+Xir8e"
+        crossorigin="anonymous">
 </head>
 
 <body>
@@ -18,10 +25,12 @@
     <div id="stickyRow">
         <input class="btn btn-success" type="button" value="Print"
             onclick="PrintReport(event)" style="margin-right:10px">
+        <input class="btn btn-success" type="button" value="Edit"
+            onclick="showEditParamters(event)" style="margin-right:10px">
         <input class="btn btn-success" type="button" value="Export"
             onclick="ToCanvas(event)" style="margin-right:10px">
         <input class="btn btn-success" type="button" value="Refresh data"
-            onclick="RefreshData(event)">
+            onclick="RefreshData(event)" style="margin-right:10px">
         <input class="btn btn-success" type="button" value="Ruler"
             onclick="ShowRuler(event)">
     </div>
@@ -29,7 +38,7 @@
     <iframe id="reportIframe"></iframe>
 <!-- start modal template html code -->
     <div class="modal" id="designerModal" tabindex="-1" role="dialog">
-        <div class="modal-dialog" role="document">
+        <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title">Title</h5>
@@ -39,7 +48,6 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <p>This is the dummy content of the modal.</p>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary"
@@ -49,7 +57,8 @@
         </div>
     </div>
 <!-- end modal template html code -->
-
+<form id="paramEditorDiv"  style="display: none; width: 100%; height: calc(100vh - 200px); overflow:auto;"> 
+</form>
 <!-- https://dev.to/madsstoumann/build-a-css-ruler-2opn -->
 <form class="ruleEditor" style="display: none; width: 100%; height: calc(100vh - 200px); overflow:auto;">
     <fieldset>
@@ -131,6 +140,7 @@
     integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g="
     crossorigin="anonymous"></script>
 <script src="../Resources/Scripts/date.format.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@json-editor/json-editor@latest/dist/jsoneditor.min.js"></script>
 <script src="../Resources/Scripts/designer.js"></script>
 <script src="../Resources/Scripts/popup.js"></script>
 <script src="../Resources/Scripts/ruler.js"></script>

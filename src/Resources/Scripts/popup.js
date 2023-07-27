@@ -2,10 +2,11 @@
 function ShowPopup(modalId, title, contenetSelector)
 {
     // Choose the div you want to display in the modal (e.g., divContent1)
-    var selectedDivContent = $(contenetSelector)[0].outerHTML;
-
+    //var selectedDivContent = $(contenetSelector)[0].outerHTML; 
     // Set the content of the modal with the selected div's content
-    $("#" + modalId + " .modal-body").html(selectedDivContent);
+    const parentSelector = "#" + modalId + " .modal-body";
+    //$(parentSelector).html(selectedDivContent);
+    $(contenetSelector).appendTo(parentSelector);  //appendTo will automagically remove it from it's previous location
     $("#" + modalId + " " + contenetSelector).css("display", "block");
     $("#" + modalId + " .modal-title").html(title);
     
@@ -14,8 +15,12 @@ function ShowPopup(modalId, title, contenetSelector)
 }
 
 //event handlers============================================================
-$(document).on('click', 'hidden.bs.modal', function () {
-    $(".modal .modal-body").html('');
+$('.modal').on('hidden.bs.modal', function ()
+{
+    const modalElement = $(this).closest(".modal");
+    var oldContent = modalElement.find('.modal-body').children(0)
+    oldContent.hide();
+    //$(".modal .modal-body").html(''); 
 })
 // Hide the modal when the close button on top is clicked
 // https://stackoverflow.com/questions/22119673/find-the-closest-ancestor-element-that-has-a-specific-class

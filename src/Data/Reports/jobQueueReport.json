@@ -1,100 +1,92 @@
 {
     "ReportTemplate": "paged.html",
     "DataSource": "../Data/Samples/jobs.json",
-    "DataParams": {
+    "Layout": {
         "PaperSize": "legal",
         "PaperLayout": "landscape",
-        "Report-Top-Margin": "6.5mm", 
-        "Report-Bottom-Margin": "6.5mm", 
-        "Report-Left-Margin": "6.5mm",
+        "Report-Top-Margin": "6.5mm",
         "Report-Right-Margin": "6.5mm",
-
+        "Report-Bottom-Margin": "6.5mm",
+        "Report-Left-Margin": "6.5mm",
         "Page-Header-Height": "20mm",
-        "Page-Footer-Height": "10mm",
-
-        "Content-Table-Border": "0.25mm",
-        "PageNumberLeft": "",
-        "PageNumberTop": "",
-        "PageNumberBottom": "",
-        "PageNumberRight": "",
-
-
-        "ReportTitle": "Task Queue",
-        "OrgTitle": "Company Name Here, State",
-        "ReportSubTitle": "Analysis From 01/01/2022 to 31/12/2022",
-        "OrgAddress1": "Door #, Street name",
-        "OrgAddress2": "Village",
-        "OrgAddress3": "City, Pin#",
-
+        "Page-Footer-Height": "10mm"
+    },
+    "Headers": {
+        "HeaderLeftText": "{OrgAddress1}<br/>{OrgAddress2}<br/>{OrgAddress3}",
+        "HeaderRightText": "{@TodayDate('mm/dd/yyyy')@}",
         "HeaderMiddleText1": "{OrgTitle}",
-        "HeaderMiddleText1Style": "font-size:11pt; font-weight: bold; margin-bottom:3mm;",
         "HeaderMiddleText2": "{ReportTitle}",
-        "HeaderMiddleText2Style": "font-size:14pt; font-weight: bold; margin-bottom:2mm;",
         "HeaderMiddleText3": "{ReportSubTitle}",
-        "HeaderMiddleText3Style": "font-size:12pt; font-weight: bold; margin-bottom:1mm;",
         "HeaderMiddleText4": "",
         "HeaderMiddleText5": "",
-        "HeaderLeftText": "{OrgAddress1}<br/>{OrgAddress2}<br/>{OrgAddress3}",
         "HeaderLeftStyle": "font-size:11pt; font-weight: bold;",
-        "HeaderRightText": "{@TodayDate('mm/dd/yyyy')@}",
-        "HeaderRightStyle": "font-size:11pt; font-weight: bold;",
-        "FooterMiddleText1": "© 2023 AptTec.com. All rights reserved.",
-        "FooterMiddleText1Style": "font-size:11pt; margin-bottom:1mm;",
+        "HeaderMiddleText1Style": "font-size:11pt; font-weight: bold; margin-bottom:3mm;",
+        "HeaderMiddleText2Style": "font-size:14pt; font-weight: bold; margin-bottom:2mm;",
+        "HeaderMiddleText3Style": "font-size:12pt; font-weight: bold; margin-bottom:1mm;",
+        "HeaderMiddleText4Style": "font-size:12pt; font-weight: bold; margin-bottom:1mm;",
+        "HeaderMiddleText5Style": "font-size:12pt; font-weight: bold; margin-bottom:1mm;",
+        "HeaderRightStyle": "font-size:11pt; font-weight: bold;"
+    },
+    "Footers": {
+        "FooterLeftText": "left footer line 1<br/>left footer line 2",
+        "FooterRightText": "right footer line 1<br/>",
+        "FooterMiddleText1": "{Copyright}",
         "FooterMiddleText2": "",
-        "FooterMiddleText2Style": "font-size:10pt; margin-bottom:1mm;",
         "FooterMiddleText3": "",
         "FooterMiddleText4": "",
         "FooterMiddleText5": "",
-        "FooterLeftText": "left footer line 1<br/>left footer line 2",
         "FooterLeftStyle": "font-size:11pt;",
-        "FooterRightText": "right footer line 1<br/>",
+        "FooterMiddleText1Style": "font-size:11pt; margin-bottom:1mm;",
+        "FooterMiddleText2Style": "font-size:10pt; margin-bottom:1mm;",
+        "FooterMiddleText3Style": "font-size:11pt; margin-bottom:1mm;",
+        "FooterMiddleText4Style": "font-size:11pt; margin-bottom:1mm;",
+        "FooterMiddleText5Style": "font-size:11pt; margin-bottom:1mm;",
         "FooterRightStyle": "font-size:11pt;"
     },
-    "TableParams": {
-        "properties": [
-            {
-                "field": "SubmitedDate",
-                "displayName": "Submit Date",
-                "columnSize": "10ch",
-                "format": "USShortDateTime"
-            },
-            {
-                "field": "SubmittedBy",
-                "displayName": "Submitted By"
-            },
-            {
-                "field": "PrintJobName",
-                "columnSize": "13em",
-                "displayName": "Job Name"
-            },
-            {
-                "field": "Status",
-                "columnSize": "5em",
-                "displayName": "Status"
-            },
-            {
-                "field": "FileName",
-                "displayName": "File Name"
-            },
-            {
-                "field": "FileSize",
-                "columnSize": "10ch",
-                "displayName": "Size"
-            },
-            {
-                "field": "SubmitedDate",
-                "displayName": "Created",
-                "columnSize": "10ch",
-                "format": "USShortDateTime"
-            },
-            {
-                "field": "JobType",
-                "displayName": "Job Type"
-            }
-        ],
-        "type": "json",
+    "GridStyles": {
         "gridHeaderStyle": "font-weight: bold; ",
         "gridStyle": " margin-bottom: -1px;",
-        "repeatTableHeader": true
-    }
+        "Content-Table-Border": "0.25mm"
+    },
+    "Columns": [
+        {
+            "field": "SubmitedDate",
+            "displayName": "Submit Date",
+            "columnSize": "10ch",
+            "format": "USShortDateTime"
+        },
+        {
+            "field": "SubmittedBy",
+            "displayName": "Submitted By"
+        },
+        {
+            "field": "PrintJobName",
+            "columnSize": "13em",
+            "displayName": "Job Name"
+        },
+        {
+            "field": "Status",
+            "columnSize": "5em",
+            "displayName": "Status"
+        },
+        {
+            "field": "FileName",
+            "displayName": "File Name"
+        },
+        {
+            "field": "FileSize",
+            "columnSize": "10ch",
+            "displayName": "Size"
+        },
+        {
+            "field": "SubmitedDate",
+            "displayName": "Created",
+            "columnSize": "10ch",
+            "format": "USShortDateTime"
+        },
+        {
+            "field": "JobType",
+            "displayName": "Job Type"
+        }
+    ]
 }

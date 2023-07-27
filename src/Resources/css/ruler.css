@@ -109,15 +109,15 @@ body {
   margin: 0 auto;
   width: 18rem;
 }
-fieldset {
+.ruleEditor fieldset {
   flex: 1;
   padding: 1ch;
 }
-input,
-select {
+.ruleEditor input,
+.ruleEditor select {
   display: block;
 }
-label {
+.ruleEditor label {
   display: block;
   margin-block-end: 2ch;
 }

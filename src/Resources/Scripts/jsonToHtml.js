@@ -20,7 +20,7 @@ function jsonToHTMLAdvanced(params,selector)
   var tableTag = '<table id="tblReport" class="display" width="100%"></table>';
   window.parent.addTags($(document)[0], selector, tableTag, 1);
 
-  var properties = mapProperties(params.properties);
+  var properties = mapProperties(params.Columns);
   var oTblReport = $("#tblReport");
   oTblReport.DataTable({
 
@@ -33,7 +33,8 @@ function jsonToHTMLAdvanced(params,selector)
   });
 }
 
-function usShortDateTime(value)
+//https://datatables.net/manual/data/renderers#Functions
+function usShortDateTime(value, type, row)
 {
   if (value === null) return "";
   return msDateToJsDate(value, 'm/d/yyyy HH:MM:ss');
@@ -102,7 +103,7 @@ function jsonToHTML(params)
   // Add the table header columns
   for (let a = 0; a < properties.length; a++)
   {
-    htmlData += '<th style="width:' + properties[a].columnSize + ';' + params.gridHeaderStyle + '">' + capitalizePrint(properties[a].displayName) + '</th>'
+    htmlData += '<th style="width:' + properties[a].columnSize + ';' + params.GridStyles.gridHeaderStyle + '">' + capitalizePrint(properties[a].displayName) + '</th>'
   }
 
   // Add the closing tag for the table header row

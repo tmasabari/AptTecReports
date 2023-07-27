@@ -11,7 +11,7 @@
 #stickyRow {
   position: absolute;
   top: 0px;
-  left: calc(100% - 320px);
+  left: calc(100% - 400px);
   z-index: 999;
 }
 #stickyRow,

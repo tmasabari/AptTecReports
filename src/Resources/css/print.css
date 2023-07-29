@@ -64,15 +64,10 @@ https://printcss.net/articles/running-headers-and-footers
 printer settings
   https://stackoverflow.com/questions/138422/landscape-printing-from-html
   https://developer.mozilla.org/en-US/docs/Web/CSS/@page/size
-*/
-:root {
-  counter-reset: printedPageIndex 0;
 
-  --header-height-margin: calc( var(--header-height) + var(--report-top-margin));
-  --footer-height-margin: calc( var(--footer-height) + var(--report-bottom-margin));
-  --page-width: calc( var(--report-width) - var(--report-left-margin) - var(--report-right-margin) );
-  --content-table-width: calc( var(--page-width) - ( var(--content-table-border) * 2) );
-}
+
+*/
+
 
 html,
 body,
@@ -110,37 +105,10 @@ body {
   width: var(--content-table-width);
   min-width: var(--content-table-width);
 }
+.header {   margin-top: var(--report-top-margin); }
+.footer { margin-bottom: var(--report-bottom-margin); }
 */
-body,
-.header,
-.header-space,
-.footer,
-.footer-space{
-  overflow-x: hidden;
-}
-
-.header {
-  position: fixed;
-  top: 0;
-  margin-top: var(--report-top-margin);
-  height: var(--header-height);
-}
-.footer {
-  position: fixed;
-  bottom: 0;
-  margin-bottom: var(--report-bottom-margin);
-  height: var(--footer-height);
-}
-
-.header-space {
-  height: var(--header-height-margin);
-}
-
-.footer-space {
-  height: var(--footer-height-margin);
-}
-
-.content {
+html, body, .content {
   overflow-x: hidden;
 }
 
@@ -155,23 +123,7 @@ apply only the content portion table */
   page-break-inside: avoid;
   word-break: break-word;
   border-spacing: 0px;
-}
-
-/* position the elements relative to the parent
-so that these elements will not interfere in center aligning the middle text
-=============================================== */
-.header-left,
-.footer-left {
-  position: absolute;   
-  text-align: left;
-  left: 0;
-}
-.header-right,
-.footer-right {
-  position: absolute; 
-  text-align: right;
-  right: 0;
-}
+} 
 /* =============================================== */
 /* You need to have different element for each increment. so the element has to be recreated for every page.
 Dont use any element or its childern that is set as a fixed position for increment or content purpose
@@ -191,20 +143,11 @@ body {
 body {
   counter-reset: page;
 }
-@Page{
-  @bottom {
-    /* counter-reset: total-pages var(--total-pages); workaround not required anymore */
-    content: "Page " counter(page) " of " counter(pages); 
-  }
-}
-
 /* https://stackoverflow.com/questions/7846346/how-to-avoid-extra-blank-page-at-end-while-printing */
 .print:last-child {
      page-break-after: auto;
 }
-html, body {
-  overflow-x: hidden;
-}
+
 
 /* general report writing 
 https://www.smashingmagazine.com/2015/01/designing-for-print-with-css/
@@ -220,12 +163,6 @@ body {
   text-align: justify;
 }
 
-.header,
-.footer {
-  text-align: center;
-  display: block; /* must have block to have overflow */
-  overflow-y: hidden;
-}
 @page :blank {
   @top-center { content: "This page is intentionally left blank." }
 }
@@ -241,4 +178,11 @@ figure {
 .empty-page-div {   
   page-break-after: always; 
   display: block;
+}
+
+.headerMiddle {
+  vertical-align: bottom;
+}
+.footerMiddle {
+  vertical-align: top;
 }

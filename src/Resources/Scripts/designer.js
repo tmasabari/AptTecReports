@@ -12,7 +12,7 @@ function ShowRuler(event)
 }
 function showEditParamters(event)
 {
-    ShowPopup('designerModal', 'Edit Parameters', '#paramEditorDiv');
+    ShowPopup('designerModal', 'Edit Parameters', '#paramEditorDiv', saveParameters);
 }
 
 function ToCanvas(event)
@@ -101,14 +101,16 @@ function onReportParametersChanged(iFrameId)
                 console.error('Error loading JSON data:', error);
             });
     }
+    else {
+       loadReportTemplate(iFrameId);
+    }
 }
 
 function loadReportTemplate(iFrameId)
 {
     // Perform the replacements
-    var modified_html = replacePlaceholders(window.htmlTemplate, window.ReportParams.Layout);
-    modified_html = replacePlaceholders(modified_html, window.ReportParams.Headers);
-    modified_html = replacePlaceholders(modified_html, window.ReportParams.Footers);
+    var modified_html = replacePlaceholders(window.htmlTemplate, window.ReportParams);
+    modified_html = replacePlaceholders(modified_html, window.ReportParams.Layout);
     modified_html = replacePlaceholders(modified_html, window.reportData.CommonData); //final replacements with server data
 
     // Insert the modified HTML into the DOM
@@ -120,10 +122,23 @@ function loadReportTemplate(iFrameId)
 //Editor ===================================================
 const jsonEditorForm = document.getElementById('paramEditorDiv');
 var paramEditorOptoins = {
+    max_depth: 10,   //to avoid infinite loop. Max depth of the nested properties to be rendered of provided json schema.
+
     iconlib: 'fontawesome5',
-    object_layout: 'grid',
+    //object_layout: 'grid-strict',
     show_errors: 'always',
-    theme: 'bootstrap5'
+    theme: 'bootstrap5',
+    array_controls_top: true,
+    disable_array_add: false,
+    disable_array_delete: false,
+    disable_array_delete_all_rows: false,
+    disable_array_delete_last_row: true,
+    disable_array_reorder: false,
+    disable_collapse: true,
+    disable_edit_json: true,
+    disable_properties: true,
+    display_required_only: false,
+    enable_array_copy: false
 }
 
 var data = {
@@ -144,6 +159,8 @@ var initJsoneditor = function () {
 
     // new instance of JSONEditor
     jsoneditor = new window.JSONEditor(jsonEditorForm, data.options);
+    // we can enable/disable entire form or part of the form as well
+    //editor.getEditor('root.location').disable();
 
     jsoneditor.on('ready', () =>
     {
@@ -152,23 +169,46 @@ var initJsoneditor = function () {
     });
 
     // listen for changes
-    jsoneditor.on('change', function () {
-        // output
-        var json = jsoneditor.getValue();
-        modifiedParams = JSON.stringify(json, null, 2);
-        //outputTextarea.setValue(modifiedParams);
-        
-        // validate
-        var validationErrors = jsoneditor.validate();
-        if (validationErrors.length) {
-            isValid = false;
-            errors = JSON.stringify(validationErrors, null, 2)
-        } else {
-            isValid=true;
-        }
-    });
+    //jsoneditor.on('change', function () {
+    //    saveParameters();
+    //});
 }
 
+function saveParameters() {
+    /* // Get a reference to a node within the editor
+        const name = editor.getEditor('root.name');
+
+        // `getEditor` will return null if the path is invalid
+        if (name)
+        {
+            name.setValue("John Smith");
+
+            console.log(name.getValue());
+        }
+        */
+
+
+    // validate
+    var validationErrors = jsoneditor.validate();
+    if (validationErrors.length)
+    {
+        isValid = false;
+        // errors is an array of objects, each with a `path`, `property`, and `message` parameter
+        // `property` is the schema keyword that triggered the validation error (e.g. "minLength")
+        // `path` is a dot separated path into the JSON object (e.g. "root.path.to.field")
+        errors = JSON.stringify(validationErrors, null, 2)
+        alert(errors);
+    } else
+    {
+        isValid = true;
+        // output
+        var reportParams = jsoneditor.getValue();
+        window.ReportParams = reportParams;
+        //refreshReport('reportIframe', window.ReportId);
+        onReportParametersChanged('reportIframe');
+        //modifiedParams = JSON.stringify(json, null, 2); 
+    }
+}
 
 //Utility functions ==========================================================
 
@@ -179,24 +219,28 @@ function replacePlaceholders(html_template, reportDataParams)
     {
         const placeholder = new RegExp('{' + key + '}', 'g');
         value = reportDataParams[key];
+        if (typeof value === 'object')
+            continue;
 
-        value = value.replace("{PageNumber}", "<span class='currentPageNumber'></span>");
-
-        const functionStart = "{@", functionEnd = "@}";
-        var nextIndex = value.indexOf(functionStart);
-        while (nextIndex >= 0)
+        //value = value.replace("{PageNumber}", "<span class='currentPageNumber'></span>");
+        if (typeof value === 'string')
         {
-            var endIndex = value.indexOf(functionEnd, nextIndex);
-            if (endIndex >= 0)
+            const functionStart = "{@", functionEnd = "@}";
+            var nextIndex = value.indexOf(functionStart);
+            while (nextIndex >= 0)
             {
-                const stringFound = value.substring(nextIndex + functionStart.length, endIndex);
-                // https://stackoverflow.com/questions/359788/how-to-execute-a-javascript-function-when-i-have-its-name-as-a-string/359910#359910
-                const codeToExecute = "return " + stringFound;
-                const tempFunction = new Function(codeToExecute);
-                const returnValue = tempFunction();
-                value = value.replace(functionStart + stringFound + functionEnd, returnValue);
+                var endIndex = value.indexOf(functionEnd, nextIndex);
+                if (endIndex >= 0)
+                {
+                    const stringFound = value.substring(nextIndex + functionStart.length, endIndex);
+                    // https://stackoverflow.com/questions/359788/how-to-execute-a-javascript-function-when-i-have-its-name-as-a-string/359910#359910
+                    const codeToExecute = "return " + stringFound;
+                    const tempFunction = new Function(codeToExecute);
+                    const returnValue = tempFunction();
+                    value = value.replace(functionStart + stringFound + functionEnd, returnValue);
+                }
+                nextIndex = value.indexOf(functionStart);
             }
-            nextIndex = value.indexOf(functionStart);
         }
         html_template = html_template.replace(placeholder, value);
     }

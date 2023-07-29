@@ -18,6 +18,9 @@
     <script src="https://cdn.datatables.net/1.13.5/js/jquery.dataTables.min.js"></script>
     <style>
         :root {
+            --report-width: 0;
+            --total-pages: 0;
+
             --paper-size: {PaperSize};
             --paper-layout: {PaperLayout};
             /* dummy --report-width must be defined here to initialize the derived variables.
@@ -25,51 +28,50 @@
             report height is not needed
             set ch unit for column widths most appropriate
             */
+            --report-top-margin: {Report-Top-Margin};
+            --report-bottom-margin: {Report-Bottom-Margin};
+            --report-left-margin: {Report-Left-Margin};
+            --report-right-margin: {Report-Right-Margin};
+
+            --header-height: {Page-Header-Height};
+            --footer-height: {Page-Footer-Height};
+
+            --content-table-border: {Content-Table-Border};
+
         } 
 
  
         @page  
         {   
-            counter-reset: page;
             /* https://stackoverflow.com/questions/1960939/disabling-browser-print-options-headers-footers-margins-from-page/2780518#2780518 
             https://stackoverflow.com/questions/1542320/margin-while-printing-html-page 
             variables are not working in Edge so place the values directly. 
             TESTED: the below code hides the Edge/Chrome page size, layout and margin drop downs */ 
             size: {PaperSize} {PaperLayout}; /* auto is the initial value it supports both portrait and landscape*/ 
-            margin: {Report-Top-Margin}mm {Report-Right-Margin}mm {Report-Bottom-Margin}mm {Report-Left-Margin}mm;   /* this affects the margin in the printer settings 
-            margin: 30mm 10mm 17mm 10mm; 
+            margin: 30mm 10mm 17mm 10mm;   /* this affects the margin in the printer settings 
             In Chrome newer versions, the browser header and footer is hidden if the @page margin is set so small that the header/footer position conflicts with content. In my opinion, this is exactly how this should behave.
             counter-reset: page;
             counter-increment: page;
             */ 
-            @bottom {
-                /* counter-reset: total-pages var(--total-pages); workaround not required anymore */
-                content: "Page " counter(page) " of " counter(pages); 
-            }
+
             @top-center {
                 content: element(headerMiddle); 
-                width:100%;
             }
             @top-left {
                 content: element(headerLeft); 
-                width:none; min-width: none;
             }
             @top-right {
                 content: element(headerRight); 
-                width:none; min-width: none;
             }
 
             @bottom-center {
                 content: element(footerMiddle); 
-                width:100%;
             }
             @bottom-left {
                 content: element(footerLeft); 
-                width:none; min-width: none;
             }
             @bottom-right {
                 content: element(footerRight); 
-                width:none; min-width: none;
             }
         } 
 
@@ -133,15 +135,17 @@
     </title>
 </head>
 
-<body>
-    <div class="headerMiddle">
-        {HeadersHtml}
-    </div>
-    <div class="footerMiddle">
-        {FootersHtml}
-    </div>
-    <!-- <div class="headerLeft">
+<body> 
+    
+    <div class="headerLeft">
         <div>{HeaderLeftText}</div>
+    </div>
+    <div class="headerMiddle">
+        <div class="headerMiddleText1">{HeaderMiddleText1}</div>
+        <div class="headerMiddleText2">{HeaderMiddleText2}</div>
+        <div class="headerMiddleText3">{HeaderMiddleText3}</div>
+        <div class="headerMiddleText4">{HeaderMiddleText4}</div>
+        <div class="headerMiddleText5">{HeaderMiddleText5}</div>
     </div>
     <div class="headerRight">
         <div>{HeaderRightText}</div>
@@ -151,7 +155,14 @@
     </div>
     <div class="footerRight">
         <div>{FooterRightText}</div>
-    </div> -->
+    </div>
+    <div class="footerMiddle">
+        <div class="footerMiddleText1">{FooterMiddleText1}</div>
+        <div class="footerMiddleText2">{FooterMiddleText2}</div>
+        <div class="footerMiddleText3">{FooterMiddleText3}</div>
+        <div class="footerMiddleText4">{FooterMiddleText4}</div>
+        <div class="footerMiddleText5">{FooterMiddleText5}</div>
+    </div>
     <div class="content"> </div> 
 
     <script src="../Resources/Scripts/report.js"></script>

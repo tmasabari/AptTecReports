@@ -7,22 +7,25 @@
             "additionalProperties": false,
             "properties": {
                 "ReportTemplate": {
-                    "type": "string"
+                    "type": "string",
+                    "options": {
+                        "hidden": true
+                    }
                 },
                 "DataSource": {
-                    "type": "string"
+                    "type": "string" ,
+                    "options": { "hidden": true }
                 },
                 "Layout": {
                     "$ref": "#/definitions/Layout"
                 },
-                "Headers": {
-                    "$ref": "#/definitions/Headers"
-                },
-                "Footers": {
-                    "$ref": "#/definitions/Footers"
-                },
-                "GridStyles": {
-                    "$ref": "#/definitions/GridStyles"
+                "HeadersHtml": {
+                    "type": "string",
+                    "title": "Header",
+                    "format": "jodit",
+                    "options": {
+                        "input_width": "100%"
+                    }
                 },
                 "Columns": {
                     "type": "array",
@@ -30,14 +33,24 @@
                     "items": {
                         "$ref": "#/definitions/Column"
                     }
+                },
+                "FootersHtml": {
+                    "type": "string",
+                    "title": "Footer",
+                    "format": "jodit",
+                    "options": {
+                        "input_width": "100%"
+                    }
                 }
             },
+            "defaultProperties": [
+                "Layout", "Columns"
+            ],
             "required": [
+                "HeadersHtml",
+                "FootersHtml",
                 "Columns",
                 "DataSource",
-                "Footers",
-                "GridStyles",
-                "Headers",
                 "Layout",
                 "ReportTemplate"
             ],
@@ -48,16 +61,20 @@
             "additionalProperties": false,
             "properties": {
                 "field": {
-                    "type": "string"
+                    "type": "string",
+                    "title": "Name"
                 },
                 "displayName": {
-                    "type": "string"
+                    "type": "string",
+                    "title": "Title"
                 },
                 "columnSize": {
-                    "type": "string"
+                    "type": "string",
+                    "title": "Width"
                 },
                 "format": {
-                    "type": "string"
+                    "type": "string",
+                    "title": "Format"
                 }
             },
             "required": [
@@ -66,189 +83,50 @@
             ],
             "title": "Column"
         },
-        "Footers": {
-            "type": "object",
-            "additionalProperties": false,
-            "properties": {
-                "FooterLeftText": {
-                    "type": "string"
-                },
-                "FooterRightText": {
-                    "type": "string"
-                },
-                "FooterMiddleText1": {
-                    "type": "string"
-                },
-                "FooterMiddleText2": {
-                    "type": "string"
-                },
-                "FooterMiddleText3": {
-                    "type": "string"
-                },
-                "FooterMiddleText4": {
-                    "type": "string"
-                },
-                "FooterMiddleText5": {
-                    "type": "string"
-                },
-                "FooterLeftStyle": {
-                    "type": "string"
-                },
-                "FooterMiddleText1Style": {
-                    "type": "string"
-                },
-                "FooterMiddleText2Style": {
-                    "type": "string"
-                },
-                "FooterMiddleText3Style": {
-                    "type": "string"
-                },
-                "FooterMiddleText4Style": {
-                    "type": "string"
-                },
-                "FooterMiddleText5Style": {
-                    "type": "string"
-                },
-                "FooterRightStyle": {
-                    "type": "string"
-                }
-            },
-            "required": [
-                "FooterLeftStyle",
-                "FooterLeftText",
-                "FooterMiddleText1",
-                "FooterMiddleText1Style",
-                "FooterMiddleText2",
-                "FooterMiddleText2Style",
-                "FooterMiddleText3",
-                "FooterMiddleText3Style",
-                "FooterMiddleText4",
-                "FooterMiddleText4Style",
-                "FooterMiddleText5",
-                "FooterMiddleText5Style",
-                "FooterRightStyle",
-                "FooterRightText"
-            ],
-            "title": "Footers"
-        },
-        "GridStyles": {
-            "type": "object",
-            "additionalProperties": false,
-            "properties": {
-                "gridHeaderStyle": {
-                    "type": "string"
-                },
-                "gridStyle": {
-                    "type": "string"
-                },
-                "Content-Table-Border": {
-                    "type": "string"
-                }
-            },
-            "required": [
-                "Content-Table-Border",
-                "gridHeaderStyle",
-                "gridStyle"
-            ],
-            "title": "GridStyles"
-        },
-        "Headers": {
-            "type": "object",
-            "additionalProperties": false,
-            "properties": {
-                "HeaderLeftText": {
-                    "type": "string"
-                },
-                "HeaderRightText": {
-                    "type": "string"
-                },
-                "HeaderMiddleText1": {
-                    "type": "string"
-                },
-                "HeaderMiddleText2": {
-                    "type": "string"
-                },
-                "HeaderMiddleText3": {
-                    "type": "string"
-                },
-                "HeaderMiddleText4": {
-                    "type": "string"
-                },
-                "HeaderMiddleText5": {
-                    "type": "string"
-                },
-                "HeaderLeftStyle": {
-                    "type": "string"
-                },
-                "HeaderMiddleText1Style": {
-                    "type": "string"
-                },
-                "HeaderMiddleText2Style": {
-                    "type": "string"
-                },
-                "HeaderMiddleText3Style": {
-                    "type": "string"
-                },
-                "HeaderMiddleText4Style": {
-                    "type": "string"
-                },
-                "HeaderMiddleText5Style": {
-                    "type": "string"
-                },
-                "HeaderRightStyle": {
-                    "type": "string"
-                }
-            },
-            "required": [
-                "HeaderLeftStyle",
-                "HeaderLeftText",
-                "HeaderMiddleText1",
-                "HeaderMiddleText1Style",
-                "HeaderMiddleText2",
-                "HeaderMiddleText2Style",
-                "HeaderMiddleText3",
-                "HeaderMiddleText3Style",
-                "HeaderMiddleText4",
-                "HeaderMiddleText4Style",
-                "HeaderMiddleText5",
-                "HeaderMiddleText5Style",
-                "HeaderRightStyle",
-                "HeaderRightText"
-            ],
-            "title": "Headers"
-        },
         "Layout": {
             "type": "object",
             "additionalProperties": false,
+            "format": "grid-strict",
             "properties": {
                 "PaperSize": {
-                    "type": "string"
+                    "type": "string",
+                    "title": "Paper size",
+                    "enum": ["A3", "A4", "A5", "B4", "B5", "letter", "legal", "ledger"],
+                    "options": {    "grid_columns": 4,
+                                    "enum_titles": ["A3", "A4", "A5", "B4", "B5", "Letter", "Legal", "Ledger"] }
                 },
                 "PaperLayout": {
-                    "type": "string"
+                    "type": "string",
+                    "title": "Paper layout",
+                    "enum": ["portrait ", "landscape"],
+                    "options": { "grid_columns": 4 , "grid_break": true,
+                        "enum_titles": [
+                            "Portrait",
+                            "Landscape"
+                        ] } 
                 },
                 "Report-Top-Margin": {
-                    "type": "string"
+                    "type": "number",
+                    "format": "number",
+                    "title": "Top margin (mm)"
                 },
                 "Report-Right-Margin": {
-                    "type": "string"
+                    "type": "number",
+                    "format": "number",
+                    "title": "Right margin (mm)"
                 },
                 "Report-Bottom-Margin": {
-                    "type": "string"
+                    "type": "number",
+                    "format": "number",
+                    "title": "Bottom margin (mm)"
                 },
                 "Report-Left-Margin": {
-                    "type": "string"
-                },
-                "Page-Header-Height": {
-                    "type": "string"
-                },
-                "Page-Footer-Height": {
-                    "type": "string"
+                    "type": "number",
+                    "format": "number",
+                    "title": "Left margin (mm)"
                 }
             },
             "required": [
-                "Page-Footer-Height",
-                "Page-Header-Height",
                 "PaperLayout",
                 "PaperSize",
                 "Report-Bottom-Margin",

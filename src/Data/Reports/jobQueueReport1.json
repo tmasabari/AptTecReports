@@ -1,0 +1,92 @@
+{
+    "ReportTemplate": "paged.html",
+    "DataSource": "../Data/Samples/jobs.json",
+    "Layout": {
+        "PaperSize": "legal",
+        "PaperLayout": "landscape",
+        "Report-Top-Margin": "6.5mm",
+        "Report-Right-Margin": "6.5mm",
+        "Report-Bottom-Margin": "6.5mm",
+        "Report-Left-Margin": "6.5mm",
+        "Page-Header-Height": "20mm",
+        "Page-Footer-Height": "10mm"
+    },
+    "Headers": {
+        "HeaderLeftText": "{OrgAddress1}<br/>{OrgAddress2}<br/>{OrgAddress3}",
+        "HeaderRightText": "{@TodayDate('mm/dd/yyyy')@}",
+        "HeaderMiddleText1": "{OrgTitle}",
+        "HeaderMiddleText2": "{ReportTitle}",
+        "HeaderMiddleText3": "{ReportSubTitle}",
+        "HeaderMiddleText4": "",
+        "HeaderMiddleText5": "",
+        "HeaderLeftStyle": "font-size:11pt; font-weight: bold;",
+        "HeaderMiddleText1Style": "font-size:11pt; font-weight: bold; margin-bottom:3mm;",
+        "HeaderMiddleText2Style": "font-size:14pt; font-weight: bold; margin-bottom:2mm;",
+        "HeaderMiddleText3Style": "font-size:12pt; font-weight: bold; margin-bottom:1mm;",
+        "HeaderMiddleText4Style": "font-size:12pt; font-weight: bold; margin-bottom:1mm;",
+        "HeaderMiddleText5Style": "font-size:12pt; font-weight: bold; margin-bottom:1mm;",
+        "HeaderRightStyle": "font-size:11pt; font-weight: bold;"
+    },
+    "Footers": {
+        "FooterLeftText": "left footer line 1<br/>left footer line 2",
+        "FooterRightText": "right footer line 1<br/>",
+        "FooterMiddleText1": "{Copyright}",
+        "FooterMiddleText2": "",
+        "FooterMiddleText3": "",
+        "FooterMiddleText4": "",
+        "FooterMiddleText5": "",
+        "FooterLeftStyle": "font-size:11pt;",
+        "FooterMiddleText1Style": "font-size:11pt; margin-bottom:1mm;",
+        "FooterMiddleText2Style": "font-size:10pt; margin-bottom:1mm;",
+        "FooterMiddleText3Style": "font-size:11pt; margin-bottom:1mm;",
+        "FooterMiddleText4Style": "font-size:11pt; margin-bottom:1mm;",
+        "FooterMiddleText5Style": "font-size:11pt; margin-bottom:1mm;",
+        "FooterRightStyle": "font-size:11pt;"
+    },
+    "GridStyles": {
+        "gridHeaderStyle": "font-weight: bold; ",
+        "gridStyle": " margin-bottom: -1px;",
+        "Content-Table-Border": "0.25mm"
+    },
+    "Columns": [
+        {
+            "field": "SubmitedDate",
+            "displayName": "Submit Date",
+            "columnSize": "10ch",
+            "format": "USShortDateTime"
+        },
+        {
+            "field": "SubmittedBy",
+            "displayName": "Submitted By"
+        },
+        {
+            "field": "PrintJobName",
+            "columnSize": "13em",
+            "displayName": "Job Name"
+        },
+        {
+            "field": "Status",
+            "columnSize": "5em",
+            "displayName": "Status"
+        },
+        {
+            "field": "FileName",
+            "displayName": "File Name"
+        },
+        {
+            "field": "FileSize",
+            "columnSize": "10ch",
+            "displayName": "Size"
+        },
+        {
+            "field": "SubmitedDate",
+            "displayName": "Created",
+            "columnSize": "10ch",
+            "format": "USShortDateTime"
+        },
+        {
+            "field": "JobType",
+            "displayName": "Job Type"
+        }
+    ]
+}

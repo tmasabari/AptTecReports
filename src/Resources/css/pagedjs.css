@@ -141,20 +141,3 @@
 
     /*--------------------------------------------------------------------------------------*/
 }
-
-
-/*
-@page {
-    @top-left {
-        content: "Sample Print Test Document" !important;
-    }
-
-    @top-center {
-        content: "" !important;
-    }
-}
-
-@page: first {
-    content: " " !important;
-}
-*/

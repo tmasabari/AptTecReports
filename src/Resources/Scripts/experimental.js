@@ -35,8 +35,8 @@ function getPageCount()
 {
     const mmToInch = 0.0393701;
     const pageHeightPixels = window.htmlHeight * mmToInch * getDeviceDPI();
-    headerTotalHeight = $(".header-space").height();
-    footerTotalHeight = $(".footer-space").height();
+    //headerTotalHeight = $(".header-space").height();
+    //footerTotalHeight = $(".footer-space").height();
     var pageContentHeight = pageHeightPixels - headerTotalHeight - footerTotalHeight;
     var totalContentHeight = document.body.scrollHeight;
     const totalPages = Math.ceil(totalContentHeight / pageContentHeight);

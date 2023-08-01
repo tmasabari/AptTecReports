@@ -114,9 +114,9 @@ html, body, .content {
 
 /* printTable class is the table fix applied all over the page. So do not apply the border for that
 apply only the content portion table */
-.content table,
-.content th,
-.content td {
+.content .dataTable,
+.content .dataTable th,
+.content .dataTable td {
   border: 0.25mm solid black;
   border-collapse: collapse;
   /* avoid page break inside row of table */

@@ -17,7 +17,7 @@ function TodayDate(format)
 }
 function jsonToHTMLAdvanced(params,selector)
 {
-  var tableTag = '<table id="tblReport" class="display" width="100%"></table>';
+  var tableTag = '<table id="tblReport" class="dataTable display" width="100%"></table>';
   window.parent.addTags($(document)[0], selector, tableTag, 1);
 
   var properties = mapProperties(params.Columns);
@@ -30,6 +30,12 @@ function jsonToHTMLAdvanced(params,selector)
     searching: false,
     data: params.printable,
     columns: properties
+  });
+}
+function insertHtmlContents(contents, selector) {
+  contents.forEach(content => {
+    var modified_html = window.parent.replacePlaceholders(content.ContentHtml, window.parent.reportData.CommonData); 
+    window.parent.addTags($(document)[0], selector, modified_html, 1);
   });
 }
 

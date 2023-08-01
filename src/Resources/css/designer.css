@@ -10,7 +10,7 @@
 }
 #stickyRow {
   position: absolute;
-  top: 0px;
+  top: 10mm;
   left: calc(100% - 400px);
   z-index: 999;
 }

@@ -1,0 +1,17 @@
+{
+    "ReportTemplate": "paged.html",
+    "DataSource": "../Data/Samples/coverletter.json",
+    "HeadersHtml": "<table style=\"border-collapse:collapse;width: 100%;\"><tbody>\n<tr>\n\t<td style=\"width: 20%;text-align:left;\">{OrgAddress1}<br/>{OrgAddress2}<br/>{OrgAddress3}</td>\n\t<td style=\"width: 60%; text-align: center;\"><strong>{OrgTitle}<br/>{ReportTitle}<br/>{ReportSubTitle}</strong><br></td>\n\t<td style=\"width: 20%;text-align:right;\">{@TodayDate('mm/dd/yyyy')@}</td></tr></tbody></table>",
+    "FootersHtml": "<table style=\"border-collapse:collapse;width: 100%;\"><tbody>\n<tr>\n\t<td style=\"width: 20%;text-align:left;\">left footer line 1<br/>left footer line 2</td>\n\t<td style=\"width: 60%; text-align: center;\"><strong>{Copyright}</strong><br></td>\n\t<td style=\"width: 20%;text-align:right;\">right footer line 1</td></tr></tbody></table>",
+    "Content": [
+        {"ContentHtml":"<table style=\"border-collapse: collapse; width: 48.6039%;\">\n    <tbody>\n        <tr>\n            <td style=\"width: 31.9728%;\">Document #<br></td>\n            <td style=\"width: 68.0272%;\">123123</td>\n        </tr>\n        <tr>\n            <td>Received From<br></td>\n            <td><br></td>\n        </tr>\n        <tr>\n            <td><br></td>\n            <td>{ClientName}</td>\n        </tr>\n        <tr>\n            <td><br></td>\n            <td>{ClientAddress1}</td>\n        </tr>\n        <tr>\n            <td><br></td>\n            <td>{ClientAddress2} <br></td>\n        </tr>\n        <tr>\n            <td><br></td>\n            <td>{ClientAddress3}<br></td>\n        </tr>\n        <tr>\n            <td><br></td>\n            <td>{ClientState} {ClientPin}</td>\n        </tr>\n    </tbody>\n</table><br/><br/><br/><br/><br/><table style=\"border:none;width: 100%;\"><tbody>\n<tr>\n\t<td style=\"width: 11.3108%;\"><br></td>\n\t<td style=\"width: 22.093%;\"><br></td>\n\t<td style=\"width: 16.6667%;\"><br></td>\n\t<td style=\"width: 5.70825%;\"><br></td>\n\t<td style=\"width: 1.4017%;\"><br></td>\n\t<td style=\"width: 43.7844%; text-align: center;\">{OfficialName}</td></tr>\n<tr>\n\t<td>On</td>\n\t<td>{DocumentDate}<br></td>\n\t<td style=\"width: 6.6667%;\"><br></td>\n\t<td><br></td>\n\t<td><br></td>\n\t<td>I certify that this is a true copy of the attached document<br></td></tr>\n<tr>\n\t<td>At</td>\n\t<td>{DocumentTime}</td>\n\t<td style=\"width: 6.6667%;\"><br></td>\n\t<td><br></td>\n\t<td><br></td>\n\t<td><br></td></tr>\n<tr>\n\t<td>Cover Sheet</td>\n\t<td>1</td>\n\t<td style=\"width: 6.6667%;\"><br></td>\n\t<td><br></td>\n\t<td><br></td>\n\t<td><br></td></tr>\n<tr>\n\t<td>Total Pages</td>\n\t<td>10</td>\n\t<td style=\"width: 16.6667%;\"><br></td>\n\t<td><br></td>\n\t<td><br></td>\n\t<td style=\" text-align: center;\">{OfficialTitle}</td></tr></tbody></table>"} 
+    ], 
+    "Layout": {
+        "PaperSize": "A4",
+        "PaperLayout": "portrait",
+        "Report-Top-Margin": "40",
+        "Report-Right-Margin": "10",
+        "Report-Bottom-Margin": "30",
+        "Report-Left-Margin": "10"
+    }
+}

@@ -1,0 +1,24 @@
+{
+    "CommonData": {
+        "ReportTitle": "Covering letter",
+        "OrgTitle": "Company Name Here, State",
+        "ReportSubTitle": "True Copy Certificate",
+        "OrgAddress1": "Door #, Street name",
+        "OrgAddress2": "Village",
+        "OrgAddress3": "City, Pin#",
+        "Copyright": "© 2023 AptTec.com. All rights reserved.",
+        "ClientName": "Firstname Middle Lastname",
+        "ClientAddress1":"Client Address Line 1",
+        "ClientAddress2": "Client Address Line 1",
+        "ClientAddress3": "Client Address Line 3",
+        "ClientState": "Client State Name",
+        "ClientPin": "Pin - 123456",
+        "DocumentDate": "12/23/2022",
+        "DocumentTime": "12:01:23",
+        "OfficialName": "Officer Firstname Middle Lastname",
+        "OfficialTitle": "Officer"
+    },
+    "Data": [
+        
+    ]
+}

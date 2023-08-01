@@ -2,11 +2,26 @@
 
 
 //UI event handlers==========================================================
+window.onload = function ()
+{
+    //https://stackoverflow.com/questions/7731778/get-query-string-parameters-url-values-with-jquery-javascript-querystring
+    var urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.has('report'))
+    {
+        window.ReportId = urlParams.get('report');
+        initializeDesigner();
+    }
+}
+
+$('.printMenu').click(function () { PrintReport(); return false; }); 
+$('.editMenu').click(function () { showEditParamters(); return false; }); 
+$('.refreshMenu').click(function () { refreshData('reportIframe'); return false; }); 
+$('.optionsMenu').click(function () { ShowRulerPopup(); return false;});
 function PrintReport(event)
 {
     document.getElementById('reportIframe').contentWindow.print();
 }
-function ShowRuler(event)
+function ShowRulerPopup(event)
 {
     ShowPopup('designerModal', 'Ruler Settings', '.ruleEditor');
 }
@@ -25,16 +40,6 @@ function ToCanvas(event)
 
 }
 
-window.onload = function ()
-{
-    //https://stackoverflow.com/questions/7731778/get-query-string-parameters-url-values-with-jquery-javascript-querystring
-    var urlParams = new URLSearchParams(window.location.search);
-    if (urlParams.has('report'))
-    {
-        window.ReportId = urlParams.get('report');
-        initializeDesigner();
-    }
-} 
 //custom code to load the reports==========================================================
 
 function initializeDesigner(event)
@@ -63,9 +68,18 @@ function refreshReport(iFrameId, reportId)
     //https://developer.mozilla.org/en-US/docs/Web/API/fetch
     fetch(reportParamsUrl)
         .then(response => response.json())
-        .then(reportParams =>
+        .then(serverParams =>
         {
-            window.ReportParams = reportParams;
+            const paramsString = localStorage.getItem(reportId);
+            if (paramsString) {
+                const localParams = JSON.parse(paramsString);
+                var finalParams = mergeObjects(serverParams, localParams);
+                localStorage.setItem(reportId, JSON.stringify(finalParams));
+                window.ReportParams = finalParams;
+            }
+            else {
+                window.ReportParams = serverParams;
+            }
             refreshData(iFrameId);
         })
         .catch(error =>
@@ -111,7 +125,8 @@ function loadReportTemplate(iFrameId)
     // Perform the replacements
     var modified_html = replacePlaceholders(window.htmlTemplate, window.ReportParams);
     modified_html = replacePlaceholders(modified_html, window.ReportParams.Layout);
-    modified_html = replacePlaceholders(modified_html, window.reportData.CommonData); //final replacements with server data
+    modified_html = replacePlaceholders(modified_html, window.reportData.CommonData); 
+    //final replacements with server data
 
     // Insert the modified HTML into the DOM
     document.getElementById(iFrameId).srcdoc = modified_html;  //set .innerHTML for div eleement
@@ -202,7 +217,8 @@ function saveParameters() {
     {
         isValid = true;
         // output
-        var reportParams = jsoneditor.getValue();
+        var reportParams = jsoneditor.getValue(); 
+        localStorage.setItem(window.ReportId, JSON.stringify(reportParams));
         window.ReportParams = reportParams;
         //refreshReport('reportIframe', window.ReportId);
         onReportParametersChanged('reportIframe');
@@ -272,3 +288,11 @@ $(document).on('input', '.ruleEditor', function (eventData)
     const value = element.type === 'checkbox' ? (element.checked ? 1 : 0) : element.value;
     document.body.style.setProperty(element.name, value + (element.dataset.suffix || ''));
 });
+function mergeObjects(obj1, obj2) {
+    for (const key in obj2) {
+        if (obj1.hasOwnProperty(key)) {
+            obj1[key] = obj2[key];
+        }
+    }
+    return obj1;
+}

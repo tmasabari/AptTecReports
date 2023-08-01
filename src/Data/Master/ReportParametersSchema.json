@@ -27,6 +27,12 @@
                         "input_width": "100%"
                     }
                 },
+                "Content": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/Content"
+                    }
+                },
                 "Columns": {
                     "type": "array",
                     "format": "table",
@@ -49,12 +55,29 @@
             "required": [
                 "HeadersHtml",
                 "FootersHtml",
-                "Columns",
                 "DataSource",
                 "Layout",
                 "ReportTemplate"
             ],
             "title": "Report Parameters"
+        },
+        "Content": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "ContentHtml": {
+                    "type": "string",
+                    "title": "HTML Content",
+                    "format": "jodit",
+                    "options": {
+                        "input_width": "100%"
+                    }
+                }
+            },
+            "required": [
+                "ContentHtml"
+            ],
+            "title": "Content"
         },
         "Column": {
             "type": "object",

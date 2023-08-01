@@ -39,17 +39,24 @@
     <ul class="ruler-x"></ul>
     <ul class="ruler-y"></ul>
 
+
     <div id="stickyRow">
-        <input class="btn btn-success" type="button" value="Print"
-            onclick="PrintReport(event)" style="margin-right:10px">
-        <input class="btn btn-success" type="button" value="Edit"
-            onclick="showEditParamters(event)" style="margin-right:10px">
-        <input class="btn btn-success" type="button" value="Export"
-            onclick="ToCanvas(event)" style="margin-right:10px">
-        <input class="btn btn-success" type="button" value="Refresh data"
-            onclick="RefreshData(event)" style="margin-right:10px">
-        <input class="btn btn-success" type="button" value="Ruler"
-            onclick="ShowRuler(event)">
+        <button class="btn btn-success printMenu" type="button">Print</button>
+        <button class="btn btn-primary editMenu" type="button">Edit</button>
+        <button class="btn btn-info refreshMenu" type="button">Refresh</button>
+        <button class="btn btn-secondary optionsMenu" type="button">Options</button>
+        <!-- <div class="dropdown">
+            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"
+                data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Settings
+            </button>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                
+                <a class="dropdown-item editMenu" >Edit</a>
+                <a class="dropdown-item refreshMenu" >Refresh Data</a>
+                <a class="dropdown-item optionsMenu" >Options</a>
+            </div>
+        </div>  -->
     </div>
 
     <iframe id="reportIframe"></iframe>
@@ -78,84 +85,94 @@
 </form>
 <!-- https://dev.to/madsstoumann/build-a-css-ruler-2opn -->
 <form class="ruleEditor" style="display: none; width: 100%; height: calc(100vh - 200px); overflow:auto;">
-    <fieldset>
-        <legend>Tall Ticks <em>Numbers align with this</em></legend>
-        <label>
-            <strong>Height</strong>
-            <input type="range" name="--ruler2-h" min="3" max="100" value="20"
-                data-suffix="px">
-        </label>
-        <label>
-            <strong>Border-width</strong>
-            <input type="range" name="--ruler2-bdw" min="1" max="10" value="1"
-                data-suffix="px">
-        </label>
-        <label>
-            <strong>Spacing</strong>
-            <input type="range" name="--ruler2-space" min="1" max="200" value="50">
-        </label>
-        <label>
-            <strong>Color</strong>
-            <input type="color" name="--ruler2-c" value="#BBBBBB">
-        </label>
-    </fieldset>
-
-    <fieldset>
-        <legend>Low Ticks</legend>
-        <label>
-            <strong>Height</strong>
-            <input type="range" name="--ruler1-h" min="3" max="100" value="8"
-                data-suffix="px">
-        </label>
-        <label>
-            <strong>Border-width</strong>
-            <input type="range" name="--ruler1-bdw" min="1" max="10" value="1"
-                data-suffix="px">
-        </label>
-        <label>
-            <strong>Spacing</strong>
-            <input type="range" name="--ruler1-space" min="1" max="100" value="5">
-        </label>
-        <label>
-            <strong>Color</strong>
-            <input type="color" name="--ruler1-c" value="#BBBBBB">
-        </label>
-    </fieldset>
-
-    <fieldset>
-        <legend>Other Options</legend>
-        <label>
-            <strong>Unit</strong>
-            <select name="--ruler-unit">
-                <option value="1mm">millimeter</option>
-                <option value="1in">inch</option>
-                <option value="1px" selected>pixel</option>
-                <option value="1em">em</option>
-                <option value="1ch">character</option>
-                <option value="1rem">rem</option>
-                <option value="1vw">viewport width</option>
-                <option value="1vh">viewport height</option>
-            </select>
-        </label>
-        <label>
-            <strong>Number Color</strong>
-            <input type="color" name="--ruler-num-c" value="#888">
-        </label>
-        <label>
-            <strong>Show x-axis</strong>
-            <input type="checkbox" name="--ruler-x" value="1" checked>
-        </label>
-        <label>
-            <strong>Show y-axis</strong>
-            <input type="checkbox" name="--ruler-y" value="1" checked>
-        </label>
-    </fieldset>
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-4">
+                <fieldset>
+                    <legend>Tall Ticks <em>Numbers align with this</em></legend>
+                    <label>
+                        <strong>Height</strong>
+                        <input type="range" name="--ruler2-h" min="3" max="100" value="20"
+                            data-suffix="px">
+                    </label>
+                    <label>
+                        <strong>Border-width</strong>
+                        <input type="range" name="--ruler2-bdw" min="1" max="10" value="1"
+                            data-suffix="px">
+                    </label>
+                    <!-- <label>
+                            <strong>Spacing</strong>
+                            <input type="range" name="--ruler2-space" min="1" max="200" value="50">
+                        </label> -->
+                    <label>
+                        <strong>Color</strong>
+                        <input type="color" name="--ruler2-c" value="#BBBBBB">
+                    </label>
+                </fieldset>
+            </div>
+            <div class="col-sm-4">
+                <fieldset>
+                    <legend>Low Ticks</legend>
+                    <label>
+                        <strong>Height</strong>
+                        <input type="range" name="--ruler1-h" min="3" max="100" value="8"
+                            data-suffix="px">
+                    </label>
+                    <label>
+                        <strong>Border-width</strong>
+                        <input type="range" name="--ruler1-bdw" min="1" max="10" value="1"
+                            data-suffix="px">
+                    </label>
+                    <!-- <label>
+                            <strong>Spacing</strong>
+                            <input type="range" name="--ruler1-space" min="1" max="100" value="5">
+                        </label> -->
+                    <label>
+                        <strong>Color</strong>
+                        <input type="color" name="--ruler1-c" value="#BBBBBB">
+                    </label>
+                </fieldset>
+            </div>
+            <div class="col-sm-4">
+                <fieldset>
+                    <legend>Other Options</legend>
+                    <label>
+                        <strong>Unit</strong>
+                        <select name="--ruler-unit">
+                            <option value="1mm" selected>millimeter</option>
+                            <option value="1in">inch</option>
+                            <option value="1px">pixel</option>
+                            <option value="1em">em</option>
+                            <option value="1ch">character</option>
+                            <option value="1rem">rem</option>
+                            <option value="1vw">viewport width</option>
+                            <option value="1vh">viewport height</option>
+                        </select>
+                    </label>
+                    <label>
+                        <strong>Number Color</strong>
+                        <input type="color" name="--ruler-num-c" value="#888">
+                    </label>
+                    <label>
+                        <strong>Show x-axis</strong>
+                        <input type="checkbox" name="--ruler-x" value="1" checked>
+                    </label>
+                    <label>
+                        <strong>Show y-axis</strong>
+                        <input type="checkbox" name="--ruler-y" value="1" checked>
+                    </label>
+                </fieldset> 
+            </div>
+        </div>
+    </div> 
 </form>
-<script
-    src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+
 <script src="https://code.jquery.com/jquery-3.7.0.min.js"
     integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g="
     crossorigin="anonymous"></script>
+    <!-- load bootstrap only after jquery -->
+<script
+    src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
 <script src="../Resources/Scripts/date.format.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jodit/3.24.9/jodit.min.js"
     integrity="sha512-6aIYUpIVYMx6EdN2TBchmmoIn+I45MJrYbbr66XZTnr0WnleWlhMbj2jVW8jlZ0fFxWSJmSKIO3muUyPJfRA4Q=="

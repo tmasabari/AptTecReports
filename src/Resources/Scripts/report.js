@@ -9,11 +9,11 @@ window.onload = function ()
     params.Columns = mapProperties(params.Columns);
     jsonToHTMLAdvanced(params, '.content');
 
-    const inchTomm = 25.4; 
-    window.htmlWidth = Math.ceil($("html").width() / getDeviceDPI() * inchTomm); 
-    window.htmlHeight = $("html").height() / getDeviceDPI() * inchTomm; 
+    //const inchTomm = 25.4; 
+    //window.htmlWidth = Math.ceil($("html").width() / getDeviceDPI() * inchTomm); 
+    //window.htmlHeight = $("html").height() / getDeviceDPI() * inchTomm; 
     //do not use Math.ceil creates problem in page detection
-    document.querySelector(":root").style.setProperty('--report-width', htmlWidth + 'mm');
+    //document.querySelector(":root").style.setProperty('--report-width', htmlWidth + 'mm');
     //window.TotalPages = getPageCount();  
     //document.querySelector(":root").style.setProperty('--total-pages', window.TotalPages);
     //addPageNumbers(window.TotalPages);

@@ -1,11 +1,8 @@
-/* this is taken from https://github.com/cognitom/paper-css/blob/master/paper.css
-and use AI to generate for all ISO sizes */
+/* The concept is based on the https://github.com/cognitom/paper-css/blob/master/paper.css
+and used AI to generate the styles for all the ISO sizes */
 @page { margin: 0 }
 body { margin: 0 }
 
-:root {
-  
-}
 
 /** Paper sizes **/
 
@@ -197,7 +194,7 @@ body { margin: 0 }
 .noheight {
     height: unset ! important; 
 }
-/* dummy classes */
+/* dummy class. the default config is portrait */
 .portrait {
   
 }
@@ -219,7 +216,6 @@ body { margin: 0 }
 
 /** For screen preview **/
 @media screen {
-  /* body { background: #e0e0e0 } */
   .sheet {
     background: white;
     box-shadow: 0 .5mm 2mm rgba(0,0,0,.3);

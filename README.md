@@ -17,7 +17,8 @@ Experience the power of **AptTec Reporting**, our innovative tool that revolutio
 
 Discover the ultimate reporting solution that enhances productivity, reduces costs, and empowers your team to create dynamic reports effortlessly. With **AptTec Reporting's** user-friendly interface and powerful features, reporting has never been this efficient. Embrace the future of reporting today!
 
-# Challenges Faced by Legacy or Server-Side Reporting
+![Alt text](/diagrams/ClientReportingFlow.drawio.svg?raw=true&sanitize=true "Solution")
+# Background: Challenges Faced by Legacy or Server-Side Reporting
 
 Legacy or server-side reporting solutions have long been plagued by various challenges that hinder their efficiency and cost-effectiveness. Below are some of the key issues faced by these systems:
 
@@ -37,3 +38,5 @@ Legacy or server-side reporting solutions have long been plagued by various chal
     
 
 These issues collectively contribute to the limitations and inefficiencies of legacy or server-side reporting, making it essential to explore more modern and flexible reporting solutions to overcome these challenges.
+
+![Alt text](/diagrams/ServerReportingFlow.drawio.svg?raw=true&sanitize=true "Issues Resolved")

@@ -163,3 +163,8 @@ function jsonToHTML(params)
 
   return htmlData
 }
+
+window.PagedConfig = {
+  auto: false
+  //, after: (flow) => { console.log("after", flow) },
+};

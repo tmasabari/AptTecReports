@@ -1,0 +1,55 @@
+{
+    "ReportTemplate": "paged.html",
+    "DataSource": "{{sampleLocation}}/jobs.json",
+    "HeadersHtml": "<table style=\"border-collapse:collapse;width: 100%;\"><tbody>\n<tr>\n\t<td style=\"width: 20%;text-align:left;\">{{OrgAddress1}}<br/>{{OrgAddress2}}<br/>{{OrgAddress3}}</td>\n\t<td style=\"width: 60%; text-align: center;\"><strong>{{OrgTitle}}<br/>{{ReportTitle}}<br/>{{ReportSubTitle}}</strong><br></td>\n\t<td style=\"width: 20%;text-align:right;\">{@TodayDate('mm/dd/yyyy')@}</td></tr></tbody></table>",
+    "FootersHtml": "<table style=\"border-collapse:collapse;width: 100%;\"><tbody>\n<tr>\n\t<td style=\"width: 20%;text-align:left;\">left footer line 1<br/>left footer line 2</td>\n\t<td style=\"width: 60%; text-align: center;\"><strong>{{Copyright}}</strong><br></td>\n\t<td style=\"width: 20%;text-align:right;\">right footer line 1</td></tr></tbody></table>",
+    "Layout": {
+        "PaperSize": "legal",
+        "PaperLayout": "landscape",
+        "Report-Top-Margin": "30",
+        "Report-Right-Margin": "10",
+        "Report-Bottom-Margin": "30",
+        "Report-Left-Margin": "10"
+    },
+    "Columns": [
+        {
+            "field": "SubmitedDate",
+            "displayName": "Submit Date",
+            "columnSize": "10ch",
+            "format": "USShortDateTime"
+        },
+        {
+            "field": "SubmittedBy",
+            "displayName": "Submitted By"
+        },
+        {
+            "field": "PrintJobName",
+            "columnSize": "13em",
+            "displayName": "Job Name"
+        },
+        {
+            "field": "Status",
+            "columnSize": "5em",
+            "displayName": "Status"
+        },
+        {
+            "field": "FileName",
+            "displayName": "File Name"
+        },
+        {
+            "field": "FileSize",
+            "columnSize": "10ch",
+            "displayName": "Size"
+        },
+        {
+            "field": "SubmitedDate",
+            "displayName": "Created",
+            "columnSize": "10ch",
+            "format": "USShortDateTime"
+        },
+        {
+            "field": "JobType",
+            "displayName": "Job Type"
+        }
+    ]
+}

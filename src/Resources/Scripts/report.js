@@ -2,8 +2,8 @@
 window.onload = function ()
 {
     // JSON result in `data` variable
-    var params = window.parent.ReportParams;
-    params.printable = window.parent.reportData.Data;//table content
+    var params = window.parent.aptTecReports.ReportParams;
+    params.printable = window.parent.aptTecReports.reportData.Data;//table content
 
     if (params.Columns)
     {

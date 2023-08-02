@@ -1,0 +1,142 @@
+// https://jsonformatter.curiousconcept.com/ to convert js code to json object
+class AptTecReports {
+    constructor(iFrameId, schemaLocation, templatesLocation, dataLocation) {
+        this.schemaLocation = schemaLocation;
+        this.templatesLocation = templatesLocation;
+        this.dataLocation = dataLocation;
+        this.dataGetter = null;
+
+        this.ReportSchema = null;
+        this.ReportParams = null;
+        this.ReportTemplateSource = null;
+        this.htmlTemplate = null; 
+        this.reportFrameId = iFrameId;
+
+        //https://stackoverflow.com/questions/7731778/get-query-string-parameters-url-values-with-jquery-javascript-querystring
+        var urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.has('report')) {
+            this.ReportId = urlParams.get('report');
+        }
+        else {
+            this.ReportId = null;
+        }
+    }
+
+    //methods
+    //custom code to load the reports==========================================================
+
+    initializeDesigner(event) {
+        //convert json to schema https://codebeautify.org/json-to-json-schema-generator
+        const schemaParamsUrl = this.schemaLocation + "ReportParametersSchema.json";
+        fetch(schemaParamsUrl)
+            .then(response => response.json())
+            .then(reportSchema =>
+            {
+                this.ReportSchema = reportSchema;
+                this.refreshReport('reportIframe');
+            })
+            .catch(error =>
+            {
+                console.error('Error loading reports schema:', error);
+            });
+    }
+
+    // Function to fetch the HTML template and JSON data and perform the replacement
+    refreshReport() {
+        var reportParamsUrl = this.templatesLocation + this.ReportId + ".json";
+        // Load the HTML template and parameters using fetch API (you can also use XMLHttpRequest)
+        //https://developer.mozilla.org/en-US/docs/Web/API/fetch
+        fetch(reportParamsUrl)
+            .then(response => response.json())
+            .then(serverParams =>
+            {
+                const paramsString = localStorage.getItem(this.ReportId);
+                if (paramsString)
+                {
+                    const localParams = JSON.parse(paramsString);
+                    var finalParams = mergeObjects(serverParams, localParams);
+                    //localStorage.setItem(this.ReportId, JSON.stringify(finalParams)); store only if user clicks save button
+                    this.ReportParams = finalParams;
+                }
+                else
+                {
+                    this.ReportParams = serverParams;
+                }
+                this.refreshData();
+            })
+            .catch(error =>
+            {
+                console.error('Error loading report settings:', error);
+            });
+    }
+
+    // Function to fetch the JSON data and perform the replacement
+    refreshData() {
+        if (typeof dataGetter === "function")
+        {
+            this.reportData = dataGetter(this.ReportParams.DataSource);
+            this.onReportParametersChanged();
+        }
+        else
+        {
+            if (this.ReportParams.DataSource)
+            {
+                this.ReportParams.DataSource = this.ReportParams.DataSource.replace(
+                    '{{sampleLocation}}', this.dataLocation);
+                // $.getJSON(this.ReportParams.DataSource, function (data)
+                // {
+                //     this.reportData = data;
+                //     this.onReportParametersChanged();
+                // });
+                fetch(this.ReportParams.DataSource)
+                    .then(response => response.json())
+                    .then(data =>
+                    {
+                        this.reportData = data;
+                        this.onReportParametersChanged();
+                    })
+                    .catch(error =>
+                    {
+                        console.error('Error loading report data:', error);
+                    });
+            }
+        }
+    }
+
+    onReportParametersChanged() {
+        if (!(this.ReportTemplateSource) || this.ReportTemplateSource !== this.ReportParams.ReportTemplate)
+        {
+            // Load the JSON data using fetch API (you can also use XMLHttpRequest)
+            fetch(this.ReportParams.ReportTemplate)
+                .then(response => response.text())
+                .then(html_template =>
+                {
+                    this.htmlTemplate = html_template;
+                    this.ReportTemplateSource = this.ReportParams.ReportTemplate;
+                    this.loadReportTemplate();
+                })
+                .catch(error =>
+                {
+                    console.error('Error loading report template:', error);
+                });
+        }
+        else
+        {
+            this.loadReportTemplate();
+        }
+    }
+
+    loadReportTemplate() {
+        // Perform the replacements
+        var modified_html = replacePlaceholders(this.htmlTemplate, this.ReportParams);
+        modified_html = replacePlaceholders(modified_html, this.ReportParams.Layout);
+        modified_html = replacePlaceholders(modified_html, this.reportData.CommonData);
+        //final replacements with server data
+
+        // Insert the modified HTML into the DOM
+        document.getElementById(this.reportFrameId).srcdoc = modified_html;  //set .innerHTML for div eleement
+
+        //finally init the json editor
+        window.SchemaFormHandler.initJsoneditor();
+    }
+}

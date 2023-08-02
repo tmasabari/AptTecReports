@@ -34,7 +34,7 @@ function jsonToHTMLAdvanced(params,selector)
 }
 function insertHtmlContents(contents, selector) {
   contents.forEach(content => {
-    var modified_html = window.parent.replacePlaceholders(content.ContentHtml, window.parent.reportData.CommonData); 
+    var modified_html = window.parent.replacePlaceholders(content.ContentHtml, window.parent.aptTecReports.reportData.CommonData); 
     window.parent.addTags($(document)[0], selector, modified_html, 1);
   });
 }

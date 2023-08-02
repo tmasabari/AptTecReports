@@ -43,7 +43,8 @@ $(document).on('click', ".modal .modal-footer .btn-secondary", function () {
 $(document).on('click', ".modal .modal-footer .btn-primary", function ()
 {
     const modalElement = $(this).closest(".modal");
-    var contentElement = modalElement.find('.modal-body').children(0)
+    var contentElement = modalElement.find('.modal-body form[style*="display: block"]');
+    
     contentElement[0].saveAction();
 
     hideModal($(this));

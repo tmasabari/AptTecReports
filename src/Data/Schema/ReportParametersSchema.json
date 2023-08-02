@@ -1,0 +1,163 @@
+{
+    "$schema": "http://json-schema.org/draft-06/schema#",
+    "$ref": "#/definitions/ReportParameters",
+    "definitions": {
+        "ReportParameters": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "ReportTemplate": {
+                    "type": "string",
+                    "options": {
+                        "hidden": true
+                    }
+                },
+                "DataSource": {
+                    "type": "string" ,
+                    "options": { "hidden": true }
+                },
+                "Layout": {
+                    "$ref": "#/definitions/Layout"
+                },
+                "HeadersHtml": {
+                    "type": "string",
+                    "title": "Header",
+                    "format": "jodit",
+                    "options": {
+                        "input_width": "100%"
+                    }
+                },
+                "Content": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/Content"
+                    }
+                },
+                "Columns": {
+                    "type": "array",
+                    "format": "table",
+                    "items": {
+                        "$ref": "#/definitions/Column"
+                    }
+                },
+                "FootersHtml": {
+                    "type": "string",
+                    "title": "Footer",
+                    "format": "jodit",
+                    "options": {
+                        "input_width": "100%"
+                    }
+                }
+            },
+            "defaultProperties": [
+                "Layout", "Columns"
+            ],
+            "required": [
+                "HeadersHtml",
+                "FootersHtml",
+                "DataSource",
+                "Layout",
+                "ReportTemplate"
+            ],
+            "title": "Report Parameters"
+        },
+        "Content": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "ContentHtml": {
+                    "type": "string",
+                    "title": "HTML Content",
+                    "format": "jodit",
+                    "options": {
+                        "input_width": "100%"
+                    }
+                }
+            },
+            "required": [
+                "ContentHtml"
+            ],
+            "title": "Content"
+        },
+        "Column": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "field": {
+                    "type": "string",
+                    "title": "Name"
+                },
+                "displayName": {
+                    "type": "string",
+                    "title": "Title"
+                },
+                "columnSize": {
+                    "type": "string",
+                    "title": "Width"
+                },
+                "format": {
+                    "type": "string",
+                    "title": "Format"
+                }
+            },
+            "required": [
+                "displayName",
+                "field"
+            ],
+            "title": "Column"
+        },
+        "Layout": {
+            "type": "object",
+            "additionalProperties": false,
+            "format": "grid-strict",
+            "properties": {
+                "PaperSize": {
+                    "type": "string",
+                    "title": "Paper size",
+                    "enum": ["A3", "A4", "A5", "B4", "B5", "letter", "legal", "ledger"],
+                    "options": {    "grid_columns": 4,
+                                    "enum_titles": ["A3", "A4", "A5", "B4", "B5", "Letter", "Legal", "Ledger"] }
+                },
+                "PaperLayout": {
+                    "type": "string",
+                    "title": "Paper layout",
+                    "enum": ["portrait ", "landscape"],
+                    "options": { "grid_columns": 4 , "grid_break": true,
+                        "enum_titles": [
+                            "Portrait",
+                            "Landscape"
+                        ] } 
+                },
+                "Report-Top-Margin": {
+                    "type": "number",
+                    "format": "number",
+                    "title": "Top margin (mm)"
+                },
+                "Report-Right-Margin": {
+                    "type": "number",
+                    "format": "number",
+                    "title": "Right margin (mm)"
+                },
+                "Report-Bottom-Margin": {
+                    "type": "number",
+                    "format": "number",
+                    "title": "Bottom margin (mm)"
+                },
+                "Report-Left-Margin": {
+                    "type": "number",
+                    "format": "number",
+                    "title": "Left margin (mm)"
+                }
+            },
+            "required": [
+                "PaperLayout",
+                "PaperSize",
+                "Report-Bottom-Margin",
+                "Report-Left-Margin",
+                "Report-Right-Margin",
+                "Report-Top-Margin"
+            ],
+            "title": "Layout"
+        }
+    }
+}

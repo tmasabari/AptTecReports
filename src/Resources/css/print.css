@@ -88,6 +88,47 @@ Iframe,
   border-spacing: 0px;
 }
 
+@page  
+{   
+    counter-reset: page;
+ 
+    @bottom {
+        /* counter-reset: total-pages var(--total-pages); workaround not required anymore */
+        content: "Page " counter(page) " of " counter(pages); 
+    }
+    @top-center {
+        content: element(headerMiddle); 
+        width:100%;
+    }
+    @top-left {
+        content: element(headerLeft); 
+        width:none; min-width: none;
+    }
+    @top-right {
+        content: element(headerRight); 
+        width:none; min-width: none;
+    }
+
+    @bottom-center {
+        content: element(footerMiddle); 
+        width:100%;
+    }
+    @bottom-left {
+        content: element(footerLeft); 
+        width:none; min-width: none;
+    }
+    @bottom-right {
+        content: element(footerRight); 
+        width:none; min-width: none;
+    }
+} 
+
+.headerMiddle{
+    position: running(headerMiddle);
+}
+.footerMiddle{
+    position: running(footerMiddle);
+}
 /* preview tested=> set report margin using the body element.
     do not set top/bottom margin for body which applies for first/last page alone.
     set the top margin within header and bottom margin within footer so that they will be applied in all pages.

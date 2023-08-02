@@ -1,21 +1,14 @@
+var aptTecReports = window.parent.aptTecReports;
 // Call the loadAndReplace function when the page loads
 window.onload = function ()
-{
-    // JSON result in `data` variable
-    var params = window.parent.aptTecReports.ReportParams;
-    params.printable = window.parent.aptTecReports.reportData.Data;//table content
-
-    if (params.Columns)
-    {
+{   
+    if (aptTecReports.ReportParams.Columns) {
         // Build the printable html data
-        //$('.content')[0].innerHTML = jsonToHTML(params);
-        params.Columns = mapProperties(params.Columns);
-        jsonToHTMLAdvanced(params, '.content');
+        aptTecReports.ReportParams.Columns = mapProperties(aptTecReports.ReportParams.Columns);
+        jsonToHTMLAdvanced(aptTecReports.ReportParams, '.content');
     }
-    if (params.Content)
-    {
-        insertHtmlContents(params.Content, '.content');
+    if (aptTecReports.ReportParams.Content) {
+        insertHtmlContents(aptTecReports.ReportParams.Content, '.content');
     }
-
     window.PagedPolyfill.preview();
 };

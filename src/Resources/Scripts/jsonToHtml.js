@@ -18,7 +18,7 @@ function TodayDate(format)
 function jsonToHTMLAdvanced(params,selector)
 {
   var tableTag = '<table id="tblReport" class="dataTable display" width="100%"></table>';
-  window.parent.addTags($(document)[0], selector, tableTag, 1);
+  addTags($(document)[0], selector, tableTag, 1);
 
   var properties = mapProperties(params.Columns);
   var oTblReport = $("#tblReport");
@@ -28,14 +28,14 @@ function jsonToHTMLAdvanced(params,selector)
     ordering: false,
     paging: false,
     searching: false,
-    data: params.printable,
+    data: aptTecReports.reportData.Data, //table json,
     columns: properties
   });
 }
 function insertHtmlContents(contents, selector) {
   contents.forEach(content => {
-    var modified_html = window.parent.replacePlaceholders(content.ContentHtml, window.parent.aptTecReports.reportData.CommonData); 
-    window.parent.addTags($(document)[0], selector, modified_html, 1);
+    var modified_html = replacePlaceholders(content.ContentHtml, aptTecReports.reportData.CommonData); 
+    addTags($(document)[0], selector, modified_html, 1);
   });
 }
 
@@ -89,8 +89,8 @@ function mapProperties(properties)
 function jsonToHTML(params)
 {
   // Get the row and column data
-  const data = params.printable;
-
+  const data = aptTecReports.reportData.Data;//table json
+  
   // We will format the property objects to keep the JSON api compatible with older releases
   var properties = mapProperties(params.properties);
 

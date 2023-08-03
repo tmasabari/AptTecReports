@@ -8,8 +8,9 @@
         integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65"
         crossorigin="anonymous">
     <link rel="stylesheet"
-        href="https://use.fontawesome.com/releases/v5.6.1/css/all.css" 
-        crossorigin="anonymous">
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+        integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="../Resources/css/ruler.css" type="text/css">
     <link rel="stylesheet" href="../Resources/css/designer.css" type="text/css">
     <link rel="stylesheet"
@@ -41,10 +42,10 @@
 
 
     <div id="stickyRow">
-        <button class="btn btn-success printMenu" type="button">Print</button>
-        <button class="btn btn-primary editMenu" type="button">Designer</button>
-        <button class="btn btn-info refreshMenu" type="button">Refresh</button>
-        <button class="btn btn-secondary optionsMenu" type="button">Options</button>
+        <button class="btn btn-success printMenu" type="button"><i class="fa fa-print"></i></button>
+        <button class="btn btn-primary editMenu" type="button"><i class="fa-regular fa-pen-to-square"></i></button>
+        <button class="btn btn-info refreshMenu" type="button"><i class="fa-solid fa-arrows-rotate" ></i></button>
+        <button class="btn btn-secondary optionsMenu" type="button"><i class="fa-solid fa-gears fa-rotate-270"></i></i></button>
         <!-- <div class="dropdown">
             <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"
                 data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -60,7 +61,8 @@
     </div>
 
     <iframe id="reportIframe"></iframe>
-<!-- start modal template html code -->
+
+    <!-- start modal template html code -->
     <div class="modal" id="designerModal" tabindex="-1" role="dialog">
         <div class="modal-dialog modal-xl" role="document">
             <div class="modal-content">
@@ -74,114 +76,120 @@
                 <div class="modal-body">
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-primary" data-dismiss="modal">Save</button><button type="button" class="btn btn-secondary"
-                        data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-success">Print</button>
+                    <button type="button" class="btn btn-primary">Save</button>
+                    <button type="button" class="btn btn-light" data-dismiss="modal">Close</button>
                 </div>
             </div>
         </div>
     </div>
-<!-- end modal template html code -->
-<form id="paramEditorDiv"  style="display: none; width: 100%; height: calc(100vh - 200px); overflow:auto;"> 
-</form>
-<!-- https://dev.to/madsstoumann/build-a-css-ruler-2opn -->
-<form class="ruleEditor" style="display: none; width: 100%; height: calc(100vh - 200px); overflow:auto;">
-    <div class="container">
-        <div class="row">
-            <div class="col-sm-4">
-                <fieldset>
-                    <legend>Tall Ticks <em>Numbers align with this</em></legend>
-                    <label>
-                        <strong>Height</strong>
-                        <input type="range" name="--ruler2-h" min="3" max="100" value="20"
-                            data-suffix="px">
-                    </label>
-                    <label>
-                        <strong>Border-width</strong>
-                        <input type="range" name="--ruler2-bdw" min="1" max="10" value="1"
-                            data-suffix="px">
-                    </label>
-                    <!-- <label>
-                            <strong>Spacing</strong>
-                            <input type="range" name="--ruler2-space" min="1" max="200" value="50">
-                        </label> -->
-                    <label>
-                        <strong>Color</strong>
-                        <input type="color" name="--ruler2-c" value="#BBBBBB">
-                    </label>
-                </fieldset>
-            </div>
-            <div class="col-sm-4">
-                <fieldset>
-                    <legend>Low Ticks</legend>
-                    <label>
-                        <strong>Height</strong>
-                        <input type="range" name="--ruler1-h" min="3" max="100" value="8"
-                            data-suffix="px">
-                    </label>
-                    <label>
-                        <strong>Border-width</strong>
-                        <input type="range" name="--ruler1-bdw" min="1" max="10" value="1"
-                            data-suffix="px">
-                    </label>
-                    <!-- <label>
-                            <strong>Spacing</strong>
-                            <input type="range" name="--ruler1-space" min="1" max="100" value="5">
-                        </label> -->
-                    <label>
-                        <strong>Color</strong>
-                        <input type="color" name="--ruler1-c" value="#BBBBBB">
-                    </label>
-                </fieldset>
-            </div>
-            <div class="col-sm-4">
-                <fieldset>
-                    <legend>Other Options</legend>
-                    <label>
-                        <strong>Unit</strong>
-                        <select name="--ruler-unit">
-                            <option value="1mm" selected>millimeter</option>
-                            <option value="1in">inch</option>
-                            <option value="1px">pixel</option>
-                            <option value="1em">em</option>
-                            <option value="1ch">character</option>
-                            <option value="1rem">rem</option>
-                            <option value="1vw">viewport width</option>
-                            <option value="1vh">viewport height</option>
-                        </select>
-                    </label>
-                    <label>
-                        <strong>Number Color</strong>
-                        <input type="color" name="--ruler-num-c" value="#888">
-                    </label>
-                    <label>
-                        <strong>Show x-axis</strong>
-                        <input type="checkbox" name="--ruler-x" value="1" checked>
-                    </label>
-                    <label>
-                        <strong>Show y-axis</strong>
-                        <input type="checkbox" name="--ruler-y" value="1" checked>
-                    </label>
-                </fieldset> 
-            </div>
-        </div>
-    </div> 
-</form>
 
-<script src="https://code.jquery.com/jquery-3.7.0.min.js"
-    integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g="
-    crossorigin="anonymous"></script>
-    <!-- load bootstrap only after jquery -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jodit/3.24.9/jodit.min.js"
-    integrity="sha512-6aIYUpIVYMx6EdN2TBchmmoIn+I45MJrYbbr66XZTnr0WnleWlhMbj2jVW8jlZ0fFxWSJmSKIO3muUyPJfRA4Q=="
-    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-<script src="https://cdn.jsdelivr.net/npm/@json-editor/json-editor@latest/dist/jsoneditor.min.js"></script>
-<script src="../Resources/Scripts/date.format.js"></script>
-<script src="../Resources/Scripts/utilities.js"></script>
-<script src="../Resources/Scripts/SchemaFormHandler.js"></script>
-<script src="../Resources/Scripts/AptTecReports.js"></script>
-<script src="../Resources/Scripts/designer.js"></script>
-<script src="../Resources/Scripts/popup.js"></script> 
+    <!-- end modal template html code -->
+    <form id="paramEditorDiv"  style="display: none; width: 100%; height: calc(100vh - 200px); overflow:auto;"> 
+    </form>
+    
+    <!-- https://dev.to/madsstoumann/build-a-css-ruler-2opn -->
+    <form class="ruleEditor" style="display: none; width: 100%; height: calc(100vh - 200px); overflow:auto;">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-4">
+                    <fieldset>
+                        <legend>Tall Ticks <em>Numbers align with this</em></legend>
+                        <label>
+                            <strong>Height</strong>
+                            <input type="range" name="--ruler2-h" min="3" max="100" value="20"
+                                data-suffix="px">
+                        </label>
+                        <label>
+                            <strong>Border-width</strong>
+                            <input type="range" name="--ruler2-bdw" min="1" max="10" value="1"
+                                data-suffix="px">
+                        </label>
+                        <!-- <label>
+                                <strong>Spacing</strong>
+                                <input type="range" name="--ruler2-space" min="1" max="200" value="50">
+                            </label> -->
+                        <label>
+                            <strong>Color</strong>
+                            <input type="color" name="--ruler2-c" value="#BBBBBB">
+                        </label>
+                    </fieldset>
+                </div>
+                <div class="col-sm-4">
+                    <fieldset>
+                        <legend>Low Ticks</legend>
+                        <label>
+                            <strong>Height</strong>
+                            <input type="range" name="--ruler1-h" min="3" max="100" value="8"
+                                data-suffix="px">
+                        </label>
+                        <label>
+                            <strong>Border-width</strong>
+                            <input type="range" name="--ruler1-bdw" min="1" max="10" value="1"
+                                data-suffix="px">
+                        </label>
+                        <!-- <label>
+                                <strong>Spacing</strong>
+                                <input type="range" name="--ruler1-space" min="1" max="100" value="5">
+                            </label> -->
+                        <label>
+                            <strong>Color</strong>
+                            <input type="color" name="--ruler1-c" value="#BBBBBB">
+                        </label>
+                    </fieldset>
+                </div>
+                <div class="col-sm-4">
+                    <fieldset>
+                        <legend>Other Options</legend>
+                        <label>
+                            <strong>Unit</strong>
+                            <select name="--ruler-unit">
+                                <option value="1mm" selected>millimeter</option>
+                                <option value="1in">inch</option>
+                                <option value="1px">pixel</option>
+                                <option value="1em">em</option>
+                                <option value="1ch">character</option>
+                                <option value="1rem">rem</option>
+                                <option value="1vw">viewport width</option>
+                                <option value="1vh">viewport height</option>
+                            </select>
+                        </label>
+                        <label>
+                            <strong>Number Color</strong>
+                            <input type="color" name="--ruler-num-c" value="#888">
+                        </label>
+                        <label>
+                            <strong>Show x-axis</strong>
+                            <input type="checkbox" name="--ruler-x" value="1" checked>
+                        </label>
+                        <label>
+                            <strong>Show y-axis</strong>
+                            <input type="checkbox" name="--ruler-y" value="1" checked>
+                        </label>
+                    </fieldset> 
+                </div>
+            </div>
+        </div> 
+    </form>
+
+    <script src="https://code.jquery.com/jquery-3.7.0.min.js"
+        integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g="
+        crossorigin="anonymous"></script>
+        <!-- load bootstrap only after jquery -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/js/all.min.js"
+        integrity="sha512-uKQ39gEGiyUJl4AI6L+ekBdGKpGw4xJ55+xyJG7YFlJokPNYegn9KwQ3P8A7aFQAUtUsAQHep+d/lrGqrbPIDQ=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jodit/3.24.9/jodit.min.js"
+        integrity="sha512-6aIYUpIVYMx6EdN2TBchmmoIn+I45MJrYbbr66XZTnr0WnleWlhMbj2jVW8jlZ0fFxWSJmSKIO3muUyPJfRA4Q=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@json-editor/json-editor@latest/dist/jsoneditor.min.js"></script>
+    <script src="../Resources/Scripts/date.format.js"></script>
+    <script src="../Resources/Scripts/utilities.js"></script>
+    <script src="../Resources/Scripts/SchemaFormHandler.js"></script>
+    <script src="../Resources/Scripts/AptTecReports.js"></script>
+    <script src="../Resources/Scripts/designer.js"></script>
+    <script src="../Resources/Scripts/popup.js"></script> 
 </body>
 
 </html>

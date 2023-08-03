@@ -65,6 +65,10 @@ printer settings
   https://stackoverflow.com/questions/138422/landscape-printing-from-html
   https://developer.mozilla.org/en-US/docs/Web/CSS/@page/size
 
+  https://stackoverflow.com/questions/1960939/disabling-browser-print-options-headers-footers-margins-from-page/2780518#2780518 
+https://stackoverflow.com/questions/1542320/margin-while-printing-html-page 
+TESTED: the below code hides the Edge/Chrome page size, layout and margin drop downs for "Save As PDF" printer
+size: {{PaperSize}} {{PaperLayout}};
 
 */
 
@@ -86,48 +90,6 @@ Iframe,
 .printTable tfoot,
 .pageNumberDiv {
   border-spacing: 0px;
-}
-
-@page  
-{   
-    counter-reset: page;
- 
-    @bottom {
-        /* counter-reset: total-pages var(--total-pages); workaround not required anymore */
-        content: "Page " counter(page) " of " counter(pages); 
-    }
-    @top-center {
-        content: element(headerMiddle); 
-        width:100%;
-    }
-    @top-left {
-        content: element(headerLeft); 
-        width:none; min-width: none;
-    }
-    @top-right {
-        content: element(headerRight); 
-        width:none; min-width: none;
-    }
-
-    @bottom-center {
-        content: element(footerMiddle); 
-        width:100%;
-    }
-    @bottom-left {
-        content: element(footerLeft); 
-        width:none; min-width: none;
-    }
-    @bottom-right {
-        content: element(footerRight); 
-        width:none; min-width: none;
-    }
-} 
-
-.headerMiddle{
-    position: running(headerMiddle);
-}
-.footerMiddle{
-    position: running(footerMiddle);
 }
 /* preview tested=> set report margin using the body element.
     do not set top/bottom margin for body which applies for first/last page alone.
@@ -153,18 +115,8 @@ html, body, .content {
   overflow-x: hidden;
 }
 
-/* printTable class is the table fix applied all over the page. So do not apply the border for that
-apply only the content portion table */
-.content .dataTable,
-.content .dataTable th,
-.content .dataTable td {
-  border: 0.25mm solid black;
-  border-collapse: collapse;
-  /* avoid page break inside row of table */
-  page-break-inside: avoid;
-  word-break: break-word;
-  border-spacing: 0px;
-} 
+
+
 /* =============================================== */
 /* You need to have different element for each increment. so the element has to be recreated for every page.
 Dont use any element or its childern that is set as a fixed position for increment or content purpose
@@ -184,10 +136,6 @@ body {
 body {
   counter-reset: page;
 }
-/* https://stackoverflow.com/questions/7846346/how-to-avoid-extra-blank-page-at-end-while-printing */
-.print:last-child {
-     page-break-after: auto;
-}
 
 
 /* general report writing 
@@ -202,11 +150,21 @@ body {
   font-size: 10pt;
   font-weight: normal;
   text-align: justify;
+} 
+
+/* not required after pagedjs
+ https://stackoverflow.com/questions/7846346/how-to-avoid-extra-blank-page-at-end-while-printing 
+.print:last-child {
+     page-break-after: auto;
 }
 
-@page :blank {
-  @top-center { content: "This page is intentionally left blank." }
-}
+avoid page break inside row of table 
+https://stackoverflow.com/questions/1763639/how-to-deal-with-page-breaks-when-printing-a-large-html-table/7763286#7763286 
+.content .dataTable { page-break-after:auto }
+.content .dataTable tr,
+.content .dataTable th,
+.content .dataTable td
+  { page-break-inside:avoid; page-break-after:auto } 
 
 h1, h2, h3, h4, h5 {
   page-break-after: avoid;
@@ -220,10 +178,4 @@ figure {
   page-break-after: always; 
   display: block;
 }
-
-.headerMiddle {
-  vertical-align: bottom;
-}
-.footerMiddle {
-  vertical-align: top;
-}
+*/

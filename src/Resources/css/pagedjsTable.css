@@ -1,0 +1,72 @@
+
+@page  
+{   
+    @top-center {
+        content: element(headerMiddle); 
+        width:100%;
+    }
+
+    @bottom-center {
+        content: element(footerMiddle); 
+        width:100%;
+    }
+    
+    @top-left {
+        content: element(headerLeft); 
+        width:none; min-width: none;
+    }
+    @top-right {
+        content: element(headerRight); 
+        width:none; min-width: none;
+    }
+    @bottom-left {
+        content: element(footerLeft); 
+        width:none; min-width: none;
+    }
+    @bottom-right {
+        content: element(footerRight); 
+        width:none; min-width: none;
+    }
+} 
+
+@page: blank { 
+    /* @top-center { content: "This page is intentionally left blank." } */
+    @top-center {
+        content: none;
+    }
+    @top-left {
+        content: none;
+    }
+    @top-right {
+        content: none;
+    }
+
+    @bottom-center {
+        content: none;
+    }
+    @bottom-left {
+        content: none;
+    }
+    @bottom-right {
+        content: none;
+    }
+}
+
+
+
+.headerMiddle{
+    position: running(headerMiddle);
+}
+.footerMiddle{
+    position: running(footerMiddle);
+}
+/* printTable class is the table fix applied all over the page. So do not apply the border for that
+apply only the content portion table */
+.content .dataTable,
+.content .dataTable th,
+.content .dataTable td {
+  border: 0.25mm solid black;
+  border-collapse: collapse;
+  word-break: break-word;
+  border-spacing: 0px;
+}

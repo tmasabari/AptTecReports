@@ -6,7 +6,10 @@ function capitalizePrint(obj)
 //nowDate.format("mm/dd/yyyy hh:mm:ss tt")
 function msDateToJsDate(msDate, format)
 {
-  var date = new Date(parseInt(msDate.substr(6)));
+  var date = msDate;
+  if (Object.prototype.toString.call(msDate) !== "[object Date]")
+    date = new Date(parseInt(msDate.substr(6)));
+
   date = (format) ? dateFormat(date, format) : dateFormat(date);
   return date;
 }

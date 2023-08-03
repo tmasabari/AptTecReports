@@ -43,6 +43,8 @@ class AptTecReports {
 
     // Function to fetch the HTML template and JSON data and perform the replacement
     refreshReport() {
+        if (!(this.ReportId)) //if report id does not exist can't perform anything more.
+            return;
         var reportParamsUrl = this.templatesLocation + this.ReportId + ".json";
         // Load the HTML template and parameters using fetch API (you can also use XMLHttpRequest)
         //https://developer.mozilla.org/en-US/docs/Web/API/fetch
@@ -72,9 +74,9 @@ class AptTecReports {
 
     // Function to fetch the JSON data and perform the replacement
     refreshData() {
-        if (typeof dataGetter === "function")
+        if (typeof this.dataGetter === "function")
         {
-            this.reportData = dataGetter(this.ReportParams.DataSource);
+            this.reportData = this.dataGetter(this.ReportParams.DataSource);
             this.onReportParametersChanged();
         }
         else

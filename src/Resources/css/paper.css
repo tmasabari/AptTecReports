@@ -1,9 +1,5 @@
 /* The concept is based on the https://github.com/cognitom/paper-css/blob/master/paper.css
 and used AI to generate the styles for all the ISO sizes */
-@page { margin: 0 }
-body { margin: 0 }
-
-
 /** Paper sizes **/
 
 .letter , .Letter   { width: 216mm; height: 279mm }
@@ -198,27 +194,9 @@ body { margin: 0 }
 .portrait {
   
 }
-
-
-
-.sheet {
-  margin: 0;
-  overflow: hidden;
-  position: relative;
-  box-sizing: border-box;
-  page-break-after: always;
-}
-/** Padding area **/
-.sheet.padding-10mm { padding: 10mm }
-.sheet.padding-15mm { padding: 15mm }
-.sheet.padding-20mm { padding: 20mm }
-.sheet.padding-25mm { padding: 25mm }
-
-/** For screen preview **/
 @media screen {
-  .sheet {
-    background: white;
-    box-shadow: 0 .5mm 2mm rgba(0,0,0,.3);
-    margin: 5mm auto;
+  .noscreen {
+      width: unset ! important;
+      height: unset ! important;
   }
 }

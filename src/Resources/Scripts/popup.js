@@ -1,9 +1,15 @@
 // Show the modal when the button is clicked
-function ShowPopup(modalId, title, contenetSelector, saveAction)
+function ShowPopup(modalId, title, contenetSelector, primaryAction, successAction)
 {
-    if (saveAction)
-        $(contenetSelector)[0].saveAction = saveAction;
-    $(".modal .modal-footer .btn-primary").css("display", (saveAction) ? "block" : "none");
+    if (primaryAction)
+        $(contenetSelector)[0].primaryAction = primaryAction;
+    $(".modal .modal-footer .btn-primary").css("display", (primaryAction) ? "block" : "none");
+
+    if (successAction)
+        $(contenetSelector)[0].successAction = successAction;
+    $(".modal .modal-footer .btn-success").css("display", (successAction) ? "block" : "none");
+
+
     // Choose the div you want to display in the modal (e.g., divContent1)
     //var selectedDivContent = $(contenetSelector)[0].outerHTML; 
     // Set the content of the modal with the selected div's content
@@ -36,16 +42,27 @@ $(document).on('click', ".modal .close", function () {
 });
 
 // Hide the modal when the close button is clicked
-$(document).on('click', ".modal .modal-footer .btn-secondary", function () {
+$(document).on('click', ".modal .modal-footer .btn-light", function () {
     hideModal($(this));
 });
-// Perform action and Hide the modal when the Save button is clicked
-$(document).on('click', ".modal .modal-footer .btn-primary", function ()
-{
-    const modalElement = $(this).closest(".modal");
-    var contentElement = modalElement.find('.modal-body form[style*="display: block"]');
-    
-    contentElement[0].saveAction();
+// Perform save  action and Hide the modal when the Save button is clicked
+$(document).on('click', ".modal .modal-footer .btn-primary", function () {
+    invokeModalAction(this, "primaryAction", true);
+});
 
-    hideModal($(this));
+
+// Perform print action and keep the modal when the Print button is clicked
+$(document).on('click', ".modal .modal-footer .btn-success", function () {
+    invokeModalAction(this, "successAction", false);
 });
+
+function invokeModalAction(source, method, isHideModal) {
+    const modalElement = $(source).closest(".modal");
+    var contentElement = modalElement.find('.modal-body form[style*="display: block"]');
+
+    if ( (contentElement.length > 0) && typeof contentElement[0][method] === 'function') 
+        contentElement[0][method]();
+
+    if (isHideModal)
+        hideModal($(source));
+}

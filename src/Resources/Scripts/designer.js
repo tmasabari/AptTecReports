@@ -1,4 +1,3 @@
-
 //add list items for rulers
 addTags($(document)[0], '.ruler-x', '<li></li>', 50);
 addTags($(document)[0], '.ruler-y', '<li></li>', 50);
@@ -26,9 +25,15 @@ function ShowRulerPopup(event) {
 
 const saveParameters = () => {
     window.SchemaFormHandler.saveParameters(); };
+
+const saveParametersPrint = () => {
+    window.SchemaFormHandler.saveParameters();
+    PrintReport();
+};
+
 function showEditParamters(event) {
     ShowPopup('designerModal', 'Report Designer', '#paramEditorDiv', 
-    saveParameters );
+        saveParameters );
 }
 
 function ToCanvas(event) {

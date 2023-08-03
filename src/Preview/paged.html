@@ -1,10 +1,13 @@
 <!DOCTYPE html>
-<html class="{{PaperSize}} {{PaperLayout}} noheight">
+<!--  class="{{PaperSize}} {{PaperLayout}} noheight" -->
+<html>
 
 <head>
     <link rel="stylesheet" href="../Resources/css/paper.css" type="text/css">
-    <link rel="stylesheet" href="../Resources/css/pagedjs.css" type="text/css">
-    <link rel="stylesheet" href="../Resources/css/print.css" type="text/css">
+    <!--this conflicts with blank pages
+         <link rel="stylesheet" href="../Resources/css/pagedjs.css" type="text/css" media="screen" > 
+         <link rel="stylesheet" href="../Resources/css/print.css" type="text/css"> -->
+    <link rel="stylesheet" href="../Resources/css/pagedjsTable.css" type="text/css">
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.5/css/jquery.dataTables.min.css" type="text/css">
     
     <script src="https://code.jquery.com/jquery-3.7.0.min.js"
@@ -13,26 +16,23 @@
     <script src="../Resources/Scripts/utilities.js"></script>
     <script src="../Resources/Scripts/date.format.js"></script>
     <script src="../Resources/Scripts/jsonToHtml.js"></script>
+    <!-- <script src="../Resources/Scripts/paged.polyfill.js"></script> -->
     <script src="https://unpkg.com/pagedjs/dist/paged.polyfill.js"></script>
     <script src="../Resources/Scripts/pagedjs-repeat-table-header.js"></script>
     <script src="https://cdn.datatables.net/1.13.5/js/jquery.dataTables.min.js"></script>
+    
     <style>
-        :root {
-            --paper-size: {{PaperSize}};
-            --paper-layout: {{PaperLayout}};
-        } 
-
-        @page  
-        {    
-            /* https://stackoverflow.com/questions/1960939/disabling-browser-print-options-headers-footers-margins-from-page/2780518#2780518 
-            https://stackoverflow.com/questions/1542320/margin-while-printing-html-page 
-            TESTED: the below code hides the Edge/Chrome page size, layout and margin drop downs */ 
-            size: {{PaperSize}} {{PaperLayout}}; /* auto is the initial value it supports both portrait and landscape*/ 
-            margin: {{Report-Top-Margin}}mm {{Report-Right-Margin}}mm {{Report-Bottom-Margin}}mm {{Report-Left-Margin}}mm;   /* this affects the margin in the printer settings  
-            */ 
-            @bottom {
-                /* counter-reset: total-pages var(--total-pages); workaround not required anymore */
-                content: "Page " counter(page) " of " counter(pages); 
+        @media print{
+            @page  
+            {    
+                size: {{PaperSize}} {{PaperLayout}};
+                margin-top: {{Report-Top-Margin}}mm;
+                margin-right: {{Report-Right-Margin}}mm;
+                margin-bottom: {{Report-Bottom-Margin}}mm;
+                margin-left: {{Report-Left-Margin}}mm;
+                @bottom {
+                    content: "Page " counter(page) " of " counter(pages); 
+                }
             }
         }
     </style>
@@ -40,8 +40,8 @@
         {{ReportTitle}}
     </title>
 </head>
-
-<body>
+<!-- class="{{PaperSize}} {{PaperLayout}} noscreen" -->
+<body > 
     <div class="headerMiddle">
         {{HeadersHtml}}
     </div>

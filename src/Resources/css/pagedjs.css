@@ -1,19 +1,18 @@
 /* CSS for Paged.js interface – v0.4 */
-
-/* Change the look */
-:root {
-    --color-background: whitesmoke;
-    --color-pageSheet: #cfcfcf;
-    --color-pageBox: violet;
-    --color-paper: white;
-    --color-marginBox: transparent;
-    --pagedjs-crop-color: black;
-    --pagedjs-crop-shadow: white;
-    --pagedjs-crop-stroke: 1px;
-}
-
 /* To define how the book look on the screen: */
 @media screen, pagedjs-ignore {
+
+    /* Change the look */
+    :root {
+        --color-background: whitesmoke;
+        --color-pageSheet: #cfcfcf;
+        --color-pageBox: violet;
+        --color-paper: white;
+        --color-marginBox: transparent;
+        --pagedjs-crop-color: black;
+        --pagedjs-crop-shadow: white;
+        --pagedjs-crop-stroke: 1px;
+    }
     body {
         background-color: var(--color-background);
     }
@@ -32,7 +31,7 @@
         margin: 0;
         flex-shrink: 0;
         flex-grow: 0;
-        margin-top: 10mm;
+        /* margin-top: 10mm; */
     }
 
 
@@ -62,28 +61,6 @@
     }
 
 /* custom styles ------------------------------------ */
-    @page: blank { 
-        
-        @top-center {
-            content: none;
-        }
-        @top-left {
-            content: none;
-        }
-        @top-right {
-            content: none;
-        }
-
-        @bottom-center {
-            content: none;
-        }
-        @bottom-left {
-            content: none;
-        }
-        @bottom-right {
-            content: none;
-        }
-    }
 
     /* uncomment this part for recto/verso book : ------------------------------------ */
 

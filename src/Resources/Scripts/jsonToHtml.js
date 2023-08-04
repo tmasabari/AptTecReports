@@ -62,7 +62,7 @@ function mapProperties(properties)
       displayName: typeof property === 'object'
         ? property.displayName : property,
       columnSize: typeof property === 'object' && property.columnSize
-        ? property.columnSize + ';' : 100 / properties.length + '%;', 
+        ? property.columnSize  : 100 / properties.length + '%', 
       format: typeof property === 'object' && property.format
         ? property.format : ''
 

@@ -15,7 +15,8 @@ $('.editMenu').click(function () { showEditParamters(); return false; });
 const refreshData = () => {
     window.aptTecReports.refreshData('reportIframe'); };
 $('.refreshMenu').click(function () { refreshData(); return false; } ); 
-$('.optionsMenu').click(function () { ShowRulerPopup(); return false;});
+$('.optionsMenu').click(function () { ShowRulerPopup(); return false; });
+$('.closeMenu').click(function () { window.aptTecReports.closeAction(); return false; });
 function PrintReport(event) {
     document.getElementById('reportIframe').contentWindow.print();
 }

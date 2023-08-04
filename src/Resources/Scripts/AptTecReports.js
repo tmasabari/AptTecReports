@@ -20,6 +20,15 @@ class AptTecReports {
         else {
             this.ReportId = null;
         }
+    } 
+
+    #closeAction = null;
+    get closeAction() {
+        return this.#closeAction;
+    }
+    set closeAction(x) {
+        this.#closeAction = x;
+        $('.closeMenu').show();
     }
 
     //methods
@@ -76,8 +85,25 @@ class AptTecReports {
     refreshData() {
         if (typeof this.dataGetter === "function")
         {
-            this.reportData = this.dataGetter(this.ReportParams.DataSource);
-            this.onReportParametersChanged();
+            var response = this.dataGetter(this.ReportParams.DataSource);
+            if (response && typeof response.then === 'function' && typeof response.catch === 'function')
+            {
+                // It's a native Promise or a custom Promise-like object
+                response.then((result) => {
+                    console.log("Promise resolved with result:", result);
+                    // Continue further operations here using the result value
+                    this.reportData = result;     //assume it is a direct data.
+                    this.onReportParametersChanged();
+                }) .catch((error) => {
+                    console.error("Promise rejected with error:", error);
+                    // Handle errors or perform fallback actions here
+                });
+            }
+            else
+            {
+                this.reportData = response;     //assume it is a direct data.
+                this.onReportParametersChanged();
+            }
         }
         else
         {

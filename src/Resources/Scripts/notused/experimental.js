@@ -1,4 +1,88 @@
 
+
+function jsonToHTML(params)
+{
+    // Get the row and column data
+    const data = aptTecReports.reportData.Data;//table json
+
+    // We will format the property objects to keep the JSON api compatible with older releases
+    var properties = mapProperties(params.properties);
+
+    // Create a html table
+    let htmlData = '<table>'
+
+    // Check if the header should be repeated
+    if (params.repeatTableHeader)
+    {
+        htmlData += '<thead>'
+    }
+
+    // Add the table header row
+    htmlData += '<tr>'
+
+    // Add the table header columns
+    for (let a = 0; a < properties.length; a++)
+    {
+        htmlData += '<th style="width:' + properties[a].columnSize + ';' + params.GridStyles.gridHeaderStyle + '">' + capitalizePrint(properties[a].displayName) + '</th>'
+    }
+
+    // Add the closing tag for the table header row
+    htmlData += '</tr>'
+
+    // If the table header is marked as repeated, add the closing tag
+    if (params.repeatTableHeader)
+    {
+        htmlData += '</thead>'
+    }
+
+    // Create the table body
+    htmlData += '<tbody>'
+
+    // Add the table data rows
+    for (let i = 0; i < data.length; i++)
+    {
+        // Add the row starting tag
+        htmlData += '<tr>'
+
+        // Print selected properties only
+        for (let n = 0; n < properties.length; n++)
+        {
+            let stringData = data[i]
+
+            // Support nested objects
+            const property = properties[n].field.split('.')
+            if (property.length > 1)
+            {
+                for (let p = 0; p < property.length; p++)
+                {
+                    stringData = stringData[property[p]]
+                }
+            } else
+            {
+                stringData = stringData[properties[n].field]
+            }
+            //report can use custom render function
+            if (properties[n].render)
+            {
+                let functionObj = window[properties[n].render];
+                stringData = functionObj(stringData);
+                //if format in not defined then undefined will be passed.
+            }
+            if (!(stringData)) stringData = "";
+
+            // Add the row contents and styles
+            htmlData += '<td style="width:' + properties[n].columnSize + params.gridStyle + '">' + stringData + '</td>'
+        }
+
+        // Add the row closing tag
+        htmlData += '</tr>'
+    }
+
+    // Add the table and body closing tags
+    htmlData += '</tbody></table>'
+
+    return htmlData
+}
 // getComputedStyle will give you the actual width of the div, not the width specified in the style sheet.
 // identify the originally defined css style. But this is not fully working in case of ! important.
 // Do NOT return there could be a override at the bottom of the style sheet.

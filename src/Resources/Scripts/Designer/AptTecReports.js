@@ -111,11 +111,6 @@ class AptTecReports {
             {
                 this.ReportParams.DataSource = this.ReportParams.DataSource.replace(
                     '{{sampleLocation}}', this.dataLocation);
-                // $.getJSON(this.ReportParams.DataSource, function (data)
-                // {
-                //     this.reportData = data;
-                //     this.onReportParametersChanged();
-                // });
                 fetch(this.ReportParams.DataSource)
                     .then(response => response.json())
                     .then(data =>

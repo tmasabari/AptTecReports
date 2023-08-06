@@ -8,9 +8,7 @@
             "properties": {
                 "ReportTemplate": {
                     "type": "string",
-                    "options": {
-                        "hidden": true
-                    }
+                    "options": { "hidden": true }
                 },
                 "DataSource": {
                     "type": "string" ,
@@ -19,9 +17,33 @@
                 "Layout": {
                     "$ref": "#/definitions/Layout"
                 },
-                "HeadersHtml": {
+                "PageHeadersHtml": {
                     "type": "string",
-                    "title": "Header",
+                    "title": "Page Header",
+                    "format": "jodit",
+                    "options": {
+                        "input_width": "100%"
+                    }
+                },
+                "PageFootersHtml": {
+                    "type": "string",
+                    "title": "Page Footer",
+                    "format": "jodit",
+                    "options": {
+                        "input_width": "100%"
+                    }
+                },
+                "ReportHeadersHtml": {
+                    "type": "string",
+                    "title": "Report Header",
+                    "format": "jodit",
+                    "options": {
+                        "input_width": "100%"
+                    }
+                },
+                "ReportFootersHtml": {
+                    "type": "string",
+                    "title": "Report Footer",
                     "format": "jodit",
                     "options": {
                         "input_width": "100%"
@@ -30,41 +52,37 @@
                 "Content": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/Content"
-                    }
-                },
-                "Columns": {
-                    "type": "array",
-                    "format": "table",
-                    "items": {
-                        "$ref": "#/definitions/Column"
-                    }
-                },
-                "FootersHtml": {
-                    "type": "string",
-                    "title": "Footer",
-                    "format": "jodit",
-                    "options": {
-                        "input_width": "100%"
+                        "oneOf": [
+                            {
+                                "$ref": "#/definitions/Htmlcontent"
+                            },
+                            {
+                                "$ref": "#/definitions/Table"
+                            }
+                        ]
                     }
                 }
             },
             "defaultProperties": [
-                "Layout", "Columns"
+                "Layout", "Content"
             ],
             "required": [
-                "HeadersHtml",
-                "FootersHtml",
+                "PageHeadersHtml",
+                "PageFootersHtml",
                 "DataSource",
                 "Layout",
                 "ReportTemplate"
             ],
             "title": "Report Parameters"
         },
-        "Content": {
+        "Htmlcontent": {
             "type": "object",
             "additionalProperties": false,
             "properties": {
+                "DataSource":{
+                    "type": "string",
+                    "options": { "hidden": true }
+                },
                 "ContentHtml": {
                     "type": "string",
                     "title": "HTML Content",
@@ -77,8 +95,30 @@
             "required": [
                 "ContentHtml"
             ],
-            "title": "Content"
+            "title": "Html Content"
         },
+        "Table": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "DataSource":{
+                    "type": "string",
+                    "options": { "hidden": true }
+                },
+                "TableContent": {
+                    "type": "array",
+                    "format": "table",
+                    "items": {
+                        "$ref": "#/definitions/Column"
+                    }
+                }
+            },
+            "required": [
+                "TableContent"
+            ],
+            "title": "Table configuration"
+        },
+        
         "Column": {
             "type": "object",
             "additionalProperties": false,
@@ -121,7 +161,7 @@
                 "PaperLayout": {
                     "type": "string",
                     "title": "Paper layout",
-                    "enum": ["portrait ", "landscape"],
+                    "enum": ["portrait", "landscape"],
                     "options": { "grid_columns": 4 , "grid_break": true,
                         "enum_titles": [
                             "Portrait",

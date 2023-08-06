@@ -3,23 +3,9 @@
 <html>
 
 <head>
-    <link rel="stylesheet" href="../Resources/css/paper.css" type="text/css">
-    <!--this conflicts with blank pages
-         <link rel="stylesheet" href="../Resources/css/pagedjs.css" type="text/css" media="screen" > 
-         <link rel="stylesheet" href="../Resources/css/print.css" type="text/css"> -->
-    <link rel="stylesheet" href="../Resources/css/pagedjsTable.css" type="text/css">
+    <link rel="stylesheet" href="../Resources/css/printContent/paper.css" type="text/css">
+    <link rel="stylesheet" href="../Resources/css/printContent/pagedjsTable.css" type="text/css">
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.5/css/jquery.dataTables.min.css" type="text/css">
-    
-    <script src="https://code.jquery.com/jquery-3.7.0.min.js"
-        integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g="
-        crossorigin="anonymous"></script>
-    <script src="../Resources/Scripts/utilities.js"></script>
-    <script src="../Resources/Scripts/date.format.js"></script>
-    <script src="../Resources/Scripts/jsonToHtml.js"></script>
-    <!-- <script src="../Resources/Scripts/paged.polyfill.js"></script> -->
-    <script src="https://unpkg.com/pagedjs/dist/paged.polyfill.js"></script>
-    <script src="../Resources/Scripts/pagedjs-repeat-table-header.js"></script>
-    <script src="https://cdn.datatables.net/1.13.5/js/jquery.dataTables.min.js"></script>
     
     <style>
         @media print{
@@ -43,14 +29,33 @@
 <!-- class="{{PaperSize}} {{PaperLayout}} noscreen" -->
 <body > 
     <div class="headerMiddle">
-        {{HeadersHtml}}
+        {{PageHeadersHtml}}
     </div>
     <div class="footerMiddle">
-        {{FootersHtml}}
+        {{PageFootersHtml}}
+    </div>
+    <div class="reportHeader">
+        {{ReportHeadersHtml}}
     </div>
     <div class="content"> </div> 
+    <div class="reportFooter">
+        {{ReportFootersHtml}}
+    </div>
 
-    <script src="../Resources/Scripts/report.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.0.min.js"
+        integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g="
+        crossorigin="anonymous"></script>
+    <script src="../Resources/Scripts/Common/utilities.js"></script>
+    <script src="../Resources/Scripts/Common/date.format.js"></script>
+
+    <script src="../Resources/Scripts/printContent/report.js"></script>
+    <script src="../Resources/Scripts/printContent/jsonToHtml.js"></script>
+    
+    <!-- <script src="../Resources/Scripts/paged.polyfill.js"></script> -->
+    <script src="https://unpkg.com/pagedjs/dist/paged.polyfill.js"></script>
+    <script src="../Resources/Scripts/printContent/pagedjs-repeat-table-header.js"></script>
+    
+    <script src="https://cdn.datatables.net/1.13.5/js/jquery.dataTables.min.js"></script>
 </body>
 
 </html>

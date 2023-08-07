@@ -41,7 +41,7 @@
 
     <script src="../../Resources/Scripts/Integration/AptTecIntegration.js"></script>
     <script>
-        var integration = new AptTecIntegration('/Preview/main.html', 'reportIframe', 'jobqueuereport','');
+        var integration = new AptTecIntegration('/Preview/main.html', 'builtinDataFrame', 'jobqueuereport','');
         const button = integration.addPreviewButton('.previewParent');
         button.click(function printPreviewClickHandler() {
             integration.showPrintPreview('../../Data/Templates/');

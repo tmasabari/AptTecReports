@@ -222,7 +222,9 @@
                 "Report-Bottom-Margin",
                 "Report-Left-Margin",
                 "Report-Right-Margin",
-                "Report-Top-Margin"
+                "Report-Top-Margin",
+                "Page-Header-Height",
+                "Page-Footer-Height"
             ],
             "title": "Layout"
         }

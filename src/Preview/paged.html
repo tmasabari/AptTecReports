@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-<!--  class="{{PaperSize}} {{PaperLayout}} noheight" -->
 <html>
 
 <head>
@@ -35,13 +34,9 @@
         {{ReportTitle}}
     </title>
 </head>
-<!-- class="{{PaperSize}} {{PaperLayout}} noscreen" -->
 <body > 
     <div class="headerMiddle">
         {{PageHeadersHtml}}
-    </div>
-    <div class="footerMiddle">
-        {{PageFootersHtml}}
     </div>
     <div class="reportHeader">
         {{ReportHeadersHtml}}
@@ -50,7 +45,9 @@
     <div class="reportFooter">
         {{ReportFootersHtml}}
     </div>
-
+    <div class="footerMiddle">
+        {{PageFootersHtml}}
+    </div>
     <script src="https://code.jquery.com/jquery-3.7.0.min.js"
         integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g="
         crossorigin="anonymous"></script>

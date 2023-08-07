@@ -53,14 +53,13 @@ class AptTecIntegration {
         $('#' + this.previewFrameId).show();
     }
 
-    // var reportParamsUrl = "/Office/Services/GetMaster.aspx?Type=reportParameters";
     sendTelerikData(gridSelector, reportParamsUrl) { // "Producing Data" (May take some time)
         var aptTecData = { CommonData: null, Data: null };
+        aptTecData.Data = this.getTelerikSortedData(gridSelector);
         let previewDataPromise = new Promise(function (previewDataResolve, previewDataReject) {
             fetch(reportParamsUrl)
                 .then(response => response.json())
                 .then(serverParams => {
-                    aptTecData.Data = this.getTelerikSortedData(gridSelector);
                     aptTecData.CommonData = serverParams.CommonData;
                     previewDataResolve(aptTecData); // when successful
                 }) .catch(error => {

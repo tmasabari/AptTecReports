@@ -11,9 +11,11 @@
     "Layout": {
         "PaperSize": "A4",
         "PaperLayout": "portrait",
-        "Report-Top-Margin": 40,
+        "Report-Top-Margin": 10,
         "Report-Right-Margin": 10,
-        "Report-Bottom-Margin": 30,
-        "Report-Left-Margin": 10
+        "Report-Bottom-Margin": 10,
+        "Report-Left-Margin": 10,
+        "Page-Header-Height": 30,
+        "Page-Footer-Height": 20
     }
 }

@@ -12,13 +12,22 @@
             @page  
             {    
                 size: {{PaperSize}} {{PaperLayout}};
-                margin-top: {{Report-Top-Margin}}mm;
+                margin-top: {{Page-Header-Height}}mm;
                 margin-right: {{Report-Right-Margin}}mm;
-                margin-bottom: {{Report-Bottom-Margin}}mm;
+                margin-bottom: {{Page-Footer-Height}}mm;
                 margin-left: {{Report-Left-Margin}}mm;
-                @bottom {
-                    content: "Page " counter(page) " of " counter(pages); 
+                .pageIndex::after{
+                    content:counter(page)
                 }
+                .pageCount::after{
+                    content:counter(pages)
+                }
+            }
+            .headerMiddle {
+                margin-top: {{Report-Top-Margin}}mm;
+            }
+            .footerMiddle {
+                margin-bottom: {{Report-Bottom-Margin}}mm;
             }
         }
     </style>

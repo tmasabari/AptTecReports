@@ -187,6 +187,16 @@
                     "type": "number",
                     "format": "number",
                     "title": "Left margin (mm)"
+                },
+                "Page-Header-Height": {
+                    "type": "number",
+                    "format": "number",
+                    "title": "Page header height (mm)"
+                },
+                "Page-Footer-Height": {
+                    "type": "number",
+                    "format": "number",
+                    "title": "Page footer height (mm)"
                 }
             },
             "required": [

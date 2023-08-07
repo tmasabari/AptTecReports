@@ -1,9 +1,7 @@
-class AptTecReportsIntegrations {
+class AptTecIntegration {
 
-    constructor(integrationType, renderTarget, reportId){
+    constructor(renderTarget, reportId, integrationType){
         this.integrationType = integrationType;
-        this.gridSelector = ''; //used only for telerik so it is optional
-
         this.renderTarget = renderTarget;
         this.reportId = reportId;
     }
@@ -11,20 +9,17 @@ class AptTecReportsIntegrations {
     //parentSelector can be #Grid secondSelector can be ".k-grid-toolbar"
     addPreviewButton(printPreviewClickHandler, parentSelector, secondSelector,
         buttonClass = 'btn btn-success', iconClass = 'fa fa-print', buttonText = '') {
-        var element;
-        if (secondSelector)
-            element = $(secondSelector, parentSelector);
-        else
-            element = $(parentSelector);
+        secondSelector = (secondSelector) ? secondSelector : ""
+        var element = $(parentSelector + ' ' + secondSelector);
         if (element.length === 0) throw "Could not add a preview button. Please check selectors";
 
         //data attributes must be lower case
         element.prepend(
             "<button data-parent-selector='" + parentSelector + 
             "' data-second-selector='" + secondSelector + 
-            "' data-report-id='" + reportId + 
-            "' data-render-target='" + renderTarget + 
-            "' 'class=" + buttonClass + "' printPreview' type='button'>" +
+            "' data-report-id='" + this.reportId + 
+            "' data-render-target='" + this.renderTarget + 
+            "' class='" + buttonClass + " printPreview' type='button'>" +
             "<i class='" + iconClass + "'></i>" + buttonText + "</button>");
         $(parentSelector + ' ' + secondSelector + ' .printPreview').click(printPreviewClickHandler);
     }
@@ -37,29 +32,27 @@ class AptTecReportsIntegrations {
     //     return false;
     // }
 
-    showPrintPreview() {
+    showPrintPreview(templatesLocation, dataGetter) {
         if ($(this.renderTarget).length === 0)
             throw "Could not find the Preview target element. Please check renderTarget selector";
 
-        childWindow = $(this.renderTarget)[0].contentWindow;
-        childWindow.aptTecReports.templatesLocation = '/Home/ReportsData/Templates/';
+        var childWindow = $(this.renderTarget)[0].contentWindow;
+        childWindow.aptTecReports.templatesLocation = templatesLocation;
         childWindow.aptTecReports.ReportId = this.reportId;
         childWindow.aptTecReports.closeAction = () => $(this.renderTarget).hide();
-        childWindow.aptTecReports.dataGetter = this.sendData;
+        childWindow.aptTecReports.dataGetter = dataGetter;
         childWindow.aptTecReports.refreshReport();
         $(this.renderTarget).show();
     }
 
-    sendData()  {
+    // var reportParamsUrl = "/Office/Services/GetMaster.aspx?Type=reportParameters";
+    sendTelerikData(gridSelector, reportParamsUrl) { // "Producing Data" (May take some time)
+        var aptTecData = { CommonData: null, Data: null };
         let previewDataPromise = new Promise(function (previewDataResolve, previewDataReject) {
-            // "Producing Data" (May take some time)
-            var reportParamsUrl = "/Office/Services/GetMaster.aspx?Type=reportParameters";
-            // Load the HTML template and parameters using fetch API (you can also use XMLHttpRequest)
-            //https://developer.mozilla.org/en-US/docs/Web/API/fetch
             fetch(reportParamsUrl)
                 .then(response => response.json())
                 .then(serverParams => {
-                    aptTecData= this.getTelerikSortedData();
+                    aptTecData.Data = this.getTelerikSortedData(gridSelector);
                     aptTecData.CommonData = serverParams.CommonData;
                     previewDataResolve(aptTecData); // when successful
                 }) .catch(error => {
@@ -70,27 +63,27 @@ class AptTecReportsIntegrations {
         return previewDataPromise;
     };
 
-    getTelerikSortedData() {
-        var aptTecData = { CommonData: null, Data: null };
-        if ($(this.gridSelector).length === 0) 
-            return aptTecData;  //if it is not a kendo grid return empty 
+    getTelerikSortedData(gridSelector) {
+         if ($(gridSelector).length === 0) 
+             return null;  //if it is not a kendo grid return empty 
         // https://www.telerik.com/forums/get-sorted-items-without-paging
-        var grid = $(this.gridSelector).data("kendoGrid");
+        var grid = $(gridSelector).data("kendoGrid");
         if (!(grid)) 
-            return aptTecData;  //if it is not a kendo grid return empty 
-            
+            return null;  //if it is not a kendo grid return empty 
+        
+        var result = null
         var dataSource = grid.dataSource;
         var data = dataSource.data();
         var sort = dataSource.sort();
         if (data.length > 0 && sort) {  //sort throws error in case data length =0
             var query = new kendo.data.Query(data);
             var sortedData = query.sort(sort).data;
-            aptTecData.Data = sortedData;
+            result = sortedData;
         }
         else {
-            aptTecData.Data = data;
+            result = data;
         }
 
-        return aptTecData;
+        return result;
     }
 }

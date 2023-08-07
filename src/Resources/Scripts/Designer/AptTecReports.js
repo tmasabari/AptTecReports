@@ -20,6 +20,11 @@ class AptTecReports {
         else {
             this.ReportId = null;
         }
+
+        this.internalCommonData = {
+            "PI": "<span class='pageIndex'>&nbsp;</span>",
+            "PC": "<span class='pageCount'>&nbsp;</span>",
+        }
     } 
 
     #closeAction = null;
@@ -29,6 +34,17 @@ class AptTecReports {
     set closeAction(x) {
         this.#closeAction = x;
         $('.closeMenu').show();
+    }
+
+    #reportData = null;
+    get reportData()
+    {
+        return this.#reportData;
+    }
+    set reportData(data)
+    {
+        this.#reportData = data;
+        this.#reportData.CommonData = mergeAllProperties(this.#reportData.CommonData, this.internalCommonData);
     }
 
     //methods
@@ -65,7 +81,7 @@ class AptTecReports {
                 if (paramsString)
                 {
                     const localParams = JSON.parse(paramsString);
-                    var finalParams = mergeObjects(serverParams, localParams);
+                    var finalParams = mergeExistingProperties(serverParams, localParams);
                     //localStorage.setItem(this.ReportId, JSON.stringify(finalParams)); store only if user clicks save button
                     this.ReportParams = finalParams;
                 }
@@ -110,7 +126,7 @@ class AptTecReports {
             if (this.ReportParams.DataSource)
             {
                 this.ReportParams.DataSource = this.ReportParams.DataSource.replace(
-                    '{{sampleLocation}}', this.dataLocation);
+                    '{{dataLocation}}', this.dataLocation);
                 fetch(this.ReportParams.DataSource)
                     .then(response => response.json())
                     .then(data =>

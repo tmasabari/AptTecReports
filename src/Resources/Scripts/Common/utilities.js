@@ -50,12 +50,17 @@ function addTags(document, parentSelector, tag, pagesCount)
     }
     document.querySelector(parentSelector).innerHTML += content;
 }
-function mergeObjects(obj1, obj2)
-{
-    for (const key in obj2)
-    {
-        if (obj1.hasOwnProperty(key))
-        {
+
+function mergeAllProperties(obj1, obj2) {
+    for (const key in obj2) {
+        obj1[key] = obj2[key];
+    }
+    return obj1;
+}
+
+function mergeExistingProperties(obj1, obj2) {
+    for (const key in obj2) {
+        if (obj1.hasOwnProperty(key)) {
             obj1[key] = obj2[key];
         }
     }

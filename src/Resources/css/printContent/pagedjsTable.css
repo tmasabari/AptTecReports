@@ -1,4 +1,31 @@
-
+html,
+body {
+  font-family: 'Times New Roman', Times, Georgia, serif;
+  font-size: 12pt;
+  font-weight: normal;
+  /* text-align: justify; */
+} 
+html,
+body, .content{
+  border: 0;
+  margin: 0;  /* html margin affects before sending to printer */
+  padding: 0;
+}
+html,
+body,
+.content,
+.content table,
+.content table thead,
+.content table tbody,
+.content table tfoot {
+  border-spacing: 0px;
+}
+/* Do not use fix the bottom margin by vertically align the content top 
+ give at least .25 inch approx. 7 mm margin on top and bottom
+ */
+/* .pagedjs_margin-bottom-center {
+    align-items: flex-start;   
+}  */
 @page  
 {   
     @top-center {
@@ -60,6 +87,13 @@
 .footerMiddle{
     position: running(footerMiddle);
 }
+.pagedjs_margin.pagedjs_margin-top-center.hasContent {
+    align-items: flex-start !important ;
+}
+.pagedjs_margin.pagedjs_margin-bottom-center.hasContent {
+    align-items: flex-end !important ;
+}
+
 /* printTable class is the table fix applied all over the page. So do not apply the border for that
 apply only the content portion table */
 .content .dataTable,
@@ -70,3 +104,22 @@ apply only the content portion table */
   word-break: break-word;
   border-spacing: 0px;
 }
+/* fix the table rows which are getting hidden */
+.content .dataTable th,
+.content .dataTable td {
+  page-break-inside: avoid;
+}
+
+/* not working workaround adjust proper header and footer height params
+
+
+html, body, .content { this creates the empty page on the top issue
+  overflow-x: hidden;
+}
+
+.headerMiddle
+.footerMiddle
+.content div
+{
+    overflow: hidden;
+} */

@@ -1,22 +1,21 @@
 {
     "ReportTemplate": "paged.html",
-    "DataSource": "{{sampleLocation}}/jobs.json",
-    "PageHeadersHtml": "<table style=\"border-collapse:collapse;width: 100%;\"><tbody>\n<tr>\n\t<td style=\"width: 20%;text-align:left;\">{{OrgAddress1}}<br/>{{OrgAddress2}}<br/>{{OrgAddress3}}</td>\n\t<td style=\"width: 60%; text-align: center;\"><strong>{{OrgTitle}}<br/>{{ReportTitle}}<br/>{{ReportSubTitle}}</strong><br></td>\n\t<td style=\"width: 20%;text-align:right;\">{@TodayDate('mm/dd/yyyy')@}</td></tr></tbody></table>",
+    "DataSource": "{{dataLocation}}/jobs.json",
+    "PageHeadersHtml": "<table style=\"border-collapse:collapse;width: 100%;\"><tbody>\n<tr>\n\t<td style=\"width: 20%;text-align:left;\">{{OrgAddress1}}<br/>{{OrgAddress2}}<br/>{{OrgAddress3}}</td>\n\t<td style=\"width: 60%; text-align: center;\"><strong>{{OrgTitle}}<br/>{{ReportTitle}}<br/>{{ReportSubTitle}}</strong><br></td>\n\t<td style=\"width: 20%;text-align:right;\">{@TodayDate('mm/dd/yyyy')@}<br/>Page{{PI}} of {{PC}}</td></tr></tbody></table>",
     "PageFootersHtml": "<table style=\"border-collapse:collapse;width: 100%;\"><tbody>\n<tr>\n\t<td style=\"width: 20%;text-align:left;\">left footer line 1<br/>left footer line 2</td>\n\t<td style=\"width: 60%; text-align: center;\"><strong>{{Copyright}}</strong><br></td>\n\t<td style=\"width: 20%;text-align:right;\">right footer line 1</td></tr></tbody></table>",
-    "ReportHeadersHtml": "",
-    "ReportFootersHtml": "",
+    "ReportFootersHtml": "<table style=\"border-collapse:collapse;width: 100%;\"><tbody>\n<tr>\n\t<td style=\"width: 27.719%; text-align: left;\"><br></td>\n\t<td style=\"width: 48.4119%; text-align: center;\"><br>Report footer- This will appear only once per report at the end<br></td>\n\t<td style=\"width: 23.7729%; text-align: right;\"><br></td></tr></tbody></table>",
+    "ReportHeadersHtml": "<table style=\"border-collapse:collapse;width: 100%;\"><tbody>\n<tr>\n\t<td style=\"width: 27.719%; text-align: left;\"><br></td>\n\t<td style=\"width: 48.4119%; text-align: center;\">Report Header- This will appear only once per report on the top<br></td>\n\t<td style=\"width: 23.7729%; text-align: right;\"><br></td></tr></tbody></table>",
     "Layout": {
-        "PaperSize": "legal",
+        "PaperSize": "ledger",
         "PaperLayout": "landscape",
-        "Report-Top-Margin": 40,
+        "Report-Top-Margin": 10,
         "Report-Right-Margin": 10,
-        "Report-Bottom-Margin": 30,
-        "Report-Left-Margin": 10
+        "Report-Bottom-Margin": 10,
+        "Report-Left-Margin": 10,
+        "Page-Header-Height":30,
+        "Page-Footer-Height": 20
     },
     "Content": [
-        {
-            "ContentHtml": ""
-        },
         {
             "DataSource": "jobsData",
             "TableContent": [
@@ -28,6 +27,7 @@
                 },
                 {
                     "field": "SubmittedBy",
+                    "columnSize": "20ch",
                     "displayName": "Submitted By"
                 },
                 {
@@ -57,9 +57,16 @@
                 },
                 {
                     "field": "JobType",
+                    "columnSize": "10ch",
                     "displayName": "Job Type"
                 }
             ]
+        },
+        {
+            "ContentHtml": "<br/>Section 1:  Extra formatted HTML content can be placed here"
+        },
+        {
+            "ContentHtml": "<br/><br/>Section 2:  Extra formatted HTML content can be placed here"
         }
     ]
 }

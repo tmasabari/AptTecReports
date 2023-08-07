@@ -73,4 +73,10 @@ class SchemaFormHandler {
             //modifiedParams = JSON.stringify(json, null, 2); 
         }
     }
+    resetParameters() {
+        localStorage.removeItem(aptTecReports.ReportId);    //remove local report configuration
+        aptTecReports.ReportParams = aptTecReports.ServerParams;
+        this.jsoneditor.setValue(aptTecReports.ReportParams);
+        aptTecReports.onReportParametersChanged('reportIframe');
+    }
 }

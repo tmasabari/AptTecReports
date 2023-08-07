@@ -1,5 +1,5 @@
 // Show the modal when the button is clicked
-function ShowPopup(modalId, title, contenetSelector, primaryAction, successAction)
+function ShowPopup(modalId, title, contenetSelector, primaryAction, successAction, dangerAction)
 {
     if (primaryAction)
         $(contenetSelector)[0].primaryAction = primaryAction;
@@ -8,6 +8,10 @@ function ShowPopup(modalId, title, contenetSelector, primaryAction, successActio
     if (successAction)
         $(contenetSelector)[0].successAction = successAction;
     $(".modal .modal-footer .btn-success").css("display", (successAction) ? "block" : "none");
+
+    if (dangerAction)
+        $(contenetSelector)[0].dangerAction = dangerAction;
+    $(".modal .modal-footer .btn-danger").css("display", (dangerAction) ? "block" : "none");
 
 
     // Choose the div you want to display in the modal (e.g., divContent1)
@@ -54,6 +58,11 @@ $(document).on('click', ".modal .modal-footer .btn-primary", function () {
 // Perform print action and keep the modal when the Print button is clicked
 $(document).on('click', ".modal .modal-footer .btn-success", function () {
     invokeModalAction(this, "successAction", false);
+});
+
+// Perform print action and keep the modal when the Print button is clicked
+$(document).on('click', ".modal .modal-footer .btn-danger", function () {
+    invokeModalAction(this, "dangerAction", false);
 });
 
 function invokeModalAction(source, method, isHideModal) {

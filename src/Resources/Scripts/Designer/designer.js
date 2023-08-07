@@ -27,6 +27,9 @@ function ShowRulerPopup(event) {
 const saveParameters = () => {
     window.SchemaFormHandler.saveParameters(); };
 
+const resetParameters = () => {
+    window.SchemaFormHandler.resetParameters(); };
+
 const saveParametersPrint = () => {
     window.SchemaFormHandler.saveParameters();
     PrintReport();
@@ -34,7 +37,7 @@ const saveParametersPrint = () => {
 
 function showEditParamters(event) {
     ShowPopup('designerModal', 'Report Designer', '#paramEditorDiv', 
-        saveParameters );
+        saveParameters, null, resetParameters );
 }
 
 function ToCanvas(event) {

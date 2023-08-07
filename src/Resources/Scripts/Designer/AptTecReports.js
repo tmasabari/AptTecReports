@@ -8,6 +8,7 @@ class AptTecReports {
 
         this.ReportSchema = null;
         this.ReportParams = null;
+        this.ServerParams = null;
         this.ReportTemplateSource = null;
         this.htmlTemplate = null; 
         this.reportFrameId = iFrameId;
@@ -77,6 +78,7 @@ class AptTecReports {
             .then(response => response.json())
             .then(serverParams =>
             {
+                this.ServerParams = serverParams;
                 const paramsString = localStorage.getItem(this.ReportId);
                 if (paramsString)
                 {

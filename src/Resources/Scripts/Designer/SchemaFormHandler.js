@@ -69,7 +69,7 @@ class SchemaFormHandler {
             localStorage.setItem(aptTecReports.ReportId, JSON.stringify(reportParams));
             aptTecReports.ReportParams = reportParams;
             //refreshReport('reportIframe', aptTecReports.ReportId);
-            aptTecReports.onReportParametersChanged('reportIframe');
+            aptTecReports.onReportParametersChanged('reportIframe', true);
             //modifiedParams = JSON.stringify(json, null, 2); 
         }
     }
@@ -77,6 +77,6 @@ class SchemaFormHandler {
         localStorage.removeItem(aptTecReports.ReportId);    //remove local report configuration
         aptTecReports.ReportParams = aptTecReports.ServerParams;
         this.jsoneditor.setValue(aptTecReports.ReportParams);
-        aptTecReports.onReportParametersChanged('reportIframe');
+        aptTecReports.onReportParametersChanged('reportIframe', true);
     }
 }

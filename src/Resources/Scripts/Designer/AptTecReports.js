@@ -144,8 +144,8 @@ class AptTecReports {
         }
     }
 
-    onReportParametersChanged() {
-        if (!(this.ReportTemplateSource) || this.ReportTemplateSource !== this.ReportParams.ReportTemplate)
+    onReportParametersChanged(forceRefresh) {
+        if (forceRefresh || !(this.ReportTemplateSource) || this.ReportTemplateSource !== this.ReportParams.ReportTemplate)
         {
             // Load the JSON data using fetch API (you can also use XMLHttpRequest)
             fetch(this.ReportParams.ReportTemplate)

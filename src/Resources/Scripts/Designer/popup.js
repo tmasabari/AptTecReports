@@ -62,7 +62,7 @@ $(document).on('click', ".modal .modal-footer .btn-success", function () {
 
 // Perform print action and keep the modal when the Print button is clicked
 $(document).on('click', ".modal .modal-footer .btn-danger", function () {
-    invokeModalAction(this, "dangerAction", false);
+    invokeModalAction(this, "dangerAction", true);
 });
 
 function invokeModalAction(source, method, isHideModal) {

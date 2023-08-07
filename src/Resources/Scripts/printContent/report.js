@@ -24,7 +24,11 @@ window.onload = function ()
                 if (contentElement.hasOwnProperty('TableContent')  && 
                     Array.isArray(contentElement.TableContent)) {
                     const tableDataSource = contentElement.DataSource;
-                    const tableConfiguration = contentElement.TableContent;
+                    //filter is equivalent to WHERE
+                    var printableColumns = contentElement.TableContent.filter(function (column) {
+                        return column.isPrint === true;
+                    });
+                    const tableConfiguration = printableColumns;
                     //Build the printable html data append/insert at the end template replaced content to contents
                     appendJsonAsDataTable(tableIndex, tableConfiguration, tableDataSource, contentDOMElement);
                     tableIndex++;

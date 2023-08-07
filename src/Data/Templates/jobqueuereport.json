@@ -23,42 +23,50 @@
                     "field": "SubmitedDate",
                     "displayName": "Submit Date",
                     "columnSize": "10ch",
-                    "format": "USShortDateTime"
+                    "format": "USShortDateTime",
+                    "isPrint": true
                 },
                 {
                     "field": "SubmittedBy",
                     "columnSize": "20ch",
-                    "displayName": "Submitted By"
+                    "displayName": "Submitted By",
+                    "isPrint": true
                 },
                 {
                     "field": "PrintJobName",
                     "columnSize": "13em",
-                    "displayName": "Job Name"
+                    "displayName": "Job Name",
+                    "isPrint": true
                 },
                 {
                     "field": "Status",
                     "columnSize": "5em",
-                    "displayName": "Status"
+                    "displayName": "Status",
+                    "isPrint": true
                 },
                 {
                     "field": "FileName",
-                    "displayName": "File Name"
+                    "displayName": "File Name",
+                    "isPrint": true
                 },
                 {
                     "field": "FileSize",
                     "columnSize": "10ch",
-                    "displayName": "Size"
+                    "displayName": "Size",
+                    "isPrint": true
                 },
                 {
                     "field": "SubmitedDate",
                     "displayName": "Created",
                     "columnSize": "10ch",
-                    "format": "USShortDateTime"
+                    "format": "USShortDateTime",
+                    "isPrint": true
                 },
                 {
                     "field": "JobType",
                     "columnSize": "10ch",
-                    "displayName": "Job Type"
+                    "displayName": "Job Type",
+                    "isPrint": true
                 }
             ]
         },

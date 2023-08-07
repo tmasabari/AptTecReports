@@ -1,4 +1,4 @@
-//Editor ===================================================
+//Editor =================================================== Refer https://github.com/json-editor/json-editor
 class SchemaFormHandler {
     constructor(containerId) {
         this.jsonEditorForm = document.getElementById(containerId);

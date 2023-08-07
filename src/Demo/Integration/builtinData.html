@@ -11,22 +11,9 @@
         href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
         integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <style>
-        #reportIframe {
-            position: absolute;
-            height: calc(100vh - 120px);
-            border: 1px solid black;
-            margin-left: -1px;
-            margin-top: -1px;
-            z-index: 1000;
-            width: 99%;
-            top: 92px;
-        }
-    </style>
 </head>
 
 <body>
-
     <table style="border-collapse:collapse;width: 100%;">
         <tbody>
             <tr>
@@ -44,10 +31,6 @@
             </tr>
         </tbody>
     </table>
-
-    <div class="previewContainer"> 
-        <iframe id="reportIframe" src="/Preview/main.html" class="panel panel-primary" style="display:none"></iframe>
-    </div>
     <script src="https://code.jquery.com/jquery-3.7.0.min.js"
         integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g="
         crossorigin="anonymous"></script>
@@ -58,11 +41,11 @@
 
     <script src="../../Resources/Scripts/Integration/AptTecIntegration.js"></script>
     <script>
-        var integration = new AptTecIntegration('#reportIframe', 'jobqueuereport','');
-        function printPreviewClickHandler() {
+        var integration = new AptTecIntegration('/Preview/main.html', 'reportIframe', 'jobqueuereport','');
+        const button = integration.addPreviewButton('.previewParent');
+        button.click(function printPreviewClickHandler() {
             integration.showPrintPreview('../../Data/Templates/');
-        }
-        integration.addPreviewButton(printPreviewClickHandler, '.previewParent');
+        });
     </script>
 
 </body>

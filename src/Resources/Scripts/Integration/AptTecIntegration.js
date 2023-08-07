@@ -1,48 +1,56 @@
 class AptTecIntegration {
 
-    constructor(renderTarget, reportId, integrationType){
+    constructor(sourceUrl, previewFrameId, reportId, integrationType){
         this.integrationType = integrationType;
-        this.renderTarget = renderTarget;
+        this.previewFrameId = previewFrameId;
         this.reportId = reportId;
+        this.addIFrameTag(sourceUrl);
+    }
+
+    addIFrameTag(sourceUrl) {
+        const iFrameTag = `
+        <style>
+            #${this.previewFrameId} {
+                position: absolute;
+                height: calc(100vh - 120px);
+                border: 1px solid black;
+                margin-left: -1px;
+                margin-top: -1px;
+                z-index: 1000;
+                width: 99%;
+                top: 92px;
+                display:none;
+            }
+        </style>
+        <iframe src="${sourceUrl}" id="${this.previewFrameId}"></iframe>`;
+        $('body').append(iFrameTag);
     }
 
     //parentSelector can be #Grid secondSelector can be ".k-grid-toolbar"
-    addPreviewButton(printPreviewClickHandler, parentSelector, secondSelector,
+    addPreviewButton(parentSelector, secondSelector,
         buttonClass = 'btn btn-success', iconClass = 'fa fa-print', buttonText = '') {
         secondSelector = (secondSelector) ? secondSelector : ""
         var element = $(parentSelector + ' ' + secondSelector);
         if (element.length === 0) throw "Could not add a preview button. Please check selectors";
 
         //data attributes must be lower case
-        element.prepend(
-            "<button data-parent-selector='" + parentSelector + 
-            "' data-second-selector='" + secondSelector + 
-            "' data-report-id='" + this.reportId + 
-            "' data-render-target='" + this.renderTarget + 
-            "' class='" + buttonClass + " printPreview' type='button'>" +
-            "<i class='" + iconClass + "'></i>" + buttonText + "</button>");
-        $(parentSelector + ' ' + secondSelector + ' .printPreview').click(printPreviewClickHandler);
+        element.prepend(`
+            <button data-parent-selector='${parentSelector}' data-second-selector='${secondSelector}' 
+            data-report-id='${this.reportId}' data-render-target='${this.previewFrameId}' 
+            class='${buttonClass} printPreview' type='button'>
+                <i class='${iconClass}'></i>${buttonText}</button>`);
+        const buttonElement = $(parentSelector + ' ' + secondSelector + ' .printPreview'); 
+        return buttonElement;
     }
 
-    // printPreviewClickHandler(button) {
-    //     const renderTarget = $(button).data('render-target');
-    //     const reportId = $(button).data('report-id');
-    //     const parentSelector = $(button).data('parent-selector');
-    //     this.showPrintPreview(renderTarget, reportId, parentSelector);
-    //     return false;
-    // }
-
     showPrintPreview(templatesLocation, dataGetter) {
-        if ($(this.renderTarget).length === 0)
-            throw "Could not find the Preview target element. Please check renderTarget selector";
-
-        var childWindow = $(this.renderTarget)[0].contentWindow;
+        var childWindow = $('#' + this.previewFrameId)[0].contentWindow;
         childWindow.aptTecReports.templatesLocation = templatesLocation;
         childWindow.aptTecReports.ReportId = this.reportId;
-        childWindow.aptTecReports.closeAction = () => $(this.renderTarget).hide();
+        childWindow.aptTecReports.closeAction = () => $('#' + this.previewFrameId).hide();
         childWindow.aptTecReports.dataGetter = dataGetter;
         childWindow.aptTecReports.refreshReport();
-        $(this.renderTarget).show();
+        $('#' + this.previewFrameId).show();
     }
 
     // var reportParamsUrl = "/Office/Services/GetMaster.aspx?Type=reportParameters";

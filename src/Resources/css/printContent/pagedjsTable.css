@@ -104,11 +104,13 @@ apply only the content portion table */
   word-break: break-word;
   border-spacing: 0px;
 }
-/* fix the table rows which are getting hidden */
-.content .dataTable th,
+/* 
+ page-break-inside: avoid creates the empty page when contents of rows goes over than 2 pages
+ The entire row becomes invisible as well.
+ monitor for fix the table rows which are getting hidden 
 .content .dataTable td {
   page-break-inside: avoid;
-}
+}*/
 
 /* not working workaround adjust proper header and footer height params
 

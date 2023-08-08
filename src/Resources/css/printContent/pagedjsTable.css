@@ -4,22 +4,12 @@ body {
   font-size: 12pt;
   font-weight: normal;
   /* text-align: justify; */
-} 
-html,
-body, .content{
+  
   border: 0;
   margin: 0;  /* html margin affects before sending to printer */
   padding: 0;
-}
-html,
-body,
-.content,
-.content table,
-.content table thead,
-.content table tbody,
-.content table tfoot {
   border-spacing: 0px;
-}
+} 
 /* Do not use fix the bottom margin by vertically align the content top 
  give at least .25 inch approx. 7 mm margin on top and bottom
  */

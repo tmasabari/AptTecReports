@@ -4,6 +4,8 @@ class AptTecReports {
         this.schemaLocation = schemaLocation;
         this.templatesLocation = templatesLocation;
         this.dataLocation = dataLocation;
+        this.sourceUrl = '';
+
         this.dataGetter = null;
 
         this.ReportSchema = null;
@@ -53,7 +55,7 @@ class AptTecReports {
 
     initializeDesigner(event) {
         //convert json to schema https://codebeautify.org/json-to-json-schema-generator
-        const schemaParamsUrl = this.schemaLocation + "ReportParametersSchema.json";
+        const schemaParamsUrl = this.sourceUrl + this.schemaLocation + "ReportParametersSchema.json";
         fetch(schemaParamsUrl)
             .then(response => response.json())
             .then(reportSchema =>
@@ -71,7 +73,7 @@ class AptTecReports {
     refreshReport() {
         if (!(this.ReportId)) //if report id does not exist can't perform anything more.
             return;
-        var reportParamsUrl = this.templatesLocation + this.ReportId + ".json";
+        var reportParamsUrl = this.sourceUrl + this.templatesLocation + this.ReportId + ".json";
         // Load the HTML template and parameters using fetch API (you can also use XMLHttpRequest)
         //https://developer.mozilla.org/en-US/docs/Web/API/fetch
         fetch(reportParamsUrl)
@@ -128,7 +130,7 @@ class AptTecReports {
             if (this.ReportParams.DataSource)
             {
                 this.ReportParams.DataSource = this.ReportParams.DataSource.replace(
-                    '{{dataLocation}}', this.dataLocation);
+                    '{{dataLocation}}', this.sourceUrl + this.dataLocation);
                 fetch(this.ReportParams.DataSource)
                     .then(response => response.json())
                     .then(data =>

@@ -1,13 +1,22 @@
-class AptTecIntegration {
+class AptTecIntegration
+{
+    #designerHTMLPath = 'Preview/main.html';
+    #sourceUrl;
+    #isSourceUrlLoaded=false;
+    #previewButtonSelector='';
+    #templateToReplace ='"../Resources/';
 
-    constructor(sourceUrl, previewFrameId, reportId, integrationType){
+    constructor(sourceUrl, previewFrameId, reportId, integrationType, isCors = true){
         this.integrationType = integrationType;
         this.previewFrameId = previewFrameId;
         this.reportId = reportId;
-        this.addIFrameTag(sourceUrl);
+        this.isCors = isCors;
+        this.#sourceUrl = sourceUrl.endsWith('/') ? sourceUrl : sourceUrl + '/' ;
+        this.#addIFrameTag();
+        this.#loadSourceUrl();
     }
 
-    addIFrameTag(sourceUrl) {
+    #addIFrameTag() {
         const iFrameTag = `
         <style>
             #${this.previewFrameId} {
@@ -22,8 +31,27 @@ class AptTecIntegration {
                 display:none;
             }
         </style>
-        <iframe src="${sourceUrl}" id="${this.previewFrameId}"></iframe>`;
+        <iframe id="${this.previewFrameId}"></iframe>`;
         $('body').append(iFrameTag);
+    }
+
+    #loadSourceUrl() {
+        const designerHTMLUrl = this.#sourceUrl + this.#designerHTMLPath;
+        fetch(designerHTMLUrl)  //new Downloader().download([designerHTMLUrl], this.isCors)
+        .then(response => response.text())       //response[0].text()
+        .then(html_template =>
+        {
+            var modified_html = html_template.replace(
+                new RegExp(this.#templateToReplace, "ig") , '"'+ this.#sourceUrl + 'Resources/');
+            document.getElementById(this.previewFrameId).srcdoc = modified_html;
+            this.#isSourceUrlLoaded = true;
+            if (this.#previewButtonSelector)
+                $(this.#previewButtonSelector).prop('disabled', false); //enable the preview button
+        })
+        .catch(error =>
+        {
+            console.error('Error loading report template:', error);
+        });
     }
 
     //parentSelector can be #Grid secondSelector can be ".k-grid-toolbar"
@@ -33,18 +61,20 @@ class AptTecIntegration {
         var element = $(parentSelector + ' ' + secondSelector);
         if (element.length === 0) throw "Could not add a preview button. Please check selectors";
 
+        const disabledAttrib = this.#isSourceUrlLoaded ? '' : 'disabled';
         //data attributes must be lower case
         element.prepend(`
             <button data-parent-selector='${parentSelector}' data-second-selector='${secondSelector}' 
             data-report-id='${this.reportId}' data-render-target='${this.previewFrameId}' 
-            class='${buttonClass} printPreview' type='button'>
+            class='${buttonClass} printPreview' type='button' ${disabledAttrib}>
                 <i class='${iconClass}'></i>${buttonText}</button>`);
-        const buttonElement = $(parentSelector + ' ' + secondSelector + ' .printPreview'); 
-        return buttonElement;
+        this.#previewButtonSelector = parentSelector + ' ' + secondSelector + ' .printPreview';
+        return $(this.#previewButtonSelector);
     }
 
     showPrintPreview(templatesLocation, dataGetter) {
         var childWindow = $('#' + this.previewFrameId)[0].contentWindow;
+        childWindow.aptTecReports.sourceUrl = this.#sourceUrl;
         childWindow.aptTecReports.templatesLocation = templatesLocation;
         childWindow.aptTecReports.ReportId = this.reportId;
         childWindow.aptTecReports.closeAction = () => $('#' + this.previewFrameId).hide();
@@ -56,16 +86,17 @@ class AptTecIntegration {
     sendTelerikData(gridSelector, reportParamsUrl) { // "Producing Data" (May take some time)
         var aptTecData = { CommonData: null, Data: null };
         aptTecData.Data = this.getTelerikSortedData(gridSelector);
+        const isCors = this.isCors;
         let previewDataPromise = new Promise(function (previewDataResolve, previewDataReject) {
-            fetch(reportParamsUrl)
-                .then(response => response.json())
-                .then(serverParams => {
-                    aptTecData.CommonData = serverParams.CommonData;
-                    previewDataResolve(aptTecData); // when successful
-                }) .catch(error => {
-                    console.error('Error loading report parameters:', error);
-                    previewDataReject();  // when error
-                });
+            fetch(reportParamsUrl) // new Downloader.download([reportParamsUrl], isCors)
+            .then(response => response.json())
+            .then(serverParams => {
+                aptTecData.CommonData = serverParams.CommonData;
+                previewDataResolve(aptTecData); // when successful
+            }) .catch(error => {
+                console.error('Error loading report parameters:', error);
+                previewDataReject();  // when error
+            });
         });
         return previewDataPromise;
     };

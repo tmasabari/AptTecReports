@@ -66,3 +66,19 @@ function mergeExistingProperties(obj1, obj2) {
     }
     return obj1;
 }
+
+//dynamic loading ===================================================
+function loadStylesheet(url) {
+    var link = document.createElement('link');
+    link.rel = 'stylesheet';
+    link.href = url;
+    document.head.appendChild(link);
+}
+function loadScript(url, callback, isDefer = false) {
+    var script = document.createElement('script');
+    script.type = 'text/javascript';
+    script.src = url;
+    script.defer = isDefer; // Load script after parsing the DOM
+    script.onload = callback; // Optional: Call a function when the script is loaded
+    document.head.appendChild(script);
+}

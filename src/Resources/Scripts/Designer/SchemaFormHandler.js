@@ -66,15 +66,15 @@ class SchemaFormHandler {
             this.isValidData = true;
             // output
             var reportParams = this.jsoneditor.getValue();
-            localStorage.setItem(aptTecReports.ReportId, JSON.stringify(reportParams));
+            localStorage.setItem(aptTecReports.reportId, JSON.stringify(reportParams));
             aptTecReports.ReportParams = reportParams;
-            //refreshReport('reportIframe', aptTecReports.ReportId);
+            //refreshReport('reportIframe', aptTecReports.reportId);
             aptTecReports.onReportParametersChanged('reportIframe', true);
             //modifiedParams = JSON.stringify(json, null, 2); 
         }
     }
     resetParameters() {
-        localStorage.removeItem(aptTecReports.ReportId);    //remove local report configuration
+        localStorage.removeItem(aptTecReports.reportId);    //remove local report configuration
         aptTecReports.ReportParams = aptTecReports.ServerParams;
         this.jsoneditor.setValue(aptTecReports.ReportParams);
         aptTecReports.onReportParametersChanged('reportIframe', true);

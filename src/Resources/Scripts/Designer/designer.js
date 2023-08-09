@@ -2,12 +2,26 @@
 addTags($(document)[0], '.ruler-x', '<li></li>', 50);
 addTags($(document)[0], '.ruler-y', '<li></li>', 50);
 //UI event handlers==========================================================
-window.onload = function ()
-{
-    window.SchemaFormHandler = new SchemaFormHandler('paramEditorDiv')
-    window.aptTecReports = new AptTecReports(
-        "reportIframe", "../Data/Schema/", "../Data/Templates/", "../Data/Samples/");
-    window.aptTecReports.initializeDesigner();
+window.onload = function () {
+    window.SchemaFormHandler = new SchemaFormHandler('paramEditorDiv');
+    if (window.self === window.top)
+    {
+        var reportId = null;
+        //https://stackoverflow.com/questions/7731778/get-query-string-parameters-url-values-with-jquery-javascript-querystring
+        var urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.has('report')) {
+            reportId = urlParams.get('report');
+        }
+        window.aptTecReports = new AptTecReports("reportIframe", reportId, "../Data/Schema/", 
+            "../Data/Templates/", "../Data/Samples/");
+        window.aptTecReports.initializeDesigner();
+    }
+}
+window.initilizePreview = function (reportParams) {
+    window.aptTecReports = new AptTecReports("reportIframe", reportParams.reportId, "Data/Schema/",
+        reportParams.templatesLocation, "Data/Samples/", reportParams.sourceUrl,
+        reportParams.closeAction, reportParams.dataGetter);
+    window.aptTecReports.initializeDesigner(false);
 }
 
 $('.printMenu').click(function () { PrintReport(); return false; }); 

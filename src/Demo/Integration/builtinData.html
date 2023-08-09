@@ -42,10 +42,11 @@
     <script src="../../Resources/Scripts/Integration/AptTecIntegration.js" crossorigin="anonymous"></script>
     <script src="../../Resources/Scripts/Common/Downloader.js" crossorigin="anonymous"></script>
     <script>
-        var integration = new AptTecIntegration('https://gridsazuredev.avenuinsights.com/reports', 'builtinDataFrame', 'jobqueuereport','');
+        var integration = new AptTecIntegration('https://gridsazuredev.avenuinsights.com/reports', 
+        'builtinDataFrame', 'jobqueuereport','Data/Templates/' );
         const button = integration.addPreviewButton('.previewParent');
         button.click(function printPreviewClickHandler() {
-            integration.showPrintPreview('../../Data/Templates/');
+            integration.showPrintPreview();
         });
     </script>
 

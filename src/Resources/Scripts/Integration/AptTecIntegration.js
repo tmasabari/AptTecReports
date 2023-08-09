@@ -5,15 +5,18 @@ class AptTecIntegration
     #isSourceUrlLoaded=false;
     #previewButtonSelector='';
     #templateToReplace ='"../Resources/';
+    #designerWindow = null;
+    #frameElement=null;
 
-    constructor(sourceUrl, previewFrameId, reportId, integrationType, isCors = true){
+    constructor(sourceUrl, previewFrameId, reportId, 
+        templatesLocation, dataGetter=null, integrationType='', isCors = true){
         this.integrationType = integrationType;
         this.previewFrameId = previewFrameId;
         this.reportId = reportId;
         this.isCors = isCors;
         this.#sourceUrl = sourceUrl.endsWith('/') ? sourceUrl : sourceUrl + '/' ;
         this.#addIFrameTag();
-        this.#loadSourceUrl();
+        this.#loadSourceUrl(templatesLocation, dataGetter);
     }
 
     #addIFrameTag() {
@@ -35,18 +38,30 @@ class AptTecIntegration
         $('body').append(iFrameTag);
     }
 
-    #loadSourceUrl() {
+    #loadSourceUrl(templatesLocation, dataGetter) {
         const designerHTMLUrl = this.#sourceUrl + this.#designerHTMLPath;
         fetch(designerHTMLUrl)  //new Downloader().download([designerHTMLUrl], this.isCors)
         .then(response => response.text())       //response[0].text()
         .then(html_template =>
         {
             var modified_html = html_template.replace(
-                new RegExp(this.#templateToReplace, "ig") , '"'+ this.#sourceUrl + 'Resources/');
-            document.getElementById(this.previewFrameId).srcdoc = modified_html;
-            this.#isSourceUrlLoaded = true;
-            if (this.#previewButtonSelector)
-                $(this.#previewButtonSelector).prop('disabled', false); //enable the preview button
+                new RegExp(this.#templateToReplace, "ig"), '"' + this.#sourceUrl + 'Resources/');
+            this.#frameElement = document.getElementById(this.previewFrameId);
+            this.#frameElement.srcdoc = modified_html;
+            this.#frameElement.onload = () => { 
+                this.#isSourceUrlLoaded = true;
+                if (this.#previewButtonSelector)
+                    $(this.#previewButtonSelector).prop('disabled', false); //enable the preview button
+                this.#designerWindow = document.getElementById(this.previewFrameId).contentWindow;
+                this.#designerWindow.initilizePreview({
+                    reportId: this.reportId,
+                    templatesLocation: templatesLocation,
+                    sourceUrl: this.#sourceUrl,
+                    closeAction: () => $('#' + this.previewFrameId).hide(),
+                    dataGetter: dataGetter
+                });
+            }
+            
         })
         .catch(error =>
         {
@@ -72,15 +87,9 @@ class AptTecIntegration
         return $(this.#previewButtonSelector);
     }
 
-    showPrintPreview(templatesLocation, dataGetter) {
-        var childWindow = $('#' + this.previewFrameId)[0].contentWindow;
-        childWindow.aptTecReports.sourceUrl = this.#sourceUrl;
-        childWindow.aptTecReports.templatesLocation = templatesLocation;
-        childWindow.aptTecReports.ReportId = this.reportId;
-        childWindow.aptTecReports.closeAction = () => $('#' + this.previewFrameId).hide();
-        childWindow.aptTecReports.dataGetter = dataGetter;
-        childWindow.aptTecReports.refreshReport();
+    showPrintPreview() {
         $('#' + this.previewFrameId).show();
+        this.#designerWindow.aptTecReports.refreshReport();
     }
 
     sendTelerikData(gridSelector, reportParamsUrl) { // "Producing Data" (May take some time)

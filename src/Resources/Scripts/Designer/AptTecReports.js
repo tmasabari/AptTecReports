@@ -1,36 +1,32 @@
 // https://jsonformatter.curiousconcept.com/ to convert js code to json object
 class AptTecReports {
-    constructor(iFrameId, schemaLocation, templatesLocation, dataLocation) {
+
+    #closeAction = null;
+    #templateToReplace = '"../Resources/';
+    #internalCommonData = {
+        "PI": "<span class='pageIndex'>&nbsp;</span>",
+        "PC": "<span class='pageCount'>&nbsp;</span>",
+    };
+    constructor(iFrameId, reportId, schemaLocation, templatesLocation, dataLocation, 
+        sourceUrl='', closeAction=null, dataGetter=null) {
         this.schemaLocation = schemaLocation;
         this.templatesLocation = templatesLocation;
         this.dataLocation = dataLocation;
-        this.sourceUrl = '';
 
-        this.dataGetter = null;
+        this.sourceUrl = sourceUrl;
+        this.previewPageUrl = (sourceUrl) ? sourceUrl + 'Preview/': null;
+        this.#closeAction = closeAction;
+        this.dataGetter = dataGetter;
+        this.reportId = reportId;
+        this.reportFrameId = iFrameId;
 
         this.ReportSchema = null;
         this.ReportParams = null;
         this.ServerParams = null;
         this.ReportTemplateSource = null;
-        this.htmlTemplate = null; 
-        this.reportFrameId = iFrameId;
-
-        //https://stackoverflow.com/questions/7731778/get-query-string-parameters-url-values-with-jquery-javascript-querystring
-        var urlParams = new URLSearchParams(window.location.search);
-        if (urlParams.has('report')) {
-            this.ReportId = urlParams.get('report');
-        }
-        else {
-            this.ReportId = null;
-        }
-
-        this.internalCommonData = {
-            "PI": "<span class='pageIndex'>&nbsp;</span>",
-            "PC": "<span class='pageCount'>&nbsp;</span>",
-        }
+        this.htmlTemplate = null;
     } 
 
-    #closeAction = null;
     get closeAction() {
         return this.#closeAction;
     }
@@ -40,20 +36,18 @@ class AptTecReports {
     }
 
     #reportData = null;
-    get reportData()
-    {
+    get reportData() {
         return this.#reportData;
     }
-    set reportData(data)
-    {
+    set reportData(data) {
         this.#reportData = data;
-        this.#reportData.CommonData = mergeAllProperties(this.#reportData.CommonData, this.internalCommonData);
+        this.#reportData.CommonData = mergeAllProperties(this.#reportData.CommonData, this.#internalCommonData);
     }
 
     //methods
     //custom code to load the reports==========================================================
 
-    initializeDesigner(event) {
+    initializeDesigner(isRefreshReport) {
         //convert json to schema https://codebeautify.org/json-to-json-schema-generator
         const schemaParamsUrl = this.sourceUrl + this.schemaLocation + "ReportParametersSchema.json";
         fetch(schemaParamsUrl)
@@ -61,7 +55,8 @@ class AptTecReports {
             .then(reportSchema =>
             {
                 this.ReportSchema = reportSchema;
-                this.refreshReport('reportIframe');
+                if (isRefreshReport)
+                    this.refreshReport();
             })
             .catch(error =>
             {
@@ -71,9 +66,9 @@ class AptTecReports {
 
     // Function to fetch the HTML template and JSON data and perform the replacement
     refreshReport() {
-        if (!(this.ReportId)) //if report id does not exist can't perform anything more.
+        if (!(this.reportId)) //if report id does not exist can't perform anything more.
             return;
-        var reportParamsUrl = this.sourceUrl + this.templatesLocation + this.ReportId + ".json";
+        var reportParamsUrl = this.sourceUrl + this.templatesLocation + this.reportId + ".json";
         // Load the HTML template and parameters using fetch API (you can also use XMLHttpRequest)
         //https://developer.mozilla.org/en-US/docs/Web/API/fetch
         fetch(reportParamsUrl)
@@ -81,12 +76,12 @@ class AptTecReports {
             .then(serverParams =>
             {
                 this.ServerParams = serverParams;
-                const paramsString = localStorage.getItem(this.ReportId);
+                const paramsString = localStorage.getItem(this.reportId);
                 if (paramsString)
                 {
                     const localParams = JSON.parse(paramsString);
                     var finalParams = mergeExistingProperties(serverParams, localParams);
-                    //localStorage.setItem(this.ReportId, JSON.stringify(finalParams)); store only if user clicks save button
+                    //localStorage.setItem(this.reportId, JSON.stringify(finalParams)); store only if user clicks save button
                     this.ReportParams = finalParams;
                 }
                 else
@@ -150,12 +145,12 @@ class AptTecReports {
         if (forceRefresh || !(this.ReportTemplateSource) || this.ReportTemplateSource !== this.ReportParams.ReportTemplate)
         {
             // Load the JSON data using fetch API (you can also use XMLHttpRequest)
-            fetch(this.ReportParams.ReportTemplate)
+            fetch(this.previewPageUrl + this.ReportParams.ReportTemplate)
                 .then(response => response.text())
                 .then(html_template =>
                 {
                     this.htmlTemplate = html_template;
-                    this.ReportTemplateSource = this.ReportParams.ReportTemplate;
+                    this.ReportTemplateSource = this.previewPageUrl + this.ReportParams.ReportTemplate;
                     this.loadReportTemplate();
                 })
                 .catch(error =>
@@ -175,6 +170,8 @@ class AptTecReports {
         modified_html = replacePlaceholders(modified_html, this.ReportParams.Layout);
         modified_html = replacePlaceholders(modified_html, this.reportData.CommonData);
         //final replacements with server data
+        modified_html = modified_html.replace(
+            new RegExp(this.#templateToReplace, "ig"), '"' + this.sourceUrl + 'Resources/');
 
         // Insert the modified HTML into the DOM
         document.getElementById(this.reportFrameId).srcdoc = modified_html;  //set .innerHTML for div eleement

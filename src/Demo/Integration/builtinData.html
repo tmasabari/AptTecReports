@@ -42,12 +42,33 @@
     <script src="../../Resources/Scripts/Integration/AptTecIntegration.js" crossorigin="anonymous"></script>
     <script src="../../Resources/Scripts/Common/Downloader.js" crossorigin="anonymous"></script>
     <script>
-        var integration = new AptTecIntegration('https://gridsazuredev.avenuinsights.com/reports', 
+        //this requires response header to be configured on the server 'Access-Control-Allow-Origin':'*'
+        // and crossorigin="anonymous" to be used for style sheet and scripts
+        var gridsazuredevIntegration = new AptTecIntegration('https://gridsazuredev.avenuinsights.com/reports', 
         'builtinDataFrame', 'jobqueuereport','Data/Templates/' );
-        const button = integration.addPreviewButton('.previewParent');
-        button.click(function printPreviewClickHandler() {
-            integration.showPrintPreview();
+        const gridsazuredevButton = gridsazuredevIntegration.addPreviewButton('.previewParent', '', 'btn btn-success', 
+        'fa fa-print', 'gridsazuredev');
+        gridsazuredevButton.click(function printPreviewClickHandler() {
+            gridsazuredevIntegration.showPrintPreview();
         });
+
+        var localIntegration = new AptTecIntegration('https://127.0.0.1:5501/',
+            'builtinDataFrame', 'jobqueuereport', 'Data/Templates/');
+        const localButton = localIntegration.addPreviewButton('.previewParent', '', 'btn btn-success',
+            'fa fa-print', 'Local');
+        localButton.click(function printPreviewClickHandler()
+        {
+            localIntegration.showPrintPreview();
+        });
+
+        // this does not 
+        // var gridsazureppIntegration = new AptTecIntegration('https://gridsazurepp.avenuinsights.com/reports',
+        // 'builtinDataFrame', 'jobqueuereport','Data/Templates/' );
+        // const gridsazureppButton = gridsazureppIntegration.addPreviewButton('.previewParent', '', 'btn btn-success',
+        // 'fa fa-print', 'gridsazurepp');
+        // gridsazureppButton.click(function printPreviewClickHandler() {
+        //     gridsazureppIntegration.showPrintPreview();
+        // });
     </script>
 
 </body>

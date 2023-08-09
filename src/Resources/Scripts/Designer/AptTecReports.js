@@ -15,7 +15,7 @@ class AptTecReports {
 
         this.sourceUrl = sourceUrl;
         this.previewPageUrl = (sourceUrl) ? sourceUrl + 'Preview/': null;
-        this.#closeAction = closeAction;
+        this.closeAction = closeAction;
         this.dataGetter = dataGetter;
         this.reportId = reportId;
         this.reportFrameId = iFrameId;

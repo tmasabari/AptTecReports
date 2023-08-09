@@ -26,6 +26,15 @@ function appendJsonAsDataTable(tableIndex, tableConfiguration, tableDataSource, 
   contentDOMElement.append(tableTag);
   const tableData = (tableDataSource) ? aptTecReports.reportData.Data[tableDataSource] 
     : aptTecReports.reportData.Data;
+
+  //filter is equivalent to WHERE
+  var colMaxLengthDefined = tableConfiguration.filter(function (colConfig) {
+    return (colConfig.maxLength) && colConfig.maxLength > 0;
+  });
+  colMaxLengthDefined.forEach((colConfig) => {
+    firstNCharacters(tableData, colConfig.field, colConfig.maxLength);
+  });
+  
   const dataTableConfig = {
     info: false, //hide footer Showing 1 to 79 of 79 entries
     ordering: false,

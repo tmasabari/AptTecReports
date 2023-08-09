@@ -13,7 +13,8 @@
         "Report-Bottom-Margin": 10,
         "Report-Left-Margin": 10,
         "Page-Header-Height":30,
-        "Page-Footer-Height": 20
+        "Page-Footer-Height": 20,
+        "CustomStyle":""
     },
     "Content": [
         {

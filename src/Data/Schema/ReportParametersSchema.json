@@ -142,7 +142,8 @@
                 },
                 "field": {
                     "type": "string",
-                    "title": "Name"
+                    "title": "Name",
+                    "options": { "hidden": true }
                 },
                 "displayName": {
                     "type": "string",
@@ -150,11 +151,18 @@
                 },
                 "columnSize": {
                     "type": "string",
-                    "title": "Width"
+                    "title": "Width",
+                    "options": { "input_width": "10ch" }
                 },
                 "format": {
                     "type": "string",
                     "title": "Format"
+                },
+                "maxLength": {
+                    "type": "number",
+                    "format": "number",
+                    "title": "First N Chars",
+                    "options": { "input_width": "10ch" }
                 }
             },
             "required": [
@@ -172,14 +180,14 @@
                     "type": "string",
                     "title": "Paper size",
                     "enum": ["A3", "A4", "A5", "B4", "B5", "letter", "legal", "ledger"],
-                    "options": {    "grid_columns": 4,
+                    "options": {    "input_width": "20ch",
                                     "enum_titles": ["A3", "A4", "A5", "B4", "B5", "Letter", "Legal", "Ledger"] }
                 },
                 "PaperLayout": {
                     "type": "string",
                     "title": "Paper layout",
                     "enum": ["portrait", "landscape"],
-                    "options": { "grid_columns": 4 , "grid_break": true,
+                    "options": { "input_width": "20ch", "grid_break": true,
                         "enum_titles": [
                             "Portrait",
                             "Landscape"
@@ -213,7 +221,14 @@
                 "Page-Footer-Height": {
                     "type": "number",
                     "format": "number",
-                    "title": "Page footer height (mm)"
+                    "title": "Page footer height (mm)",
+                    "options": { "grid_break": true }
+                },
+                "CustomStyle": {
+                    "type": "string",
+                    "title": "Custom content styles",
+                    "format": "textarea",
+                    "options": {"input_width": "100%", "expand_height":"true"}
                 }
             },
             "required": [
@@ -224,7 +239,8 @@
                 "Report-Right-Margin",
                 "Report-Top-Margin",
                 "Page-Header-Height",
-                "Page-Footer-Height"
+                "Page-Footer-Height",
+                "CustomStyle"
             ],
             "title": "Layout"
         }

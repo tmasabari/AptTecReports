@@ -90,10 +90,17 @@ apply only the content portion table */
 .content .dataTable th,
 .content .dataTable td {
   border: 0.25mm solid black;
-  border-collapse: collapse;
   word-break: break-word;
   border-spacing: 0px;
 }
+/* dont apply border collapse for datatable which creates a empty page problem if content of a cell overflows more than 2 pages */
+.content .dataTable th,
+.content .dataTable td {
+  border-collapse: collapse;
+  vertical-align: text-top;
+  padding: 1mm;
+}
+
 /* 
  page-break-inside: avoid creates the empty page when contents of rows goes over than 2 pages
  The entire row becomes invisible as well.

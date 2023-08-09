@@ -44,21 +44,24 @@
     <script>
         //this requires response header to be configured on the server 'Access-Control-Allow-Origin':'*'
         // and crossorigin="anonymous" to be used for style sheet and scripts
+        //this will use local templates
         var gridsazuredevIntegration = new AptTecIntegration('https://gridsazuredev.avenuinsights.com/reports', 
-        'builtinDataFrame', 'jobqueuereport','Data/Templates/' );
+        'builtinGridsazuredevDataFrame', 'jobqueuereport','/Data/Templates/' );
         const gridsazuredevButton = gridsazuredevIntegration.addPreviewButton('.previewParent', '', 'btn btn-success', 
         'fa fa-print', 'gridsazuredev');
         gridsazuredevButton.click(function printPreviewClickHandler() {
             gridsazuredevIntegration.showPrintPreview();
+            return false;
         });
 
-        var localIntegration = new AptTecIntegration('https://127.0.0.1:5501/',
-            'builtinDataFrame', 'jobqueuereport', 'Data/Templates/');
+        //this is using local templates
+        var localIntegration = new AptTecIntegration('/',
+            'builtinLocalDataFrame', 'jobqueuereport', '/Data/Templates/', null, '', true);
         const localButton = localIntegration.addPreviewButton('.previewParent', '', 'btn btn-success',
             'fa fa-print', 'Local');
-        localButton.click(function printPreviewClickHandler()
-        {
+        localButton.click(function printPreviewClickHandler() {
             localIntegration.showPrintPreview();
+            return false;
         });
 
         // this does not 

@@ -51,6 +51,7 @@ function addTags(document, parentSelector, tag, pagesCount)
     document.querySelector(parentSelector).innerHTML += content;
 }
 
+//JSON related ===================================================
 function mergeAllProperties(obj1, obj2) {
     for (const key in obj2) {
         obj1[key] = obj2[key];
@@ -65,6 +66,14 @@ function mergeExistingProperties(obj1, obj2) {
         }
     }
     return obj1;
+}
+function firstNCharacters(jsonArray, propertyToModify, n) {
+    jsonArray.forEach(item => {
+        if (item[propertyToModify].length > n) {
+            item[propertyToModify] = item[propertyToModify].substring(0, n);
+        }
+    });
+    return jsonArray;
 }
 
 //dynamic loading ===================================================

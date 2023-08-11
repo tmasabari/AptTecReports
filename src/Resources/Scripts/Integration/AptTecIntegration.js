@@ -1,28 +1,8 @@
 class AptTecIntegration
 {
     #designerHTMLPath = 'Preview/main.html';
-    #sourceUrl;
-    #isSourceUrlLoaded=false;
-    #previewButtonSelector='';
     #templateToReplace ='"../Resources/';
-    #designerWindow = null;
-    #frameElement=null;
-
-    constructor(sourceUrl, previewFrameId, reportId, 
-        templatesLocation, dataGetter=null, integrationType='', isCors = true){
-        this.integrationType = integrationType;
-        this.previewFrameId = previewFrameId;
-        this.reportId = reportId;
-        this.isCors = isCors;
-        this.#sourceUrl = sourceUrl.endsWith('/') ? sourceUrl : sourceUrl + '/' ;
-        this.#addIFrameTag();
-        this.#loadSourceUrl(templatesLocation, dataGetter);
-    }
-
-    #addIFrameTag() {
-        const iFrameTag = `
-        <style>
-            #${this.previewFrameId} {
+    #defaultFrameStyle =`
                 position: absolute;
                 height: calc(100vh - 120px);
                 border: 1px solid black;
@@ -32,13 +12,53 @@ class AptTecIntegration
                 width: 99%;
                 top: 92px;
                 display:none;
-            }
+                `;
+    #allPreviewButtonSelector = '.AptTecPrintPreview';
+    #frameElement = null;
+    #isSourceUrlLoaded = false;
+    #designerWindow = null;
+    #sourceUrl ='';
+    #previewFrameId='';
+    #templatesLocation='';
+    /**
+     * This integration is using the IFrame tag to avoid the css and scripts conflicts between the caller and library
+     * There will be clear separation of concerns
+     * @param {string} sourceUrl - The library can hosted on local or remote website.
+     *  sample local path '/reports' remote path 'https://your.staticwebsite.com/reports'
+     *  for remote website CORS must be enabled.
+     * @param {string} previewFrameId -  Integration scenarios
+     * 1. For the traditions MPA pages - One preview IFrame per page/one table/data region
+     *      reportId, dataSetter can be set directly via the constructor.
+     *      the AptTecIntegration will call dataSetter/direct/kendo while rendering the preview.
+     * 2. Common preview form on the master layout
+     *      There could be multiple data regions in a SPA or master layout
+     *      However only one preview can be shown at a time.
+     * @param {string} templatesLocation - The templates folder path.
+     *      Customize your templates folder path based on requirements.
+     *      You can set different templatesLocation for different tenants/clients for multi-tenant scenarios.
+     */
+    constructor(sourceUrl, previewFrameId,  templatesLocation, frameStyle){
+        this.aptTecData = { CommonData: {}, InstanceData: {}, Data: [] };
+
+        this.#sourceUrl = sourceUrl.endsWith('/') ? sourceUrl : sourceUrl + '/' ;
+        this.#previewFrameId = previewFrameId; 
+        this.#addIFrameTag(frameStyle);
+        this.#frameElement = document.getElementById(this.#previewFrameId);
+        this.#templatesLocation = templatesLocation;
+        this.#loadSourceUrl();
+    }
+
+    #addIFrameTag(frameStyle) {
+        const style = (frameStyle) ? frameStyle : this.#defaultFrameStyle;
+        const iFrameTag = `
+        <style>
+            #${this.#previewFrameId} { ${style} } 
         </style>
-        <iframe id="${this.previewFrameId}"></iframe>`;
+        <iframe id="${this.#previewFrameId}"></iframe>`;
         $('body').append(iFrameTag);
     }
 
-    #loadSourceUrl(templatesLocation, dataGetter) {
+    #loadSourceUrl() {
         const designerHTMLUrl = this.#sourceUrl + this.#designerHTMLPath;
         fetch(designerHTMLUrl)  //new Downloader().download([designerHTMLUrl], this.isCors)
         .then(response => response.text())       //response[0].text()
@@ -46,91 +66,137 @@ class AptTecIntegration
         {
             var modified_html = html_template.replace(
                 new RegExp(this.#templateToReplace, "ig"), '"' + this.#sourceUrl + 'Resources/');
-            this.#frameElement = document.getElementById(this.previewFrameId);
             this.#frameElement.srcdoc = modified_html;
-            this.#frameElement.onload = () => { 
-                this.#isSourceUrlLoaded = true;
-                if (this.#previewButtonSelector)
-                    $(this.#previewButtonSelector).prop('disabled', false); //enable the preview button
-                this.#designerWindow = document.getElementById(this.previewFrameId).contentWindow;
-                this.#designerWindow.initilizePreview({
-                    reportId: this.reportId,
-                    templatesLocation: templatesLocation,
-                    sourceUrl: this.#sourceUrl,
-                    closeAction: () => $('#' + this.previewFrameId).hide(),
-                    dataGetter: dataGetter
-                });
-            }
+            this.#frameElement.onload = () => { this.#frameLoaded(); }
             
         })
-        .catch(error =>
-        {
+        .catch(error => {
             console.error('Error loading report template:', error);
         });
     }
 
-    //parentSelector can be #Grid secondSelector can be ".k-grid-toolbar"
-    addPreviewButton(parentSelector, secondSelector,
-        buttonClass = 'btn btn-success', iconClass = 'fa fa-print', buttonText = '') {
-        secondSelector = (secondSelector) ? secondSelector : ""
-        var element = $(parentSelector + ' ' + secondSelector);
-        if (element.length === 0) throw "Could not add a preview button. Please check selectors";
+    #frameLoaded() {
+        this.#isSourceUrlLoaded = true;
+        $(this.#allPreviewButtonSelector).prop('disabled', false); //enable all printpreview buttons
+        this.#designerWindow = document.getElementById(this.#previewFrameId).contentWindow;
+        this.#designerWindow.initilizePreview({
+            templatesLocation: this.#templatesLocation,
+            sourceUrl: this.#sourceUrl,
+            closeAction: () => $('#' + this.#previewFrameId).hide()
+        });
+    }
 
+    /**
+     * Add the preview button
+     * @param {string} reportId - The templates file path. for MPA pages set here. 
+     *      For SPA or layout scenarios set reportId while calling addPreviewButton
+     * @param {string} parentSelector - css parent container selector.
+     * @param {object} attributes - additional data attributes to be included in the button
+     * @param {string} buttonClass -css button classes to apply the styles
+     * @param {string} iconClass - icon classes to be displayed within the text
+     * @param {string} buttonText - Text to be displayed
+     * @param {string} location - 'Start' add button at the beginning. 'end' add button at the end.
+     * @returns 
+     */
+    addPreviewButton(reportId, parentSelector, attributes, dataSetter,
+        buttonClass = 'btn btn-success', iconClass = 'fa fa-print', buttonText = '', location = 'start') {
+        var buttonResult =this.#addPreviewButton(reportId, parentSelector, attributes,
+            buttonClass, iconClass, buttonText, location);
+        this.HandlePreviewButton(buttonResult, dataSetter);
+        return buttonResult;
+    }
+    #addPreviewButton(reportId, parentSelector, attributes, 
+        buttonClass, iconClass, buttonText, location)
+    {
+        var result = { previewButton: {}, AlreadyExists : false };
+        var element = $(parentSelector);
+        if (element.length === 0) throw "Could not add a preview button. Please check parentSelector";
+
+        const currentPreviewButtonSelector = parentSelector + ' .AptTecPrintPreview';
+        result.previewButton = $(currentPreviewButtonSelector);
+        if (result.previewButton.length !== 0) { //if button already exists do not add again
+            result.AlreadyExists = true;
+            return result;
+        }
         const disabledAttrib = this.#isSourceUrlLoaded ? '' : 'disabled';
+
+        var attributesText = '';
+        if(attributes) {
+            for (const [key, value] of Object.entries(attributes)) {
+                attributesText += ` data-${key}='${value}'`;
+            }
+        }
+        const buttonTagText = `
+            <button data-render-target='${this.#previewFrameId}' data-report-id='${reportId}' 
+            data-parent-selector='${parentSelector}' ${attributesText} ${disabledAttrib} 
+            class='${buttonClass} AptTecPrintPreview' type='button' >
+                <i class='${iconClass}'></i>${buttonText}</button>`;
+
         //data attributes must be lower case
-        element.prepend(`
-            <button data-parent-selector='${parentSelector}' data-second-selector='${secondSelector}' 
-            data-report-id='${this.reportId}' data-render-target='${this.previewFrameId}' 
-            class='${buttonClass} printPreview' type='button' ${disabledAttrib}>
-                <i class='${iconClass}'></i>${buttonText}</button>`);
-        this.#previewButtonSelector = parentSelector + ' ' + secondSelector + ' .printPreview';
-        return $(this.#previewButtonSelector);
+        if (location==='start')
+            element.prepend(buttonTagText);
+        else
+            element.append(buttonTagText);
+        result.previewButton = $(currentPreviewButtonSelector);
+        return result;
     }
 
-    showPrintPreview() {
-        $('#' + this.previewFrameId).show();
-        this.#designerWindow.aptTecReports.refreshReport();
+    /**
+     * 
+     * @param {*} buttonResult 
+     * @param {Object} dataSetter - Anyof "function" or "string" 
+     *      if it is a function, the function will be called while rendering the preview.
+     *      'direct' - the JSON data will be read directly from the aptTecData property
+     *      'kendo' - the JSON data will be read directly from the Kendo grid using data-id set using button
+     * @returns 
+     */
+    HandlePreviewButton(buttonResult, dataSetter ) {
+        if (buttonResult.AlreadyExists) return;
+        const aptIntegration = this;
+        buttonResult.previewButton.click(function ()
+        {
+            const reportId = $(this).data('report-id');
+            aptIntegration.#designerWindow.aptTecReports.reportId = reportId;
+            if (typeof dataSetter === "function") {
+                aptIntegration.#designerWindow.aptTecReports.dataGetter = dataSetter;
+            }
+            else {
+                switch (dataSetter) {
+                    case 'direct':
+                        aptIntegration.#designerWindow.aptTecReports.dataGetter = 
+                            () => { return aptIntegration.aptTecData; };
+                        break;
+                    case 'kendoGrid':
+                        aptIntegration.#designerWindow.aptTecReports.dataGetter = () => { 
+                            aptIntegration.aptTecData.Data = getKendoSortedData(gridSelector);
+                            return aptIntegration.aptTecData; 
+                        };
+                        break;
+                    default:
+                        aptIntegration.#designerWindow.aptTecReports.dataGetter = null;
+                        break;
+                }
+            }
+            $('#' + aptIntegration.#previewFrameId).show();
+            //this always loads the template from server and does entire refresh.
+            aptIntegration.#designerWindow.aptTecReports.refreshReport();
+        } );
     }
 
-    sendTelerikData(gridSelector, reportParamsUrl) { // "Producing Data" (May take some time)
-        var aptTecData = { CommonData: null, Data: null };
-        aptTecData.Data = this.getTelerikSortedData(gridSelector);
-        const isCors = this.isCors;
-        let previewDataPromise = new Promise(function (previewDataResolve, previewDataReject) {
-            fetch(reportParamsUrl) // new Downloader.download([reportParamsUrl], isCors)
+    //return aptTecintegration.sendTelerikData("#" + printableGridId, "/Office/Services/GetMaster.aspx?
+    fetchData(Url, aptTecDataPropertyName, sourcePropertyName) {
+        const thisIntegration = this;
+        return new Promise(function (previewDataResolve, previewDataReject) {
+            fetch(Url) // new Downloader.download([Url], isCors)
             .then(response => response.json())
-            .then(serverParams => {
-                aptTecData.CommonData = serverParams.CommonData;
-                previewDataResolve(aptTecData); // when successful
-            }) .catch(error => {
+            .then(data => {
+                thisIntegration.aptTecData[aptTecDataPropertyName] = 
+                    (sourcePropertyName) ? data[sourcePropertyName] : data;
+                previewDataResolve(thisIntegration.aptTecData); // when successful
+            }).catch(error => {
                 console.error('Error loading report parameters:', error);
                 previewDataReject();  // when error
             });
-        });
-        return previewDataPromise;
+        }); 
     };
-
-    getTelerikSortedData(gridSelector) {
-         if ($(gridSelector).length === 0) 
-             return null;  //if it is not a kendo grid return empty 
-        // https://www.telerik.com/forums/get-sorted-items-without-paging
-        var grid = $(gridSelector).data("kendoGrid");
-        if (!(grid)) 
-            return null;  //if it is not a kendo grid return empty 
-        
-        var result = null
-        var dataSource = grid.dataSource;
-        var data = dataSource.data();
-        var sort = dataSource.sort();
-        if (data.length > 0 && sort) {  //sort throws error in case data length =0
-            var query = new kendo.data.Query(data);
-            var sortedData = query.sort(sort).data;
-            result = sortedData;
-        }
-        else {
-            result = data;
-        }
-
-        return result;
-    }
-}
+} 

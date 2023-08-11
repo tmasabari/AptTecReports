@@ -1,6 +1,6 @@
 // https://jsonformatter.curiousconcept.com/ to convert js code to json object
 class AptTecReports {
-
+    #previewPageUrl='';
     #closeAction = null;
     #templateToReplace = '"../Resources/';
     #internalCommonData = {
@@ -14,7 +14,7 @@ class AptTecReports {
         this.dataLocation = dataLocation;
 
         this.sourceUrl = sourceUrl;
-        this.previewPageUrl = (sourceUrl) ? sourceUrl + 'Preview/': null;
+        this.#previewPageUrl = (sourceUrl) ? sourceUrl + 'Preview/': null;
         this.closeAction = closeAction;
         this.dataGetter = dataGetter;
         this.reportId = reportId;
@@ -145,12 +145,12 @@ class AptTecReports {
         if (forceRefresh || !(this.ReportTemplateSource) || this.ReportTemplateSource !== this.ReportParams.ReportTemplate)
         {
             // Load the JSON data using fetch API (you can also use XMLHttpRequest)
-            fetch(this.previewPageUrl + this.ReportParams.ReportTemplate)
+            fetch(this.#previewPageUrl + this.ReportParams.ReportTemplate)
                 .then(response => response.text())
                 .then(html_template =>
                 {
                     this.htmlTemplate = html_template;
-                    this.ReportTemplateSource = this.previewPageUrl + this.ReportParams.ReportTemplate;
+                    this.ReportTemplateSource = this.#previewPageUrl + this.ReportParams.ReportTemplate;
                     this.loadReportTemplate();
                 })
                 .catch(error =>

@@ -91,3 +91,31 @@ function loadScript(url, callback, isDefer = false) {
     script.onload = callback; // Optional: Call a function when the script is loaded
     document.head.appendChild(script);
 }
+
+
+//Kendo ===================================================
+function getKendoSortedData(gridSelector) {
+    if ($(gridSelector).length === 0)
+        return null;  //if it is not a kendo grid return empty 
+    // https://www.telerik.com/forums/get-sorted-items-without-paging
+    var grid = $(gridSelector).data("kendoGrid");
+    if (!(grid))
+        return null;  //if it is not a kendo grid return empty 
+
+    var result = null
+    var dataSource = grid.dataSource;
+    var data = dataSource.data();
+    var sort = dataSource.sort();
+    if (data.length > 0 && sort)
+    {  //sort throws error in case data length =0
+        var query = new kendo.data.Query(data);
+        var sortedData = query.sort(sort).data;
+        result = sortedData;
+    }
+    else
+    {
+        result = data;
+    }
+
+    return result;
+}

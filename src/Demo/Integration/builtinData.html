@@ -27,6 +27,8 @@
                     </strong>
                 </td>
                 <td class="previewParent" style="width: 20%;text-align:right;">
+                    <div class="jobqueue"></div>
+                    <div class="letter"></div>
                 </td>
             </tr>
         </tbody>
@@ -43,40 +45,19 @@
     <script src="../../Resources/Scripts/Common/Downloader.js"
         crossorigin="anonymous"></script> -->
 
-    <script src="https://gridsazuredev.avenuinsights.com/reports/Resources/Scripts/Integration/AptTecIntegration.js" crossorigin="anonymous"></script>
+    <script src="/Resources/Scripts/Integration/AptTecIntegration.js" crossorigin="anonymous"></script>
     <script>
-        //this requires response header to be configured on the server 'Access-Control-Allow-Origin':'*'
-        // and crossorigin="anonymous" to be used for style sheet and scripts
-        //this will use local templates
-        var gridsazuredevIntegration = new AptTecIntegration('https://gridsazuredev.avenuinsights.com/reports', 
-        'builtinGridsazuredevDataFrame', 'jobqueuereport','/Data/Templates/' );
-        const gridsazuredevButton = gridsazuredevIntegration.addPreviewButton('.previewParent', '', 'btn btn-success', 
-        'fa fa-print', 'gridsazuredev');
-        gridsazuredevButton.click(function printPreviewClickHandler() {
-            gridsazuredevIntegration.showPrintPreview();
-            return false;
-        });
-
         //this is using local templates
-        var localIntegration = new AptTecIntegration('/',
-            'builtinLocalDataFrame', 'jobqueuereport', '/Data/Templates/', null, '', true);
-        const localButton = localIntegration.addPreviewButton('.previewParent', '', 'btn btn-success',
-            'fa fa-print', 'Local');
-        localButton.click(function printPreviewClickHandler() {
-            localIntegration.showPrintPreview();
-            return false;
-        });
+        var localIntegration = new AptTecIntegration('/', 'builtinLocalDataFrame', '/Data/Templates/');
 
-        // this does not 
-        // var gridsazureppIntegration = new AptTecIntegration('https://gridsazurepp.avenuinsights.com/reports',
-        // 'builtinDataFrame', 'jobqueuereport','Data/Templates/' );
-        // const gridsazureppButton = gridsazureppIntegration.addPreviewButton('.previewParent', '', 'btn btn-success',
-        // 'fa fa-print', 'gridsazurepp');
-        // gridsazureppButton.click(function printPreviewClickHandler() {
-        //     gridsazureppIntegration.showPrintPreview();
-        // });
+        const localJobQueueButtonResult = localIntegration.addPreviewButton(
+            'jobqueuereport', '.previewParent .jobqueue', null, null, 'btn btn-success', 'fa fa-print', 'Job Queue', 'start');
+        
+        const localLetterButtonResult = localIntegration.addPreviewButton('letter', 
+        '.previewParent .letter', null, 
+            () => localIntegration.fetchData('/Data/Samples/coverletter.json', 'CommonData', 'CommonData')
+            , 'btn btn-success', 'fa fa-print', 'Letter', 'end'); 
     </script>
-
 </body>
 
 </html>

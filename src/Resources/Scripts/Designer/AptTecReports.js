@@ -2,7 +2,7 @@
 class AptTecReports {
     #previewPageUrl='';
     #closeAction = null;
-    #templateToReplace = '"../Resources/';
+    #templateToReplace = '{{SourceUrl}}';
     #internalCommonData = {
         "PI": "<span class='pageIndex'>&nbsp;</span>",
         "PC": "<span class='pageCount'>&nbsp;</span>",
@@ -171,7 +171,7 @@ class AptTecReports {
         modified_html = replacePlaceholders(modified_html, this.reportData.CommonData);
         //final replacements with server data
         modified_html = modified_html.replace(
-            new RegExp(this.#templateToReplace, "ig"), '"' + this.sourceUrl + 'Resources/');
+            new RegExp(this.#templateToReplace, "ig"), this.sourceUrl );
 
         // Insert the modified HTML into the DOM
         document.getElementById(this.reportFrameId).srcdoc = modified_html;  //set .innerHTML for div eleement

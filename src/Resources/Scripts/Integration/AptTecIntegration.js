@@ -1,7 +1,7 @@
 class AptTecIntegration
 {
     #designerHTMLPath = 'Preview/main.html';
-    #templateToReplace ='"../Resources/';
+    #templateToReplace ='{{SourceUrl}}';
     #defaultFrameStyle =`
                 position: absolute;
                 height: calc(100vh - 120px);
@@ -24,18 +24,14 @@ class AptTecIntegration
      * This integration is using the IFrame tag to avoid the css and scripts conflicts between the caller and library
      * There will be clear separation of concerns
      * @param {string} sourceUrl - The library can hosted on local or remote website.
-     *  sample local path '/reports' remote path 'https://your.staticwebsite.com/reports'
-     *  for remote website CORS must be enabled.
-     * @param {string} previewFrameId -  Integration scenarios
-     * 1. For the traditions MPA pages - One preview IFrame per page/one table/data region
-     *      reportId, dataSetter can be set directly via the constructor.
-     *      the AptTecIntegration will call dataSetter/direct/kendo while rendering the preview.
-     * 2. Common preview form on the master layout
+     *      sample local path '/reports' remote path 'https://your.staticwebsite.com/reports'
+     *      for remote website CORS must be enabled.
+     * @param {string} previewFrameId -   Common preview form on the master layout or SPA or MPA pages
      *      There could be multiple data regions in a SPA or master layout
      *      However only one preview can be shown at a time.
-     * @param {string} templatesLocation - The templates folder path.
-     *      Customize your templates folder path based on requirements.
+     * @param {string} templatesLocation - Customize your templates folder path based on requirements.
      *      You can set different templatesLocation for different tenants/clients for multi-tenant scenarios.
+     * @param {string} frameStyle - The styles to be applied for the preview frame.
      */
     constructor(sourceUrl, previewFrameId,  templatesLocation, frameStyle){
         this.aptTecData = { CommonData: {}, InstanceData: {}, Data: [] };
@@ -65,7 +61,7 @@ class AptTecIntegration
         .then(html_template =>
         {
             var modified_html = html_template.replace(
-                new RegExp(this.#templateToReplace, "ig"), '"' + this.#sourceUrl + 'Resources/');
+                new RegExp(this.#templateToReplace, "ig"), this.#sourceUrl );
             this.#frameElement.srcdoc = modified_html;
             this.#frameElement.onload = () => { this.#frameLoaded(); }
             
@@ -163,8 +159,10 @@ class AptTecIntegration
             else {
                 switch (dataSetter) {
                     case 'direct':
-                        aptIntegration.#designerWindow.aptTecReports.dataGetter = 
-                            () => { return aptIntegration.aptTecData; };
+                        aptIntegration.#designerWindow.aptTecReports.dataGetter = () => { 
+                            aptIntegration.aptTecData.Data = buttonResult.previewButton[0].printData;
+                            return aptIntegration.aptTecData; 
+                        };
                         break;
                     case 'kendoGrid':
                         aptIntegration.#designerWindow.aptTecReports.dataGetter = () => { 

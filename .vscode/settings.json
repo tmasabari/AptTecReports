@@ -5,11 +5,11 @@
   "liveServer.settings.https": {
     "enable": true,
     //Linux
-    //"cert": "/mnt/DNTFS/GitHub/HTML Report Generator/.vscode/localhost.pem", //full path
-    //"key": "/mnt/DNTFS/GitHub/HTML Report Generator/.vscode/localhost.key", //full path
+    "cert": "/mnt/DNTFS/GitHub/HTML Report Generator/.vscode/localhost.pem", //full path
+    "key": "/mnt/DNTFS/GitHub/HTML Report Generator/.vscode/localhost.key", //full path
     //Win
-    "cert": "D:/GitHub/HTML Report Generator/.vscode/localhost.pem", //full path
-    "key": "D:/GitHub/HTML Report Generator/.vscode/localhost.key", //full path
+    // "cert": "D:/GitHub/HTML Report Generator/.vscode/localhost.pem", //full path
+    // "key": "D:/GitHub/HTML Report Generator/.vscode/localhost.key", //full path
     "passphrase": "12345678"
   }
 } 

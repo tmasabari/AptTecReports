@@ -1,3 +1,5 @@
+import { AptTecExporter as Exporter } from './Exporter.js';
+
 //add list items for rulers
 addTags($(document)[0], '.ruler-x', '<li></li>', 50);
 addTags($(document)[0], '.ruler-y', '<li></li>', 50);
@@ -25,7 +27,8 @@ window.initilizePreview = function (reportParams) {
 }
 
 $('.printMenu').click(function () { PrintReport(); return false; }); 
-$('.editMenu').click(function () { showEditParamters(); return false; }); 
+$('.editMenu').click(function () { showEditParamters(); return false; });
+$('.exportMenu').click(function () { ToCanvas(); return false; });
 const refreshData = () => {
     window.aptTecReports.refreshData('reportIframe'); };
 $('.refreshMenu').click(function () { refreshData(); return false; } ); 
@@ -55,10 +58,10 @@ function showEditParamters(event) {
 }
 
 function ToCanvas(event) {
-    childWindow = document.getElementById('reportIframe').contentWindow;
-    childWindow.html2canvas(document.querySelector("html")).then(canvas => {
-        document.body.appendChild(canvas)
-    });
+    const sourceWindow = document.getElementById('reportIframe').contentWindow;
+    const exporter = new Exporter();
+    const options = exporter.getPdfOptions(aptTecReports.ReportParams);
+    exporter.generatePDF(sourceWindow, `.pagedjs_page`, options);
 }
 
 $(document).on('input', '.ruleEditor', function (eventData) {

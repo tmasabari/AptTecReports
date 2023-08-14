@@ -119,3 +119,13 @@ function getKendoSortedData(gridSelector) {
 
     return result;
 }
+
+// Function to get the device DPI
+function getDeviceDPI() {
+    const dpiDiv = document.createElement("div");
+    dpiDiv.style.width = "1in";
+    document.body.appendChild(dpiDiv);
+    const dpi = dpiDiv.offsetWidth;
+    document.body.removeChild(dpiDiv);
+    return dpi;
+}

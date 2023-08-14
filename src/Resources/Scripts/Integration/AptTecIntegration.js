@@ -82,6 +82,9 @@ class AptTecIntegration
         });
     }
 
+    get aptTecReports() {
+        return this.#designerWindow.aptTecReports;
+    }
     /**
      * Add the preview button
      * @param {string} reportId - The templates file path. for MPA pages set here. 

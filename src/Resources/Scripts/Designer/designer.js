@@ -61,7 +61,7 @@ function ToCanvas(event) {
     const sourceWindow = document.getElementById('reportIframe').contentWindow;
     const exporter = new Exporter();
     const options = exporter.getPdfOptions(aptTecReports.ReportParams);
-    exporter.generatePDF(sourceWindow, `.pagedjs_page`, options);
+     exporter.generatePDF(sourceWindow, `.pagedjs_page`, options);
 }
 
 $(document).on('input', '.ruleEditor', function (eventData) {

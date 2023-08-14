@@ -47,15 +47,22 @@ export class AptTecExporter {
 
     generateCanvas(sourceWindow, pdfDocumnet, pageIndex, deferred)
     {
+        sourceWindow.scrollTo(0, 0);
+        const element = sourceWindow.$(`.pagedjs_page[data-page-number='${pageIndex}'] > .pagedjs_sheet`)[0];
+        const area = element.getBoundingClientRect();
         const canvasOptions = {
             allowTaint: true,
             dpi: 300,
             letterRendering: true,
-            logging: false
-            ,scale :1
+            logging: false,
+            scrollX: 0,
+            scrollY: -sourceWindow.scrollY,
+            scale :1,
             //scale: .8 https://stackoverflow.com/questions/16541676/what-are-best-practices-for-detecting-pixel-ratio-density
+            width: area.width,
+            height: area.height
         };
-        window.html2canvas(sourceWindow.$(`.pagedjs_page[data-page-number='${pageIndex}']`)[0], canvasOptions)
+        window.html2canvas(element, canvasOptions)
             .then(canvas => {
                 this.addCanvasToPDFPage(canvas, pdfDocumnet)
                 deferred.resolve();

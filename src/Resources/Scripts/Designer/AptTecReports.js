@@ -35,6 +35,13 @@ class AptTecReports {
         $('.closeMenu').show();
     }
 
+    enableExport(isVisible) {
+        if (isVisible)
+            $('.exportMenu').show();
+        else
+            $('.exportMenu').hide();
+    }
+
     #reportData = null;
     get reportData() {
         return this.#reportData;

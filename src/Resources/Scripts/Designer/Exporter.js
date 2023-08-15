@@ -35,7 +35,7 @@ export class AptTecExporter {
         $.when.apply($, deferreds).then(function ()
         { // executes after adding all images
             //pdfDocumnet.save(fileName);
-            const pdfWindow = window.open(pdfDocumnet.output('bloburl'), '_blank');
+            window.open(pdfDocumnet.output('bloburl'), '_blank');
             //pdfWindow.print();
         });
 
@@ -64,7 +64,7 @@ export class AptTecExporter {
         };
         window.html2canvas(element, canvasOptions)
             .then(canvas => {
-                this.addCanvasToPDFPage(canvas, pdfDocumnet)
+                this.addCanvasToPDFPage(canvas, pdfDocumnet);
                 deferred.resolve();
             });
     }

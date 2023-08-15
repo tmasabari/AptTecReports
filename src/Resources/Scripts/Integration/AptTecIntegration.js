@@ -1,5 +1,9 @@
-class AptTecIntegration
-{
+'use strict';
+import { getKendoSortedData } from '../Common/utilities.js';
+
+const AptTecReporting = window.AptTecReporting || {};
+
+AptTecReporting.Integraion = class AptTecIntegration {
     #designerHTMLPath = 'Preview/main.html';
     #templateToReplace ='{{SourceUrl}}';
     #defaultFrameStyle =`
@@ -57,18 +61,18 @@ class AptTecIntegration
     #loadSourceUrl() {
         const designerHTMLUrl = this.#sourceUrl + this.#designerHTMLPath;
         fetch(designerHTMLUrl)  //new Downloader().download([designerHTMLUrl], this.isCors)
-        .then(response => response.text())       //response[0].text()
-        .then(html_template =>
-        {
-            var modified_html = html_template.replace(
-                new RegExp(this.#templateToReplace, "ig"), this.#sourceUrl );
-            this.#frameElement.srcdoc = modified_html;
-            this.#frameElement.onload = () => { this.#frameLoaded(); }
+            .then(response => response.text())       //response[0].text()
+            .then(html_template =>
+            {
+                var modified_html = html_template.replace(
+                    new RegExp(this.#templateToReplace, 'ig'), this.#sourceUrl );
+                this.#frameElement.srcdoc = modified_html;
+                this.#frameElement.onload = () => { this.#frameLoaded(); };
             
-        })
-        .catch(error => {
-            console.error('Error loading report template:', error);
-        });
+            })
+            .catch(error => {
+                console.error('Error loading report template:', error);
+            });
     }
 
     #frameLoaded() {
@@ -109,7 +113,7 @@ class AptTecIntegration
     {
         var result = { previewButton: {}, AlreadyExists : false };
         var element = $(parentSelector);
-        if (element.length === 0) throw "Could not add a preview button. Please check parentSelector";
+        if (element.length === 0) throw 'Could not add a preview button. Please check parentSelector';
 
         const currentPreviewButtonSelector = parentSelector + ' .AptTecPrintPreview';
         result.previewButton = $(currentPreviewButtonSelector);
@@ -152,30 +156,32 @@ class AptTecIntegration
     HandlePreviewButton(buttonResult, dataSetter ) {
         if (buttonResult.AlreadyExists) return;
         const aptIntegration = this;
-        buttonResult.previewButton.click(function ()
+        buttonResult.previewButton.click(function ()  
+        //this is closure or inner function so it always rememebers the correct dataSetter
         {
             const reportId = $(this).data('report-id');
+            const gridId = $(this).data('parent-selector');
             aptIntegration.#designerWindow.aptTecReports.reportId = reportId;
-            if (typeof dataSetter === "function") {
+            if (typeof dataSetter === 'function') {
                 aptIntegration.#designerWindow.aptTecReports.dataGetter = dataSetter;
             }
             else {
                 switch (dataSetter) {
-                    case 'direct':
-                        aptIntegration.#designerWindow.aptTecReports.dataGetter = () => { 
-                            aptIntegration.aptTecData.Data = buttonResult.previewButton[0].printData;
-                            return aptIntegration.aptTecData; 
-                        };
-                        break;
-                    case 'kendoGrid':
-                        aptIntegration.#designerWindow.aptTecReports.dataGetter = () => { 
-                            aptIntegration.aptTecData.Data = getKendoSortedData(gridSelector);
-                            return aptIntegration.aptTecData; 
-                        };
-                        break;
-                    default:
-                        aptIntegration.#designerWindow.aptTecReports.dataGetter = null;
-                        break;
+                case 'direct':
+                    aptIntegration.#designerWindow.aptTecReports.dataGetter = () => { 
+                        aptIntegration.aptTecData.Data = buttonResult.previewButton[0].printData;
+                        return aptIntegration.aptTecData; 
+                    };
+                    break;
+                case 'kendoGrid':
+                    aptIntegration.#designerWindow.aptTecReports.dataGetter = () => { 
+                        aptIntegration.aptTecData.Data =  getKendoSortedData(gridId);
+                        return aptIntegration.aptTecData; 
+                    };
+                    break;
+                default:
+                    aptIntegration.#designerWindow.aptTecReports.dataGetter = null;
+                    break;
                 }
             }
             $('#' + aptIntegration.#previewFrameId).show();
@@ -189,15 +195,15 @@ class AptTecIntegration
         const thisIntegration = this;
         return new Promise(function (previewDataResolve, previewDataReject) {
             fetch(Url) // new Downloader.download([Url], isCors)
-            .then(response => response.json())
-            .then(data => {
-                thisIntegration.aptTecData[aptTecDataPropertyName] = 
+                .then(response => response.json())
+                .then(data => {
+                    thisIntegration.aptTecData[aptTecDataPropertyName] = 
                     (sourcePropertyName) ? data[sourcePropertyName] : data;
-                previewDataResolve(thisIntegration.aptTecData); // when successful
-            }).catch(error => {
-                console.error('Error loading report parameters:', error);
-                previewDataReject();  // when error
-            });
+                    previewDataResolve(thisIntegration.aptTecData); // when successful
+                }).catch(error => {
+                    console.error('Error loading report parameters:', error);
+                    previewDataReject();  // when error
+                });
         }); 
-    };
-} 
+    }
+}; 

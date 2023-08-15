@@ -3,33 +3,33 @@ class RepeatTableHeadersHandler extends Paged.Handler
 {
     constructor(chunker, polisher, caller)
     {
-        super(chunker, polisher, caller)
-        this.splitTablesRefs = []
+        super(chunker, polisher, caller);
+        this.splitTablesRefs = [];
     }
 
     afterPageLayout(pageElement, page, breakToken, chunker)
     {
-        this.chunker = chunker
-        this.splitTablesRefs = []
+        this.chunker = chunker;
+        this.splitTablesRefs = [];
 
         if (breakToken)
         {
-            const node = breakToken.node
-            const tables = this.findAllAncestors(node, "table")
-            if (node.tagName === "TABLE") tables.push(node)
+            const node = breakToken.node;
+            const tables = this.findAllAncestors(node, 'table');
+            if (node.tagName === 'TABLE') tables.push(node);
 
             if (tables.length > 0)
             {
-                this.splitTablesRefs = tables.map(t => t.dataset.ref)
+                this.splitTablesRefs = tables.map(t => t.dataset.ref);
 
-                let thead = node.tagName === "THEAD" ? node : this.findFirstAncestor(node, "thead")
+                let thead = node.tagName === 'THEAD' ? node : this.findFirstAncestor(node, 'thead');
                 if (thead)
                 {
-                    let lastTheadNode = thead.hasChildNodes() ? thead.lastChild : thead
-                    breakToken.node = this.nodeAfter(lastTheadNode, chunker.source)
+                    let lastTheadNode = thead.hasChildNodes() ? thead.lastChild : thead;
+                    breakToken.node = this.nodeAfter(lastTheadNode, chunker.source);
                 }
 
-                this.hideEmptyTables(pageElement, node)
+                this.hideEmptyTables(pageElement, node);
             }
         }
     }
@@ -38,110 +38,110 @@ class RepeatTableHeadersHandler extends Paged.Handler
     {
         this.splitTablesRefs.forEach(ref =>
         {
-            let table = pageElement.querySelector("[data-ref='" + ref + "']")
+            let table = pageElement.querySelector('[data-ref=\'' + ref + '\']');
             if (table)
             {
-                let sourceBody = table.querySelector("tbody > tr")
+                let sourceBody = table.querySelector('tbody > tr');
                 if (!sourceBody || this.refEquals(sourceBody.firstElementChild, breakTokenNode))
                 {
-                    table.style.visibility = "hidden"
-                    table.style.position = "absolute"
-                    let lineSpacer = table.nextSibling
+                    table.style.visibility = 'hidden';
+                    table.style.position = 'absolute';
+                    let lineSpacer = table.nextSibling;
                     if (lineSpacer)
                     {
-                        lineSpacer.style.visibility = "hidden"
-                        lineSpacer.style.position = "absolute"
+                        lineSpacer.style.visibility = 'hidden';
+                        lineSpacer.style.position = 'absolute';
                     }
                 }
             }
-        })
+        });
     }
 
     refEquals(a, b)
     {
-        return a && a.dataset && b && b.dataset && a.dataset.ref === b.dataset.ref
+        return a && a.dataset && b && b.dataset && a.dataset.ref === b.dataset.ref;
     }
 
     findFirstAncestor(element, selector)
     {
         while (element.parentNode && element.parentNode.nodeType === 1)
         {
-            if (element.parentNode.matches(selector)) return element.parentNode
-            element = element.parentNode
+            if (element.parentNode.matches(selector)) return element.parentNode;
+            element = element.parentNode;
         }
-        return null
+        return null;
     }
 
     findAllAncestors(element, selector)
     {
-        const ancestors = []
+        const ancestors = [];
         while (element.parentNode && element.parentNode.nodeType === 1)
         {
-            if (element.parentNode.matches(selector)) ancestors.unshift(element.parentNode)
-            element = element.parentNode
+            if (element.parentNode.matches(selector)) ancestors.unshift(element.parentNode);
+            element = element.parentNode;
         }
-        return ancestors
+        return ancestors;
     }
 
     layout(rendered, layout)
     {
         this.splitTablesRefs.forEach(ref =>
         {
-            const renderedTable = rendered.querySelector("[data-ref='" + ref + "']")
+            const renderedTable = rendered.querySelector('[data-ref=\'' + ref + '\']');
             if (renderedTable)
             {
-                if (!renderedTable.getAttribute("repeated-headers"))
+                if (!renderedTable.getAttribute('repeated-headers'))
                 {
-                    const sourceTable = this.chunker.source.querySelector("[data-ref='" + ref + "']")
-                    this.repeatColgroup(sourceTable, renderedTable)
-                    this.repeatTHead(sourceTable, renderedTable)
-                    renderedTable.setAttribute("repeated-headers", true)
+                    const sourceTable = this.chunker.source.querySelector('[data-ref=\'' + ref + '\']');
+                    this.repeatColgroup(sourceTable, renderedTable);
+                    this.repeatTHead(sourceTable, renderedTable);
+                    renderedTable.setAttribute('repeated-headers', true);
                 }
             }
-        })
+        });
     }
 
     repeatColgroup(sourceTable, renderedTable)
     {
-        let colgroup = sourceTable.querySelectorAll("colgroup")
-        let firstChild = renderedTable.firstChild
+        let colgroup = sourceTable.querySelectorAll('colgroup');
+        let firstChild = renderedTable.firstChild;
         colgroup.forEach((colgroup) =>
         {
-            let clonedColgroup = colgroup.cloneNode(true)
-            renderedTable.insertBefore(clonedColgroup, firstChild)
-        })
+            let clonedColgroup = colgroup.cloneNode(true);
+            renderedTable.insertBefore(clonedColgroup, firstChild);
+        });
     }
 
     repeatTHead(sourceTable, renderedTable)
     {
-        let thead = sourceTable.querySelector("thead")
+        let thead = sourceTable.querySelector('thead');
         if (thead)
         {
-            let clonedThead = thead.cloneNode(true)
-            renderedTable.insertBefore(clonedThead, renderedTable.firstChild)
+            let clonedThead = thead.cloneNode(true);
+            renderedTable.insertBefore(clonedThead, renderedTable.firstChild);
         }
     }
 
     nodeAfter(node, limiter)
     {
-        if (limiter && node === limiter) return
-        let significantNode = this.nextSignificantNode(node)
-        if (significantNode) return significantNode
+        if (limiter && node === limiter) return;
+        let significantNode = this.nextSignificantNode(node);
+        if (significantNode) return significantNode;
         if (node.parentNode)
         {
             while ((node = node.parentNode))
             {
-                if (limiter && node === limiter) return
-                significantNode = this.nextSignificantNode(node)
-                if (significantNode) return significantNode
+                if (limiter && node === limiter) return;
+                significantNode = this.nextSignificantNode(node);
+                if (significantNode) return significantNode;
             }
         }
     }
 
     nextSignificantNode(sib)
     {
-        while ((sib = sib.nextSibling)) { if (!this.isIgnorable(sib)) return sib }
-        return null
+        while ((sib = sib.nextSibling)) { if (!this.isIgnorable(sib)) return sib; }
+        return null;
     }
 
     isIgnorable(node)
@@ -149,13 +149,13 @@ class RepeatTableHeadersHandler extends Paged.Handler
         return (
             (node.nodeType === 8)
             || ((node.nodeType === 3) && this.isAllWhitespace(node))
-        )
+        );
     }
 
     isAllWhitespace(node)
     {
-        return !(/[^\t\n\r ]/.test(node.textContent))
+        return !(/[^\t\n\r ]/.test(node.textContent));
     }
 }
 
-Paged.registerHandlers(RepeatTableHeadersHandler)
+Paged.registerHandlers(RepeatTableHeadersHandler);

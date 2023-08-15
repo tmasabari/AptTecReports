@@ -1,4 +1,7 @@
-
+function capitalizePrint(obj)
+{
+    return obj.charAt(0).toUpperCase() + obj.slice(1);
+}
 
 function jsonToHTML(params)
 {

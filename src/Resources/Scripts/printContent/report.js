@@ -1,8 +1,6 @@
+'use strict';
+import { appendJsonAsDataTable } from './jsonToHtml.js';
 var aptTecReports = window.parent.aptTecReports;
-window.PagedConfig = {
-    auto: false
-    //, after: (flow) => { console.log("after", flow) },
-};
 // Call the loadAndReplace function when the page loads
 window.onload = function ()
 {
@@ -19,15 +17,15 @@ window.onload = function ()
     if (aptTecReports.ReportParams.Content) {
         for (let contentIndex = 0; contentIndex < aptTecReports.ReportParams.Content.length; contentIndex++) {
             const contentElement = aptTecReports.ReportParams.Content[contentIndex];
-            if (contentElement.hasOwnProperty('ContentHtml')) {
-                const htmlContent = replacePlaceholders(contentElement.ContentHtml, 
+            if ( Object.prototype.hasOwnProperty.call(contentElement, 'ContentHtml')  ) {
+                const htmlContent = aptTecReports.replacePlaceholders(contentElement.ContentHtml, 
                     aptTecReports.reportData.CommonData);
                 //append/insert at the end template replaced content to contents
                 contentDOMElement.append(htmlContent);
             }
             else {
 
-                if (contentElement.hasOwnProperty('TableContent')  && 
+                if ( Object.prototype.hasOwnProperty.call(contentElement, 'TableContent') && 
                     Array.isArray(contentElement.TableContent)) {
                     const tableDataSource = contentElement.DataSource;
                     //filter is equivalent to WHERE
@@ -36,7 +34,7 @@ window.onload = function ()
                     });
                     const tableConfiguration = printableColumns;
                     //Build the printable html data append/insert at the end template replaced content to contents
-                    appendJsonAsDataTable(tableIndex, tableConfiguration, tableDataSource, contentDOMElement);
+                    appendJsonAsDataTable(aptTecReports,tableIndex, tableConfiguration, tableDataSource, contentDOMElement);
                     tableIndex++;
                 }
             }

@@ -1,4 +1,4 @@
-class Downloader
+export class Downloader
 {
     /**
      * Calls the list of Urls to fetch the data and returns the results
@@ -48,9 +48,9 @@ class Downloader
                     } 
                 }); 
 
-                console.log("All service calls completed:", allResults);
+                console.log('All service calls completed:', allResults);
                 return allResults;
-            })
+            });
         });
         // handle the catch in calling function using the promise returned nothing to do here
         // .catch((error) =>

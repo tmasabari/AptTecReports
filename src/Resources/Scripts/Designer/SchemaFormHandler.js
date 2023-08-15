@@ -1,5 +1,5 @@
 //Editor =================================================== Refer https://github.com/json-editor/json-editor
-class SchemaFormHandler {
+export default class SchemaFormHandler {
     constructor(containerId) {
         this.jsonEditorForm = document.getElementById(containerId);
         this.isValidData = true;
@@ -29,10 +29,10 @@ class SchemaFormHandler {
         if (this.jsoneditor)
         { //if jsoneditor is already loaded just set the new values to designer.
             //jsoneditor.destroy(); // destroy old JSONEditor instance if exists
-            this.jsoneditor.setValue(aptTecReports.ReportParams);
+            this.jsoneditor.setValue(window.aptTecReports.ReportParams);
             return;
         }
-        this.paramEditorOptions.schema = aptTecReports.ReportSchema;
+        this.paramEditorOptions.schema = window.aptTecReports.ReportSchema;
 
         // new instance of JSONEditor
         this.jsoneditor = new window.JSONEditor(this.jsonEditorForm, this.paramEditorOptions);
@@ -42,7 +42,7 @@ class SchemaFormHandler {
         this.jsoneditor.on('ready', () =>    //if it is loaded for the first time, try to get the values from global object
         {
             // Now the api methods will be available
-            this.jsoneditor.setValue(aptTecReports.ReportParams);
+            this.jsoneditor.setValue(window.aptTecReports.ReportParams);
         });
 
         // listen for changes
@@ -59,24 +59,24 @@ class SchemaFormHandler {
             // this.designerValidationErrors is an array of objects, each with a `path`, `property`, and `message` parameter
             // `property` is the schema keyword that triggered the validation error (e.g. "minLength")
             // `path` is a dot separated path into the JSON object (e.g. "root.path.to.field")
-            this.designerValidationErrors = JSON.stringify(validationErrors, null, 2)
+            this.designerValidationErrors = JSON.stringify(validationErrors, null, 2);
             alert(this.designerValidationErrors);
         } else
         {
             this.isValidData = true;
             // output
             var reportParams = this.jsoneditor.getValue();
-            localStorage.setItem(aptTecReports.reportId, JSON.stringify(reportParams));
-            aptTecReports.ReportParams = reportParams;
-            //refreshReport('reportIframe', aptTecReports.reportId);
-            aptTecReports.onReportParametersChanged('reportIframe', true);
+            localStorage.setItem(window.aptTecReports.reportId, JSON.stringify(reportParams));
+            window.aptTecReports.ReportParams = reportParams;
+            //refreshReport('reportIframe', window.aptTecReports.reportId);
+            window.aptTecReports.onReportParametersChanged('reportIframe', true);
             //modifiedParams = JSON.stringify(json, null, 2); 
         }
     }
     resetParameters() {
-        localStorage.removeItem(aptTecReports.reportId);    //remove local report configuration
-        aptTecReports.ReportParams = aptTecReports.ServerParams;
-        this.jsoneditor.setValue(aptTecReports.ReportParams);
-        aptTecReports.onReportParametersChanged('reportIframe', true);
+        localStorage.removeItem(window.aptTecReports.reportId);    //remove local report configuration
+        window.aptTecReports.ReportParams = window.aptTecReports.ServerParams;
+        this.jsoneditor.setValue(window.aptTecReports.ReportParams);
+        window.aptTecReports.onReportParametersChanged('reportIframe', true);
     }
 }

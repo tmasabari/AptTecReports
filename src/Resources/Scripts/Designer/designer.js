@@ -1,8 +1,20 @@
+'use strict'; 
+import AptTecReports from './AptTecReports.js';
+import SchemaFormHandler from './SchemaFormHandler.js';
+import { ShowPopup } from './popup.js';
 import { AptTecExporter as Exporter } from './Exporter.js';
 
 //add list items for rulers
 addTags($(document)[0], '.ruler-x', '<li></li>', 50);
 addTags($(document)[0], '.ruler-y', '<li></li>', 50);
+function addTags(document, parentSelector, tag, pagesCount) {
+    var content = '';
+    for (var i = 1; i <= pagesCount; i++)
+    {
+        content += tag;
+    }
+    document.querySelector(parentSelector).innerHTML += content;
+}
 //UI event handlers==========================================================
 window.onload = function () {
     window.SchemaFormHandler = new SchemaFormHandler('paramEditorDiv');
@@ -14,17 +26,17 @@ window.onload = function () {
         if (urlParams.has('report')) {
             reportId = urlParams.get('report');
         }
-        window.aptTecReports = new AptTecReports("reportIframe", reportId, "../Data/Schema/", 
-            "../Data/Templates/", "../Data/Samples/");
+        window.aptTecReports = new AptTecReports('reportIframe', reportId, '../Data/Schema/', 
+            '../Data/Templates/', '../Data/Samples/');
         window.aptTecReports.initializeDesigner();
     }
-}
+};
 window.initilizePreview = function (reportParams) {
-    window.aptTecReports = new AptTecReports("reportIframe", reportParams.reportId, "Data/Schema/",
-        reportParams.templatesLocation, "Data/Samples/", reportParams.sourceUrl,
+    window.aptTecReports = new AptTecReports('reportIframe', reportParams.reportId, 'Data/Schema/',
+        reportParams.templatesLocation, 'Data/Samples/', reportParams.sourceUrl,
         reportParams.closeAction, reportParams.dataGetter);
     window.aptTecReports.initializeDesigner(false);
-}
+};
 
 $('.printMenu').click(function () { PrintReport(); return false; }); 
 $('.editMenu').click(function () { showEditParamters(); return false; });
@@ -34,10 +46,10 @@ const refreshData = () => {
 $('.refreshMenu').click(function () { refreshData(); return false; } ); 
 $('.optionsMenu').click(function () { ShowRulerPopup(); return false; });
 $('.closeMenu').click(function () { window.aptTecReports.closeAction(); return false; });
-function PrintReport(event) {
+function PrintReport() {
     document.getElementById('reportIframe').contentWindow.print();
 }
-function ShowRulerPopup(event) {
+function ShowRulerPopup() {
     ShowPopup('designerModal', 'Ruler Settings', '.ruleEditor');
 }
 
@@ -47,21 +59,21 @@ const saveParameters = () => {
 const resetParameters = () => {
     window.SchemaFormHandler.resetParameters(); };
 
-const saveParametersPrint = () => {
-    window.SchemaFormHandler.saveParameters();
-    PrintReport();
-};
+// const saveParametersPrint = () => {
+//     window.SchemaFormHandler.saveParameters();
+//     PrintReport();
+// };
 
-function showEditParamters(event) {
+function showEditParamters() {
     ShowPopup('designerModal', 'Report Designer', '#paramEditorDiv', 
         saveParameters, null, resetParameters );
 }
 
-function ToCanvas(event) {
+function ToCanvas() {
     const sourceWindow = document.getElementById('reportIframe').contentWindow;
     const exporter = new Exporter();
-    const options = exporter.getPdfOptions(aptTecReports.ReportParams);
-     exporter.generatePDF(sourceWindow, `.pagedjs_page`, options);
+    const options = exporter.getPdfOptions(window.aptTecReports.ReportParams);
+    exporter.generatePDF(sourceWindow, '.pagedjs_page', options);
 }
 
 $(document).on('input', '.ruleEditor', function (eventData) {

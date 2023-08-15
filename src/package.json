@@ -1,0 +1,31 @@
+{
+  "name": "apttec-reports",
+  "version": "0.0.1",
+  "description": "Browser based open source reporting tool",
+  "main": ".eslintrc.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tmasabari/AptTecReports.git"
+  },
+  "keywords": [
+    "apttec",
+    "report",
+    "designer",
+    "print",
+    "printer",
+    "preview",
+    "browser"
+  ],
+  "browserslist": [
+    "last 2 versions, not dead, not op_mini all > 0.2%"
+  ],
+  "author": "Sabarinathan Arthanari",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/tmasabari/AptTecReports/issues"
+  },
+  "homepage": "https://github.com/tmasabari/AptTecReports#readme"
+}

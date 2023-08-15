@@ -1,9 +1,10 @@
 'use strict';
 import { getKendoSortedData } from '../Common/utilities.js';
 
-const AptTecReporting = window.AptTecReporting || {};
-
-AptTecReporting.Integraion = class AptTecIntegration {
+window.AptTecReporting = window.AptTecReporting || {};
+window.AptTecReporting.Kendo = {};
+window.AptTecReporting.Kendo.getSortedData = getKendoSortedData;
+AptTecReporting.Integration = class AptTecIntegration {
     #designerHTMLPath = 'Preview/main.html';
     #templateToReplace ='{{SourceUrl}}';
     #defaultFrameStyle =`

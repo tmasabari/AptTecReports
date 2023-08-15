@@ -42,32 +42,28 @@
     <!-- load bootstrap only after jquery -->
     <script
         src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/js/all.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/js/all.min.js"></script>  
 
-    <script src="https://gridsazuredev.avenuinsights.com/reports/Resources/Scripts/Common/utilities.js" crossorigin="anonymous" ></script>
-    <script src="https://gridsazuredev.avenuinsights.com/reports/Resources/Scripts/Integration/AptTecIntegration.js" crossorigin="anonymous" ></script>
+    <script src="/Resources/Scripts/Integration/AptTecIntegration.js" type="module"
+        crossorigin="anonymous">
+        </script>
     <script>
-    function loadScript(url, callback, isDefer = false) {
-            var script = document.createElement('script');
-            script.type = 'module';
-            script.src = url;
-            script.defer = isDefer; // Load script after parsing the DOM
-            script.onload = callback; // Optional: Call a Function when the script is loaded
-            document.head.appendChild(script);
-    }
-    const baseLocation = '/';
-    loadScript(baseLocation + 'Resources/Scripts/Integration/AptTecIntegration.js', function() {
-        //this is using local templates
-        var localIntegration = new AptTecIntegration(baseLocation, 'builtinLocalDataFrame', baseLocation + 'Data/Templates/');
+        const baseLocation = '/';
+        var aptTecintegration;
+        //listen/register this handler first before any other body part loads
+        document.addEventListener('DOMContentLoaded', () =>
+        {
+            //this executes after all modules/deferred scripts are loaded
+            aptTecintegration = new window.AptTecReporting.Integration(baseLocation, 'builtinLocalDataFrame', baseLocation + 'Data/Templates/');
 
-        const localJobQueueButtonResult = localIntegration.addPreviewButton(
-            'jobqueuereport', '.previewParent .jobqueue', null, null, 'btn btn-success', 'fa fa-print', 'Job Queue', 'start');
+            const localJobQueueButtonResult = aptTecintegration.addPreviewButton(
+                'jobqueuereport', '.previewParent .jobqueue', null, null, 'btn btn-success', 'fa fa-print', 'Job Queue', 'start');
 
-        const localLetterButtonResult = localIntegration.addPreviewButton('letter',
-            '.previewParent .letter', null,
-            () => localIntegration.fetchData(baseLocation + 'Data/Samples/coverletter.json', 'CommonData', 'CommonData')
-            , 'btn btn-success', 'fa fa-print', 'Letter', 'end'); 
-    });
+            const localLetterButtonResult = aptTecintegration.addPreviewButton('letter',
+                '.previewParent .letter', null,
+                () => aptTecintegration.fetchData(baseLocation + 'Data/Samples/coverletter.json', 'CommonData', 'CommonData')
+                , 'btn btn-success', 'fa fa-print', 'Letter', 'end'); 
+        });
     </script>
 </body>
 

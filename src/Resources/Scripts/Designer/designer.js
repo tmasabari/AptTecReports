@@ -1,4 +1,8 @@
-'use strict'; 
+'use strict';
+//css
+import '../../css/Designer/designer.css';
+import '../../css/Designer/ruler.css';
+//scripts
 import AptTecReports from './AptTecReports.js';
 import SchemaFormHandler from './SchemaFormHandler.js';
 import { ShowPopup } from './popup.js';

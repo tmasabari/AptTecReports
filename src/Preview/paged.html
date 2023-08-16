@@ -5,8 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <link rel="stylesheet" href="{{SourceUrl}}Resources/css/printContent/paper.css" type="text/css">
-    <link rel="stylesheet" href="{{SourceUrl}}Resources/css/printContent/pagedjsTable.css" type="text/css">
+    <link rel="stylesheet" href="{{SourceUrl}}dist/previewContent.css" type="text/css" crossorigin="anonymous">
     
     <style>
         @media print{
@@ -56,15 +55,14 @@
         integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g="
         crossorigin="anonymous"></script>
 
-    <script src="{{SourceUrl}}Resources/Scripts/printContent/report.js" type="module"></script>
     <script>
             window.PagedConfig = {
                 auto: false
                 //, after: (flow) => { console.log("after", flow) },
             };
     </script>
-    <script src="https://unpkg.com/pagedjs/dist/paged.polyfill.js"></script>
-    <script src="{{SourceUrl}}Resources/Scripts/printContent/pagedjs-repeat-table-header.js"></script>
+    <script src="{{SourceUrl}}dist/previewContent.bundle.js" type="module"></script>
+    <script src="https://unpkg.com/pagedjs/dist/paged.polyfill.js"></script> 
     
     <script src="https://cdn.datatables.net/1.13.5/js/jquery.dataTables.min.js"></script>
 </body>

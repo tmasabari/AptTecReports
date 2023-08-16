@@ -1,4 +1,8 @@
 'use strict';
+//css
+import '../../css/printContent/pagedjsTable.css';
+import '../../css/printContent/paper.css';
+//scripts
 import { appendJsonAsDataTable } from './jsonToHtml.js';
 var aptTecReports = window.parent.aptTecReports;
 // Call the loadAndReplace function when the page loads

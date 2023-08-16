@@ -4,6 +4,7 @@
   "description": "Browser based open source reporting tool",
   "main": ".eslintrc.js",
   "scripts": {
+    "build": "webpack --config webpack.config.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -27,5 +28,15 @@
   "bugs": {
     "url": "https://github.com/tmasabari/AptTecReports/issues"
   },
-  "homepage": "https://github.com/tmasabari/AptTecReports#readme"
+  "homepage": "https://github.com/tmasabari/AptTecReports#readme",
+  "devDependencies": {
+    "css-loader": "^6.8.1",
+    "css-minimizer-webpack-plugin": "^5.0.1",
+    "style-loader": "^3.3.3",
+    "webpack": "^5.88.2",
+    "webpack-cli": "^5.1.4"
+  },
+  "dependencies": {
+    "dayjs": "^1.11.9"
+  }
 }

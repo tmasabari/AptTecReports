@@ -1,6 +1,6 @@
 'use strict';
 import {  mergeExistingProperties } from '../Common/utilities.js';
-import dayjs from 'https://cdn.jsdelivr.net/npm/dayjs/+esm';
+import * as dayjs from 'dayjs';
 // https://jsonformatter.curiousconcept.com/ to convert js code to json object
 export default class AptTecReports
 {

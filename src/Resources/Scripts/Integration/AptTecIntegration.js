@@ -63,13 +63,11 @@ AptTecReporting.Integration = class AptTecIntegration {
         const designerHTMLUrl = this.#sourceUrl + this.#designerHTMLPath;
         fetch(designerHTMLUrl)  //new Downloader().download([designerHTMLUrl], this.isCors)
             .then(response => response.text())       //response[0].text()
-            .then(html_template =>
-            {
+            .then(html_template => {
                 var modified_html = html_template.replace(
                     new RegExp(this.#templateToReplace, 'ig'), this.#sourceUrl );
                 this.#frameElement.srcdoc = modified_html;
                 this.#frameElement.onload = () => { this.#frameLoaded(); };
-            
             })
             .catch(error => {
                 console.error('Error loading report template:', error);

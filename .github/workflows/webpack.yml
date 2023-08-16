@@ -1,4 +1,4 @@
-name: NodeJS with Webpack
+name: NodeJS with Webpack Build, Publish, and Release
 
 on:
   push:
@@ -12,18 +12,23 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [14.x, 16.x, 18.x]
+        node-version: [18.x]
 
     steps:
+    - name: Checkout code
     - uses: actions/checkout@v3
 
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v3
       with:
         node-version: ${{ matrix.node-version }}
-
-    - name: Build
+        
+    - name: Install dependencies
       run: |
         cd src
         npm install
-        npx webpack
+      
+    - name: Build with Webpack
+      run: npx webpack
+
+    

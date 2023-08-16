@@ -1,6 +1,5 @@
 # compiled output
 /dist
-/src/dist
 /tmp
 /out-tsc
 

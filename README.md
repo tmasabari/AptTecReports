@@ -12,6 +12,7 @@ Here's how **AptTec Reporting** can supercharge your reporting process:
 6. **Advanced Styling with CSS:** For advanced users, we offer the ability to fine-tune the look and feel of reports using custom CSS style sheets. Achieve a polished and professional appearance that aligns with your brand identity.
 7. **Eco-Friendly Paper Saving:** Empower users to optimize data elements' width and height, enabling significant paper savings. Contribute to a greener environment without compromising on data readability.
 
+![Alt text](/diagrams/features.drawio.svg?raw=true&sanitize=true "Features")
 # Revolutionary Architecture and Design:
 
 1. Behind the scenes, **AptTec Reporting** employs an ingenious architecture that loads HTML and supporting files from a common static website.

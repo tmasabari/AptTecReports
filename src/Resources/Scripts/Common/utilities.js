@@ -13,7 +13,7 @@ export function mergeExistingProperties(obj1, obj2) {
 }
 export function firstNCharacters(jsonArray, propertyToModify, n) {
     jsonArray.forEach(item => {
-        if (item[propertyToModify].length > n) {
+        if ( (item[propertyToModify]) && item[propertyToModify].length > n) {
             item[propertyToModify] = item[propertyToModify].substring(0, n);
         }
     });

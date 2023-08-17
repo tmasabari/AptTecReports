@@ -4,15 +4,8 @@ Experience the power of **AptTec Reporting**, our innovative tool that revolutio
 
 Here's how **AptTec Reporting** can supercharge your reporting process:
 
-1. **Browser-Based Rendering:** Reports are seamlessly rendered within your browser, eliminating the need for costly server-side hardware and software. Enjoy lightning-fast report generation without the burden of heavy infrastructure.
-2. **Print Time Configuration:** Preview data based on default formats set by the Business Analysts. However, retain the flexibility to fine-tune all parameters after previewing the data, ensuring that reports meet end users specific needs.
-3. **Enhanced Customization with WYSIWYG Editors:** Enjoy an intuitive experience with WYSIWYG HTML editors for customizing and saving report designs effortlessly. The end users now have the ability to tailor logos, header and footer designs, select columns to print, define column titles, column formats, column width, and even specify the number of characters to be printed for each column. This granular control ensures that reports are tailored precisely to your end users' needs.
-4. **Diverse data sets and categories:** Now, users can effortlessly customize multiple printable tables and multiple HTML sections within a single report. This feature is perfect for creating comprehensive reports that cover diverse data sets and categories.
-5. **Multi-Tenancy Reporting:** Business Analysts can easily configure templates for each specific tenant, tailoring the reports to their unique requirements.
-6. **Advanced Styling with CSS:** For advanced users, we offer the ability to fine-tune the look and feel of reports using custom CSS style sheets. Achieve a polished and professional appearance that aligns with your brand identity.
-7. **Eco-Friendly Paper Saving:** Empower users to optimize data elements' width and height, enabling significant paper savings. Contribute to a greener environment without compromising on data readability.
-
 ![Alt text](/diagrams/features.drawio.svg?raw=true&sanitize=true "Features")
+
 # Revolutionary Architecture and Design:
 
 1. Behind the scenes, **AptTec Reporting** employs an ingenious architecture that loads HTML and supporting files from a common static website.
@@ -37,7 +30,6 @@ Experience the future of reporting, where your reports are not just static docum
 3. The settings set on the template files will be the default settings applied for all the users.
 4. If users click the Reset button on the report designer the settings will be reverted back to the templates files settings.
 
-
 **Print Time Configuration** : Allows the end users to configure the below options from the browser
 
 1. Page size - pre-configured page sizes. "A3", "A4", "A5", "B4", "B5", "Letter", "Legal", "Ledger"
@@ -56,3 +48,11 @@ Experience the future of reporting, where your reports are not just static docum
    5. To print only the first N characters from a column.
 
 ![Alt text](/diagrams/PageLayout.drawio.svg?raw=true&sanitize=true "Print time configurations")
+
+# How-to
+
+**Integration**
+
+```javascript
+
+```

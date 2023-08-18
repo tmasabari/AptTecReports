@@ -44,13 +44,18 @@
     <div class="reportHeader">
         {{ReportHeadersHtml}}
     </div>
-    <div class="content"> </div> 
-    <div class="reportFooter">
-        {{ReportFootersHtml}}
-    </div>
     <div class="footerMiddle">
         {{PageFootersHtml}}
     </div>
+    
+    <!-- https://stackoverflow.com/questions/56311521/running-footer-elementfooter-in-paged-media-appear-only-in-last-page 
+        content should be place on bottom. only report footer should follow that -->
+    <div class="content"> </div> 
+
+    <div class="reportFooter">
+        {{ReportFootersHtml}}
+    </div>
+
     <script src="https://code.jquery.com/jquery-3.7.0.min.js"
         integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g="
         crossorigin="anonymous"></script>
@@ -58,7 +63,6 @@
     <script>
             window.PagedConfig = {
                 auto: false
-                //, after: (flow) => { console.log("after", flow) },
             };
     </script>
     <script src="{{SourceUrl}}dist/previewContent.bundle.js" type="module"></script>

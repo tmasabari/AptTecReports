@@ -4,7 +4,7 @@ import { getKendoSortedData } from '../Common/utilities.js';
 window.AptTecReporting = window.AptTecReporting || {};
 window.AptTecReporting.Kendo = {};
 window.AptTecReporting.Kendo.getSortedData = getKendoSortedData;
-AptTecReporting.Integration = class AptTecIntegration {
+window.AptTecReporting.Integration = class AptTecIntegration {
     #designerHTMLPath = 'Preview/main.html';
     #templateToReplace ='{{SourceUrl}}';
     #defaultFrameStyle =`
@@ -90,31 +90,31 @@ AptTecReporting.Integration = class AptTecIntegration {
     }
     /**
      * Add the preview button
-     * @param {string} reportId - The templates file path. for MPA pages set here. 
-     *      For SPA or layout scenarios set reportId while calling addPreviewButton
-     * @param {string} parentSelector - css parent container selector.
-     * @param {object} attributes - additional data attributes to be included in the button
-     * @param {string} buttonClass -css button classes to apply the styles
-     * @param {string} iconClass - icon classes to be displayed within the text
-     * @param {string} buttonText - Text to be displayed
-     * @param {string} location - 'Start' add button at the beginning. 'end' add button at the end.
-     * @returns 
+     * @param {string} reportId - specifies the report id to fetch the report template from the template location. The product will use the URL aptTecintegration.templatesLocation + '/' + reportId. For example '/Demo/reports/Templates/MyReport'
+     * @param {string} buttonParent - the CSS selector to identify the parent within the page to place the preview button
+     * @param {object} attributesObject - The object with the set of additional data attributes to be included in the button. It is an optional parameter
+     * @param {string} buttonClass - The string to specify the CSS classes for the button. Optional.
+     * @param {string} iconClass - The string to specify the CSS classes for the icon within the button. Optional.
+     * @param {string} buttonText - You can leave this empty if you like to create tool bar button
+     * @param {string} location - The value can be 'start, or 'end', to specify the location of the button within the parent
+     * @returns {object} AlreadyExists - true if the button already exists and the add logic is skipped, false if it is newly added. previewButton $(buttonParent + ' .AptTecPrintPreview')
      */
-    addPreviewButton(reportId, parentSelector, attributes, dataSetter,
+    addPreviewButton(reportId, buttonParent, attributesObject, dataSetter,
         buttonClass = 'btn btn-success', iconClass = 'fa fa-print', buttonText = '', location = 'start') {
-        var buttonResult =this.#addPreviewButton(reportId, parentSelector, attributes,
+
+        var buttonResult = this.#addPreviewButton(reportId, buttonParent, attributesObject,
             buttonClass, iconClass, buttonText, location);
         this.HandlePreviewButton(buttonResult, dataSetter);
         return buttonResult;
     }
-    #addPreviewButton(reportId, parentSelector, attributes, 
+    #addPreviewButton(reportId, buttonParent, attributesObject, 
         buttonClass, iconClass, buttonText, location)
     {
         var result = { previewButton: {}, AlreadyExists : false };
-        var element = $(parentSelector);
-        if (element.length === 0) throw 'Could not add a preview button. Please check parentSelector';
+        var element = $(buttonParent);
+        if (element.length === 0) throw 'Could not add a preview button. Please check buttonParent';
 
-        const currentPreviewButtonSelector = parentSelector + ' .AptTecPrintPreview';
+        const currentPreviewButtonSelector = buttonParent + ' .AptTecPrintPreview';
         result.previewButton = $(currentPreviewButtonSelector);
         if (result.previewButton.length !== 0) { //if button already exists do not add again
             result.AlreadyExists = true;
@@ -123,14 +123,14 @@ AptTecReporting.Integration = class AptTecIntegration {
         const disabledAttrib = this.#isSourceUrlLoaded ? '' : 'disabled';
 
         var attributesText = '';
-        if(attributes) {
-            for (const [key, value] of Object.entries(attributes)) {
+        if (attributesObject) {
+            for (const [key, value] of Object.entries(attributesObject)) {
                 attributesText += ` data-${key}='${value}'`;
             }
         }
         const buttonTagText = `
             <button data-render-target='${this.#previewFrameId}' data-report-id='${reportId}' 
-            data-parent-selector='${parentSelector}' ${attributesText} ${disabledAttrib} 
+            data-parent-selector='${buttonParent}' ${attributesText} ${disabledAttrib} 
             class='${buttonClass} AptTecPrintPreview' type='button' >
                 <i class='${iconClass}'></i>${buttonText}</button>`;
 
@@ -159,7 +159,7 @@ AptTecReporting.Integration = class AptTecIntegration {
         //this is closure or inner function so it always rememebers the correct dataSetter
         {
             const reportId = $(this).data('report-id');
-            const gridId = $(this).data('parent-selector');
+            const gridId = $(this).data('grid-id');
             aptIntegration.#designerWindow.aptTecReports.reportId = reportId;
             if (typeof dataSetter === 'function') {
                 aptIntegration.#designerWindow.aptTecReports.dataGetter = dataSetter;

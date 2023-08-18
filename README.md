@@ -49,10 +49,6 @@ Experience the future of reporting, where your reports are not just static docum
 
 ![Alt text](/diagrams/PageLayout.drawio.svg?raw=true&sanitize=true "Print time configurations")
 
-# How-to
+# How-to use
 
-**Integration**
-
-```javascript
-
-```
+[Refer the how to section](HowTo.md "How to integrate")

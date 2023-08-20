@@ -38,6 +38,7 @@
     "webpack-cli": "^5.1.4"
   },
   "dependencies": {
+    "datatables.net-dt": "^1.13.6",
     "dayjs": "^1.11.9"
   }
 }

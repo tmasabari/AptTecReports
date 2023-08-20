@@ -9,7 +9,7 @@
         "Copyright": "© 2023 AptTec.com. All rights reserved.",
         "ClientName": "Firstname Middle Lastname",
         "ClientAddress1":"Client Address Line 1",
-        "ClientAddress2": "Client Address Line 1",
+        "ClientAddress2": "Client Address Line 2",
         "ClientAddress3": "Client Address Line 3",
         "ClientState": "Client State Name",
         "ClientPin": "Pin - 123456",

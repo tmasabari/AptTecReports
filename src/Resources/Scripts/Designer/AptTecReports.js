@@ -11,9 +11,18 @@ export default class AptTecReports
         'PI': '<span class=\'pageIndex\'>&nbsp;</span>',
         'PC': '<span class=\'pageCount\'>&nbsp;</span>',
     };
-
+    #dateTime24 = {     // "12/19/2012, 19:00:00"
+        year: 'numeric',
+        month: 'numeric',
+        day: 'numeric',
+        hour: 'numeric',
+        minute: 'numeric',
+        second: 'numeric',
+        hour12: false,
+        //timeZone: 'America/Los_Angeles',
+    };
     constructor(iFrameId, reportId, schemaLocation, templatesLocation, dataLocation,
-        sourceUrl = '', closeAction = null, dataGetter = null)
+        sourceUrl = '', closeAction = null, dataGetter = null, locale = 'en-US', currency= 'USD', dateOptions= null)
     {
         this.schemaLocation = schemaLocation;
         this.templatesLocation = templatesLocation;
@@ -31,14 +40,32 @@ export default class AptTecReports
         this.ServerParams = null;
         this.ReportTemplateSource = null;
         this.htmlTemplate = null;
+        //https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/Locale#examples
+        this.Locale = new Intl.Locale(locale);
+        var dateOptionsUsed = (dateOptions) ? dateOptions : this.#dateTime24;
+        // todo explore the performance improvements
+        // this.Formats = {
+        //     'decimal': new Intl.NumberFormat(locale, { style: 'decimal' }),
+        //     'percent': new Intl.NumberFormat(locale, { style: 'percent' }),
+        //     'currency': new Intl.NumberFormat(locale, { style: 'currency', currency: currency }),
+        //     'date': new Intl.DateTimeFormat(locale, dateOptionsUsed),
+        //     'dateTime24': new Intl.DateTimeFormat(locale, this.#dateTime24),
+        //     'shortdatetime': { format: (value) => this.shortDateTime(value) }
+        // };
+        //this.unitFormat = new Intl.NumberFormat(locale, { style: 'unit', unit: 'liter' });
 
         this.customFunctions = {};
-        this.customFunctions.getformatteddate = (date, format) => this.GetFormattedDate(date, format);
-        this.customFunctions.todaydateus = () => this.GetFormattedDate();
-        this.customFunctions.usshortdatetime = (value) => this.usShortDateTime(value);
+        this.customFunctions.decimal = (value) => new Intl.NumberFormat(locale, { style: 'decimal' }).format(value);
+        this.customFunctions.percent = (value) => new Intl.NumberFormat(locale, { style: 'percent' }).format(value);
+        this.customFunctions.currency = (value) => new Intl.NumberFormat(locale, 
+            { style: 'currency', currency: currency }).format(value);
+        this.customFunctions.date = (value) => new Intl.DateTimeFormat(locale, dateOptionsUsed).format(value);
+        this.customFunctions.dateTime24 = (value) => new Intl.DateTimeFormat(locale, this.#dateTime24).format(value);
+        this.customFunctions.shortdatetime = (value) => this.shortDateTime(value);
+        //this.customFunctions.todaydate = () => this.getFormattedDate(); //deprecated
     }
 
-    GetFormattedDate(date, format) {
+    getFormattedDate(date, format) {
         date = date ?? Date.now();
         format = format ?? 'MM-DD-YYYY';
         return dayjs(date).format(format);
@@ -50,10 +77,10 @@ export default class AptTecReports
         if (Object.prototype.toString.call(msDate) !== '[object Date]')
             date = new Date(parseInt(msDate.substr(6)));
             
-        return this.GetFormattedDate(date, format);
+        return this.getFormattedDate(date, format);
     }
 
-    usShortDateTime(value) {
+    shortDateTime(value) {
         if (!(value)) return '';
         return this.msDateToJsDate(value, 'M/D/YYYY HH:MM:ss');
     }
@@ -81,7 +108,8 @@ export default class AptTecReports
     set reportData(data)
     {
         this.#reportData = data;
-        this.#reportData.CommonData = { ...this.#reportData.CommonData, ...this.#internalCommonData } ;
+        //the values from caller will always override internal variables.
+        this.#reportData.CommonData = { ...this.#internalCommonData , ...this.#reportData.CommonData } ;
     }
 
     //methods
@@ -209,13 +237,20 @@ export default class AptTecReports
             this.loadReportTemplate();
         }
     }
+    #refreshCommonParameters() {
+        this.reportData.CommonData.CurrentDateTime = this.getFormattedDate();
+    }
 
     loadReportTemplate()
     {
+        //Always refresh certain common parameters
+        this.#refreshCommonParameters();
+
         // Perform the replacements
         var modified_html = this.replacePlaceholders(this.htmlTemplate, this.ReportParams);
         modified_html = this.replacePlaceholders(modified_html, this.ReportParams.Layout);
         modified_html = this.replacePlaceholders(modified_html, this.reportData.CommonData);
+        modified_html = this.replacePlaceholders(modified_html, this.reportData.InstanceData);
         //final replacements with server data
         modified_html = modified_html.replace(
             new RegExp(this.#templateToReplace, 'ig'), this.sourceUrl);
@@ -231,34 +266,47 @@ export default class AptTecReports
     {
         for (const key in reportDataParams)
         {
-            const placeholder = new RegExp('{{' + key + '}}', 'g');
-            var value = reportDataParams[key];
-            if (typeof value === 'object')
-                continue;
+            try {
+                const placeholder = new RegExp('{{' + key + '}}', 'g');
+                var value = reportDataParams[key];
+                if (typeof value === 'object')
+                    continue;
 
-            //value = value.replace("{PageNumber}", "<span class='currentPageNumber'></span>");
-            if (typeof value === 'string')
-            {
-                const functionStart = '{@', functionEnd = '@}';
-                var nextIndex = value.indexOf(functionStart);
-                while (nextIndex >= 0)
+                //value = value.replace("{PageNumber}", "<span class='currentPageNumber'></span>");
+                if (typeof value === 'string')
                 {
-                    var endIndex = value.indexOf(functionEnd, nextIndex);
-                    if (endIndex >= 0)
+                    const functionStart = '{@', functionEnd = '@}';
+                    var indexToSearch = 0;
+                    var nextIndex = value.indexOf(functionStart, indexToSearch);
+                    while (nextIndex >= 0)
                     {
-                        const stringFound = value.substring(nextIndex + functionStart.length, endIndex);
-                        // https://stackoverflow.com/questions/359788/how-to-execute-a-javascript-function-when-i-have-its-name-as-a-string/359910#359910
-                        //todo convert only function name to lower case if paramters are to be included
-                        var codeToExecute = 'return window.aptTecReports.customFunctions.' + stringFound.toLowerCase();
-                        if (!stringFound.endsWith(')')) codeToExecute += '();';
-                        const tempFunction = new Function(codeToExecute);
-                        const returnValue = tempFunction();
-                        value = value.replace(functionStart + stringFound + functionEnd, returnValue);
+                        var endIndex = value.indexOf(functionEnd, nextIndex);
+                        if (endIndex >= 0)
+                        {
+                            const stringFound = value.substring(nextIndex + functionStart.length, endIndex);
+                            try {
+                                // https://stackoverflow.com/questions/359788/how-to-execute-a-javascript-function-when-i-have-its-name-as-a-string/359910#359910
+                                //todo convert only function name to lower case if paramters are to be included
+                                var codeToExecute = 'return window.aptTecReports.customFunctions.' + stringFound.toLowerCase();
+                                if (!stringFound.endsWith(')')) codeToExecute += '();'; indexToSearch
+                                const tempFunction = new Function(codeToExecute);
+                                const returnValue = tempFunction();
+                                value = value.replace(functionStart + stringFound + functionEnd, returnValue);
+                                //if succeeded start from the same location again
+                                indexToSearch = nextIndex;
+                            } catch (error) {
+                                console.error(`Error while evaluating the template function ${stringFound}: ${error}`);
+                                indexToSearch = endIndex + functionEnd.length;
+                            }
+                        }
+                        nextIndex = value.indexOf(functionStart, indexToSearch);
                     }
-                    nextIndex = value.indexOf(functionStart);
                 }
+                html_template = html_template.replace(placeholder, value);
+                
+            } catch (error) {
+                console.error(`Error while replacing the template variable ${key}: ${error}`);
             }
-            html_template = html_template.replace(placeholder, value);
         }
         return html_template;
     }

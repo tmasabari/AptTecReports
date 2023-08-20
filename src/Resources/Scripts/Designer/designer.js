@@ -2,6 +2,8 @@
 //css
 import '../../css/Designer/designer.css';
 import '../../css/Designer/ruler.css';
+import DataTable from 'datatables.net-dt';
+
 //scripts
 import AptTecReports from './AptTecReports.js';
 import SchemaFormHandler from './SchemaFormHandler.js';
@@ -68,9 +70,23 @@ const resetParameters = () => {
 //     PrintReport();
 // };
 
+const showHideVariables = () => {
+    const element = $('#divVariablesSection');
+    const isVariable = window.getComputedStyle(element[0], null).display;
+    if (isVariable === 'block') {
+        element.hide();
+        $('#paramEditorDiv').show();
+    }
+    else {
+        showVariables();
+        element.show();
+        $('#paramEditorDiv').hide();
+    }
+};
+
 function showEditParamters() {
-    ShowPopup('designerModal', 'Report Designer', '#paramEditorDiv', 
-        saveParameters, null, resetParameters );
+    ShowPopup('designerModal', 'Report Designer', '#divReportDesigner', 
+        saveParameters, null, resetParameters, showHideVariables);
 }
 
 function ToCanvas() {
@@ -85,3 +101,36 @@ $(document).on('input', '.ruleEditor', function (eventData) {
     const value = element.type === 'checkbox' ? (element.checked ? 1 : 0) : element.value;
     document.body.style.setProperty(element.name, value + (element.dataset.suffix || ''));
 });
+
+function objectToArray(dataObject) {
+    var dataArray = [];
+    for (var property in dataObject) {
+        //if (Object.prototype.hasOwnProperty.call(dataObject, property)  ) {
+        dataArray.push({ property: property, value: dataObject[property] });
+        //}
+    }
+    return dataArray;
+}
+
+function showVariables() {
+
+    const tableData = objectToArray(window.aptTecReports.reportData.CommonData);
+    const dataTableConfig = {
+        info: false, //hide footer Showing 1 to 79 of 79 entries
+        ordering: false,
+        paging: false,
+        searching: false,
+        data: tableData,
+        columns: [
+            { data: 'property', title: 'Property' },
+            { data: 'value', title: 'Value' }
+        ]
+    };
+    let dataTable = new DataTable('#templateVariableTable', dataTableConfig);    
+    // https://stackoverflow.com/questions/18007630/how-to-disable-warning-datatables-warning-requested-unknown-parameter-from-the-d
+    //dataTable.ext.errMode = 'none'; //to suppress the warnings from data table library in case if a property is missing.
+    $('.dataTable').on('error.dt', function (e, settings, techNote, message) {
+        console.error('An error has been reported by DataTables: ', message);
+    });
+    
+}

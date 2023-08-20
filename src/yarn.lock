@@ -581,6 +581,21 @@ csso@^5.0.5:
   dependencies:
     css-tree "~2.2.0"
 
+datatables.net-dt@^1.13.6:
+  version "1.13.6"
+  resolved "https://registry.npmjs.org/datatables.net-dt/-/datatables.net-dt-1.13.6.tgz"
+  integrity sha512-0fBsUi8k5e+x5e+xA/Eb5stFr2PIkHgDnbhZs8ZDLvzzL975lCm6sqBAcsTsXKvF7yuBvaDTVBTF4wOMw7PrYw==
+  dependencies:
+    datatables.net ">=1.13.4"
+    jquery ">=1.7"
+
+datatables.net@>=1.13.4:
+  version "1.13.6"
+  resolved "https://registry.npmjs.org/datatables.net/-/datatables.net-1.13.6.tgz"
+  integrity sha512-rHNcnW+yEP9me82/KmRcid5eKrqPqW3+I/p1TwqCW3c/7GRYYkDyF6aJQOQ9DNS/pw+nyr4BVpjyJ3yoZXiFPg==
+  dependencies:
+    jquery ">=1.7"
+
 dayjs@^1.11.9:
   version "1.11.9"
   resolved "https://registry.npmjs.org/dayjs/-/dayjs-1.11.9.tgz"
@@ -801,6 +816,11 @@ jest-worker@^29.4.3:
     jest-util "^29.6.2"
     merge-stream "^2.0.0"
     supports-color "^8.0.0"
+
+jquery@>=1.7:
+  version "3.7.0"
+  resolved "https://registry.npmjs.org/jquery/-/jquery-3.7.0.tgz"
+  integrity sha512-umpJ0/k8X0MvD1ds0P9SfowREz2LenHsQaxSohMZ5OMNEU2r0tf8pdeEFTHMFxWVxKNyU9rTtK3CWzUCTKJUeQ==
 
 json-parse-even-better-errors@^2.3.1:
   version "2.3.1"

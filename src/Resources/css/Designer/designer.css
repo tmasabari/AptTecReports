@@ -31,3 +31,20 @@
     background-image: none;
   }
 }
+
+/* printTable class is the table fix applied all over the page. So do not apply the border for that
+apply only the content portion table */
+.divReportDesigner .dataTable,
+.divReportDesigner .dataTable th,
+.divReportDesigner .dataTable td {
+  border: 0.25mm solid black;
+  word-break: break-word;
+  border-spacing: 0px;
+}
+/* dont apply border collapse for datatable which creates a empty page problem if content of a cell overflows more than 2 pages */
+.divReportDesigner .dataTable th,
+.divReportDesigner .dataTable td {
+  border-collapse: collapse;
+  vertical-align: text-top;
+  padding: 1mm;
+}

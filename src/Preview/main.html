@@ -79,16 +79,21 @@
                 <div class="modal-footer">
                     <button type="button" class="btn btn-success">Print</button>
                     <button type="button" class="btn btn-primary">Save</button>
+                    <button type="button" class="btn btn-info">Info</button>
                     <button type="button" class="btn btn-danger">Reset</button>
                     <button type="button" class="btn btn-light" data-dismiss="modal">Close</button>
                 </div>
             </div>
         </div>
-    </div>
+    </div><!-- end modal template html code -->
 
-    <!-- end modal template html code -->
-    <form id="paramEditorDiv"  style="display: none; width: 100%; height: calc(100vh - 240px); overflow:auto;"> 
-    </form>
+    <div id="divReportDesigner" style="display: none; width: 100%; height: calc(100vh - 240px); overflow:auto;">
+        <form id="paramEditorDiv"  > 
+        </form>
+        <div id="divVariablesSection" style="display: none;">
+            <table id="templateVariableTable" class="dataTable display" style="width:100%"></table>
+        </div>
+    </div>
     
     <!-- https://dev.to/madsstoumann/build-a-css-ruler-2opn -->
     <form class="ruleEditor" style="display: none; width: 100%; height: 350px; overflow:auto;">

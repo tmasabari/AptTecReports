@@ -1,5 +1,5 @@
 // Show the modal when the button is clicked
-export function ShowPopup(modalId, title, contenetSelector, primaryAction, successAction, dangerAction)
+export function ShowPopup(modalId, title, contenetSelector, primaryAction, successAction, dangerAction, infoAction)
 {
     if (primaryAction)
         $(contenetSelector)[0].primaryAction = primaryAction;
@@ -12,6 +12,11 @@ export function ShowPopup(modalId, title, contenetSelector, primaryAction, succe
     if (dangerAction)
         $(contenetSelector)[0].dangerAction = dangerAction;
     $('.modal .modal-footer .btn-danger').css('display', (dangerAction) ? 'block' : 'none');
+
+
+    if (infoAction)
+        $(contenetSelector)[0].infoAction = infoAction;
+    $('.modal .modal-footer .btn-info').css('display', (infoAction) ? 'block' : 'none');
 
 
     // Choose the div you want to display in the modal (e.g., divContent1)
@@ -65,9 +70,14 @@ $(document).on('click', '.modal .modal-footer .btn-danger', function () {
     invokeModalAction(this, 'dangerAction', true);
 });
 
+// Perform print action and keep the modal when the Print button is clicked
+$(document).on('click', '.modal .modal-footer .btn-info', function () {
+    invokeModalAction(this, 'infoAction', false);
+});
+
 function invokeModalAction(source, method, isHideModal) {
     const modalElement = $(source).closest('.modal');
-    var contentElement = modalElement.find('.modal-body form[style*="display: block"]');
+    var contentElement = modalElement.find('.modal-body > *[style*="display: block"]');
 
     if ( (contentElement.length > 0) && typeof contentElement[0][method] === 'function') 
         contentElement[0][method]();

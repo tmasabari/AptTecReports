@@ -33,12 +33,13 @@ export function ShowPopup(modalId, title, contenetSelector, primaryAction, succe
 }
 
 //event handlers============================================================
+
+//handle popup close event
 $('.modal').on('hidden.bs.modal', function ()
 {
     const modalElement = $(this).closest('.modal');
     var oldContent = modalElement.find('.modal-body').children(0);
     oldContent.hide();
-    //$(".modal .modal-body").html(''); 
 });
 function hideModal(modalChildElement) {
     const modalElement = modalChildElement.closest('.modal');

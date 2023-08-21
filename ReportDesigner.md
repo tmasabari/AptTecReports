@@ -15,6 +15,7 @@ This helps to setup the printable portion of the paper.
 * Report header - users can configure HTML content that appears at the **top of the report** using the WYSIWYG editor
 * Report footer - users can configure HTML content that appears at the **bottom of the report** using the WYSIWYG editor
 
+![Alt text](./diagrams/LayoutDesigner.drawio.svg?raw=true&sanitize=true "Layout Designer")
 ## Table Designer
 
 1. To select whether a column to appear on the report or not
@@ -28,6 +29,7 @@ This helps to setup the printable portion of the paper.
    5. DateTime24 - "12/19/2012, 19:00:00"
 5. To print only the first N characters from a column. The rest of of the characters will be ignored. Specify 0 to include all the characters.
 
+![Alt text](./diagrams/TableDesigner.drawio.svg?raw=true&sanitize=true "Table Designer")
 ## WYSIWYG HTML Editors
 
 * Standard text edit tool bar - Bold, Italics, Underline, alignments, styles, etc
@@ -39,4 +41,4 @@ This helps to setup the printable portion of the paper.
     * CurrentDateTime
 * The developers can add their custom variables names.
 
-![Alt text](./diagrams/Designer.drawio.svg?raw=true&sanitize=true "Report Designer")
+![Alt text](./diagrams/HTMLDesigner.drawio.svg?raw=true&sanitize=true "HTML Designer")

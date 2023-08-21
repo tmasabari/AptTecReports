@@ -163,6 +163,14 @@
                     "format": "number",
                     "title": "First N Chars",
                     "options": { "input_width": "10ch" }
+                },
+                "TitleStyle": {
+                    "type": "string",
+                    "title": "Title Style"
+                },
+                "ContentStyle": {
+                    "type": "string",
+                    "title": "Content Style"
                 }
             },
             "required": [

@@ -34,7 +34,9 @@ Experience the future of reporting, where your reports are not just static docum
 
 The end users has full control over the page layout, table designer, WYSIWYG editors for different sections, etc allowed by the developers & BAs at the time of printing. Please refer the [Report Designer section](ReportDesigner.md "Report designer section") page for further information.
 
-![Alt text](./diagrams/Designer.drawio.svg?raw=true&sanitize=true "Report Designer")
+![Alt text](./diagrams/LayoutDesigner.drawio.svg?raw=true&sanitize=true "Layout Designer")
+![Alt text](./diagrams/TableDesigner.drawio.svg?raw=true&sanitize=true "Table Designer")
+![Alt text](./diagrams/HTMLDesigner.drawio.svg?raw=true&sanitize=true "HTML Designer")
 
 ![Alt text](./diagrams/PageLayout.drawio.svg?raw=true&sanitize=true "Print time configurations")
 

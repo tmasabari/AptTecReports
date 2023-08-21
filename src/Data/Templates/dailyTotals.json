@@ -1,0 +1,90 @@
+{
+    "ReportTemplate": "paged.html",
+    "DataSource": "",
+    "PageHeadersHtml": "<table style=\"border-collapse:collapse;width: 100%;\"><tbody>\n<tr>\n\t<td style=\"width: 30%;text-align:left;\">{{OrgAddress1}}<br/>{{OrgAddress2}}<br/>{{OrgAddress3}}</td>\n\t<td style=\"width: 40%; text-align: center;\"><strong>{{ClientTitle}}<br/>Daily Totals for the period between {{ReportStartDate}} and {{ReportEndDate}}</strong><br></td>\n\t<td style=\"width: 30%;text-align:right;\">{{CurrentDateTime}}<br/>Page{{PI}} of {{PC}}</td></tr></tbody></table>",
+    "PageFootersHtml": "",
+    "ReportFootersHtml": "",
+    "ReportHeadersHtml": "",
+    "Layout": {
+        "PaperSize": "ledger",
+        "PaperLayout": "landscape",
+        "Report-Top-Margin": 10,
+        "Report-Right-Margin": 10,
+        "Report-Bottom-Margin": 10,
+        "Report-Left-Margin": 10,
+        "Page-Header-Height": 30,
+        "Page-Footer-Height": 20,
+        "CustomStyle": ""
+    },
+    "Content": [
+        {
+            "TableContent": [
+                {
+                    "field": "orderDate",
+                    "displayName": "Order Date",
+                    "columnSize": "10ch",
+                    "format": "",
+                    "isPrint": true,
+                    "ContentStyle": "text-align:center;"
+                },
+                {
+                    "field": "regularCount",
+                    "columnSize": "5ch",
+                    "displayName": "Regular Count",
+                    "isPrint": true,
+                    "format":"decimal",
+                    "ContentStyle": "text-align:right;"
+                },
+                {
+                    "field": "regularTotal",
+                    "columnSize": "5ch",
+                    "displayName": "Regular Fees",
+                    "isPrint": true,
+                    "format": "currency",
+                    "ContentStyle": "text-align:right;"
+                },
+                {
+                    "field": "subscriptionCount",
+                    "columnSize": "5ch",
+                    "displayName": "Subscription Count",
+                    "isPrint": true,
+                    "format": "decimal",
+                    "ContentStyle": "text-align:right;"
+                },
+                {
+                    "field": "subscriptionTotal",
+                    "columnSize": "5ch",
+                    "displayName": "Subscription Fees",
+                    "isPrint": true,
+                    "format": "currency",
+                    "ContentStyle": "text-align:right;"
+                },
+                {
+                    "field": "othersCount",
+                    "columnSize": "5ch",
+                    "displayName": "Transactions Count",
+                    "isPrint": true,
+                    "format": "decimal",
+                    "ContentStyle": "text-align:right;"
+                },
+                {
+                    "field": "othersTotal",
+                    "columnSize": "5ch",
+                    "displayName": "Transactions Fees",
+                    "isPrint": true,
+                    "format": "currency",
+                    "ContentStyle": "text-align:right;"
+                },
+                {
+                    "field": "dailyTotal",
+                    "columnSize": "5ch",
+                    "displayName": "Daily Total",
+                    "isPrint": true,
+                    "format": "currency",
+                    "TitleStyle": "",
+                    "ContentStyle": "text-align:right;"
+                }
+            ]
+        }
+    ]
+}

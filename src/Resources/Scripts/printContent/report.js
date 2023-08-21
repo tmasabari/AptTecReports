@@ -33,13 +33,8 @@ window.onload = function ()
                 if ( Object.prototype.hasOwnProperty.call(contentElement, 'TableContent') && 
                     Array.isArray(contentElement.TableContent)) {
                     const tableDataSource = contentElement.DataSource;
-                    //filter is equivalent to WHERE
-                    var printableColumns = contentElement.TableContent.filter(function (column) {
-                        return column.isPrint === true;
-                    });
-                    const tableConfiguration = printableColumns;
                     //Build the printable html data append/insert at the end template replaced content to contents
-                    appendJsonAsDataTable(aptTecReports,tableIndex, tableConfiguration, tableDataSource, contentDOMElement);
+                    appendJsonAsDataTable(aptTecReports, tableIndex, contentElement.TableContent, tableDataSource, contentDOMElement);
                     tableIndex++;
                 }
             }

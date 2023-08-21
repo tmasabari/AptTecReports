@@ -14,6 +14,11 @@
         href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
         integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <style>
+        .previewParent > div {
+            float: left;
+        }
+    </style>
 </head>
 
 <body>
@@ -29,9 +34,10 @@
                         <br>
                     </strong>
                 </td>
-                <td class="previewParent" style="width: 20%;text-align:right;">
+                <td class="previewParent" style="text-align:right;">
                     <div class="jobqueue"></div>
                     <div class="letter"></div>
+                    <div class="dailyTotals"></div>
                 </td>
             </tr>
         </tbody>
@@ -64,6 +70,29 @@
                 () => fetch(baseLocation + 'Data/Samples/coverletter.json').then(response => response.json())
                 //aptTecintegration.fetchData(, 'CommonData', 'CommonData')
                 , 'btn btn-success', 'fa fa-print', 'Letter', 'end'); 
+
+            const dailyTotalsButtonResult = aptTecintegration.addPreviewButton('dailyTotals',
+                '.previewParent .dailyTotals', null,
+                () => fetch(baseLocation + 'Data/Samples/dailyTotalData.json')
+                        .then(response => response.json())
+                        .then(jsonObject => {
+                            // do you custom logic here and populate the listDailyTotals
+                            aptTecintegration.aptTecData.CommonData = {
+                                "OrgAddress1": 'Your Client Address Line 1',
+                                "OrgAddress2": 'Your Client Address Line 2',
+                                "OrgAddress3": 'Your Client Address Line 3',
+                                "ClientTitle": 'Your Client Title'
+                            };
+                            aptTecintegration.aptTecData.InstanceData = {
+                                "ReportStartDate": '01/01/2023',
+                                "ReportEndDate": '01/01/2023' 
+                            };
+                            aptTecintegration.aptTecData.Data = jsonObject.listDailyTotals;
+                            return aptTecintegration.aptTecData;
+
+                        })
+                //aptTecintegration.fetchData(, 'CommonData', 'CommonData')
+                , 'btn btn-success', 'fa fa-print', 'Daily Totals', 'end'); 
         });
     </script>
 </body>

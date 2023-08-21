@@ -5,7 +5,7 @@ window.AptTecReporting = window.AptTecReporting || {};
 window.AptTecReporting.Kendo = {};
 window.AptTecReporting.Kendo.getSortedData = getKendoSortedData;
 window.AptTecReporting.Integration = class AptTecIntegration {
-    #designerHTMLPath = 'Preview/main.html';
+    #designerHTMLPath = 'Pages/designer.html';
     #templateToReplace ='{{SourceUrl}}';
     #defaultFrameStyle =`
                 position: absolute;

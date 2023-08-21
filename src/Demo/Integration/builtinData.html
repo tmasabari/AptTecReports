@@ -61,7 +61,8 @@
 
             const localLetterButtonResult = aptTecintegration.addPreviewButton('letter',
                 '.previewParent .letter', null,
-                () => aptTecintegration.fetchData(baseLocation + 'Data/Samples/coverletter.json', 'CommonData', 'CommonData')
+                () => fetch(baseLocation + 'Data/Samples/coverletter.json').then(response => response.json())
+                //aptTecintegration.fetchData(, 'CommonData', 'CommonData')
                 , 'btn btn-success', 'fa fa-print', 'Letter', 'end'); 
         });
     </script>

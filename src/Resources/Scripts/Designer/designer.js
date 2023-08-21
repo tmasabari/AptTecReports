@@ -22,7 +22,8 @@ function addTags(document, parentSelector, tag, pagesCount) {
     document.querySelector(parentSelector).innerHTML += content;
 }
 //UI event handlers==========================================================
-window.onload = function () {
+window.onload = function ()
+{
     window.SchemaFormHandler = new SchemaFormHandler('paramEditorDiv');
     if (window.self === window.top)
     {
@@ -70,23 +71,24 @@ const resetParameters = () => {
 //     PrintReport();
 // };
 
-const showHideVariables = () => {
+const toggleVariablesSection = (isHide) => {
     const element = $('#divVariablesSection');
     const isVariable = window.getComputedStyle(element[0], null).display;
-    if (isVariable === 'block') {
+    if (isVariable === 'block' || isHide === true) {
         element.hide();
         $('#paramEditorDiv').show();
     }
     else {
-        showVariables();
+        buildVariablesSection();
         element.show();
         $('#paramEditorDiv').hide();
     }
 };
 
 function showEditParamters() {
+    toggleVariablesSection(true);
     ShowPopup('designerModal', 'Report Designer', '#divReportDesigner', 
-        saveParameters, null, resetParameters, showHideVariables);
+        saveParameters, null, resetParameters, toggleVariablesSection);
 }
 
 function ToCanvas() {
@@ -112,8 +114,10 @@ function objectToArray(dataObject) {
     return dataArray;
 }
 
-function showVariables() {
-
+function buildVariablesSection() {
+    // eslint-disable-next-line quotes
+    const tableTag = `<table id='templateVariableTable' class='dataTable display' style='width:100%'></table>`;
+    document.querySelector('#divVariableContainer').innerHTML += tableTag;
     const tableData = objectToArray(window.aptTecReports.reportData.CommonData);
     const dataTableConfig = {
         info: false, //hide footer Showing 1 to 79 of 79 entries

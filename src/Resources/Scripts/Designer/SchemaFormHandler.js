@@ -77,6 +77,6 @@ export default class SchemaFormHandler {
         localStorage.removeItem(window.aptTecReports.reportId);    //remove local report configuration
         window.aptTecReports.ReportParams = window.aptTecReports.ServerParams;
         this.jsoneditor.setValue(window.aptTecReports.ReportParams);
-        window.aptTecReports.onReportParametersChanged('reportIframe', true);
+        this.saveParameters();
     }
 }

@@ -2,11 +2,14 @@
     "CommonData": {
         "ReportTitle": "Task Queue",
         "OrgTitle": "Company Name Here, State",
-        "ReportSubTitle": "Analysis From 01/01/2022 to 31/12/2022",
         "OrgAddress1": "Door #, Street name",
         "OrgAddress2": "Village",
         "OrgAddress3": "City, Pin#",
         "Copyright": "© 2023 AptTec.com. All rights reserved."
+    },
+    "InstanceData": {
+        "ReportStartDate": "01/01/2022",
+        "ReportEndDate": "31/12/2022"
     },
     "Data": {
         "jobsData": [

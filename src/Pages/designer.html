@@ -25,20 +25,7 @@
         href="https://cdnjs.cloudflare.com/ajax/libs/jodit/3.24.9/jodit.min.css"
         integrity="sha512-3tfJTyWjzueL4n4z9+SJYdYFIrRTEUPram+/x61OSHEvWoU8Ovi2dJApUGxmSzT5t9YeRYNSUoiOzTryI0N1Vg=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
-
-    <style>
-        /* json editor tweaks */
-        .je-ready h3 label {
-            margin-right: 10px;
-        }
-        /* #paramEditorDiv > div > h3 */
-        .je-ready h3.card-title.level-1 {
-            display: none !important;
-        }
-        .je-ready  div.card.card-body.my-3 {
-            margin-top: 0!important;
-        }
-    </style>
+ 
 </head>
 
 <body>
@@ -91,7 +78,10 @@
         <form id="paramEditorDiv"  > 
         </form>
         <div id="divVariablesSection" style="display: none;">
-            <table id="templateVariableTable" class="dataTable display" style="width:100%"></table>
+            <h1>Variables</h1><br/>
+            <div id="divVariableContainer">
+                
+            </div>
         </div>
     </div>
     

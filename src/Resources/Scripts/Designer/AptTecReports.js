@@ -29,7 +29,7 @@ export default class AptTecReports
         this.dataLocation = dataLocation;
 
         this.sourceUrl = sourceUrl;
-        this.#previewPageUrl = (sourceUrl) ? sourceUrl + 'Preview/' : null;
+        this.#previewPageUrl = (sourceUrl) ? sourceUrl + 'Pages/' : null;
         this.closeAction = closeAction;
         this.dataGetter = dataGetter;
         this.reportId = reportId;
@@ -134,35 +134,31 @@ export default class AptTecReports
     }
 
     // Function to fetch the HTML template and JSON data and perform the replacement
-    refreshReport()
-    {
+    refreshReport() {
         if (!(this.reportId)) //if report id does not exist can't perform anything more.
             return;
+        
         var reportParamsUrl = this.templatesLocation + this.reportId + '.json';
         // Load the HTML template and parameters using fetch API (you can also use XMLHttpRequest)
         //https://developer.mozilla.org/en-US/docs/Web/API/fetch
         fetch(reportParamsUrl)
             .then(response => response.json())
-            .then(serverParams =>
-            {
+            .then(serverParams => {
                 this.ServerParams = serverParams;
                 const paramsString = localStorage.getItem(this.reportId);
-                if (paramsString)
-                {
+                if (paramsString) {
                     const localParams = JSON.parse(paramsString);
                     var finalParams = mergeExistingProperties(serverParams, localParams);
                     //localStorage.setItem(this.reportId, JSON.stringify(finalParams)); store only if user clicks save button
                     this.ReportParams = finalParams;
                 }
-                else
-                {
+                else {
                     this.ReportParams = serverParams;
                 }
                 this.refreshData();
             })
-            .catch(error =>
-            {
-                console.error('Error loading report settings:', error);
+            .catch(error => {
+                console.error('Error loading report data paramters:', error);
             });
     }
 

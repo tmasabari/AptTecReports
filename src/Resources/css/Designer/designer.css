@@ -48,3 +48,19 @@ apply only the content portion table */
   vertical-align: text-top;
   padding: 1mm;
 }
+
+div.card.card-body [data-schemapath^="root.Content"] > label,
+div.card.card-body [data-schemapath^="root.Content"] > select 
+{ display: none; }
+
+/* json editor tweaks */
+.je-ready h3 label {
+    margin-right: 10px;
+}
+/* #paramEditorDiv > div > h3 */
+.je-ready h3.card-title.level-1 {
+    display: none !important;
+}
+.je-ready  div.card.card-body.my-3 {
+    margin-top: 0!important;
+}

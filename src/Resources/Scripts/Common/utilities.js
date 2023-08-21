@@ -3,7 +3,8 @@
 
 //JSON related ===================================================
 
-export function mergeExistingProperties(obj1, obj2) {
+export function mergeExistingProperties(source, obj2) {
+    let obj1 = JSON.parse(JSON.stringify(source));  //deep copy
     for (const key in obj2) {
         if ( Object.prototype.hasOwnProperty.call(obj1, key) ) {
             obj1[key] = obj2[key];

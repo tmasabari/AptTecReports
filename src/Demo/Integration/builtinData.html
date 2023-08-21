@@ -87,6 +87,9 @@
                                 "ReportStartDate": '01/01/2023',
                                 "ReportEndDate": '01/01/2023' 
                             };
+                            jsonObject.listDailyTotals.forEach(element => {
+                                element.orderDate = new Date(element.orderDate);
+                            });
                             aptTecintegration.aptTecData.Data = jsonObject.listDailyTotals;
                             return aptTecintegration.aptTecData;
 

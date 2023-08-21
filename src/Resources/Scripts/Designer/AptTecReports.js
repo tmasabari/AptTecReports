@@ -11,6 +11,11 @@ export default class AptTecReports
         'PI': '<span class=\'pageIndex\'>&nbsp;</span>',
         'PC': '<span class=\'pageCount\'>&nbsp;</span>',
     };
+    #dateOnly = {
+        year: 'numeric',
+        month: 'numeric',
+        day: 'numeric'
+    };
     #dateTime24 = {     // "12/19/2012, 19:00:00"
         year: 'numeric',
         month: 'numeric',
@@ -60,6 +65,7 @@ export default class AptTecReports
         this.customFunctions.currency = (value) => new Intl.NumberFormat(locale, 
             { style: 'currency', currency: currency }).format(value);
         this.customFunctions.date = (value) => new Intl.DateTimeFormat(locale, dateOptionsUsed).format(value);
+        this.customFunctions.dateonly = (value) => new Intl.DateTimeFormat(locale, this.#dateOnly).format(value);
         this.customFunctions.dateTime24 = (value) => new Intl.DateTimeFormat(locale, this.#dateTime24).format(value);
         this.customFunctions.shortdatetime = (value) => this.shortDateTime(value);
         //this.customFunctions.todaydate = () => this.getFormattedDate(); //deprecated

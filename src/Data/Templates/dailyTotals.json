@@ -6,8 +6,8 @@
     "ReportFootersHtml": "",
     "ReportHeadersHtml": "",
     "Layout": {
-        "PaperSize": "ledger",
-        "PaperLayout": "landscape",
+        "PaperSize": "A4",
+        "PaperLayout": "portrait",
         "Report-Top-Margin": 10,
         "Report-Right-Margin": 10,
         "Report-Bottom-Margin": 10,

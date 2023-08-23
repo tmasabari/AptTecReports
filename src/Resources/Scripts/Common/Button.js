@@ -44,7 +44,7 @@ export class Button {
         const buttonTagText = `<button ${attributesText}  class='${this.buttonClass}' type='button' >
                 <i class='${this.iconClass}'></i>${this.buttonText}</button>`;
 
-        if (location === 'start')
+        if (this.location === 'start')
             element.prepend(buttonTagText);
         else
             element.append(buttonTagText);

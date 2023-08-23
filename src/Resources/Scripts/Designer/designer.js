@@ -9,6 +9,7 @@ import AptTecReports from './AptTecReports.js';
 import SchemaFormHandler from './SchemaFormHandler.js';
 import { ShowPopup } from './popup.js';
 import { AptTecExporter as Exporter } from './Exporter.js';
+import { Downloader } from '../Common/Downloader.js';
 
 //add list items for rulers
 addTags($(document)[0], '.ruler-x', '<li></li>', 50);
@@ -47,7 +48,7 @@ window.initilizePreview = function (reportParams) {
 
 $('.printMenu').click(function () { PrintReport(); return false; }); 
 $('.editMenu').click(function () { showEditParamters(); return false; });
-$('.exportMenu').click(function () { ToCanvas(); return false; });
+$('.exportMenu').click(function () { exportParameters(); return false; });
 const refreshData = () => {
     window.aptTecReports.refreshData('reportIframe'); };
 $('.refreshMenu').click(function () { refreshData(); return false; } ); 
@@ -61,15 +62,19 @@ function ShowRulerPopup() {
 }
 
 const saveParameters = () => {
-    window.SchemaFormHandler.saveParameters(); };
+    window.SchemaFormHandler.saveParameters();
+};
+    
+const exportParameters = () => {
+    var reportParams = window.SchemaFormHandler.getCurrentParameters();
+    const downloader = new Downloader();
+    const url = downloader.generateJsonUrlFromObject(reportParams);
+    downloader.autoDownloadUrl(url, 'Export - report template -' + window.aptTecReports.reportId + '.json');
+    URL.revokeObjectURL(url);
+};
 
 const resetParameters = () => {
     window.SchemaFormHandler.resetParameters(); };
-
-// const saveParametersPrint = () => {
-//     window.SchemaFormHandler.saveParameters();
-//     PrintReport();
-// };
 
 const toggleVariablesSection = (isHide) => {
     const element = $('#divVariablesSection');

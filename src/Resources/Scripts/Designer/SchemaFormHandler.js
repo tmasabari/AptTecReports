@@ -50,6 +50,9 @@ export default class SchemaFormHandler {
         //    saveParameters();
         //});
     }
+    getCurrentParameters() {
+        return this.jsoneditor.getValue();
+    }
     saveParameters() {
         // validate
         var validationErrors = this.jsoneditor.validate();

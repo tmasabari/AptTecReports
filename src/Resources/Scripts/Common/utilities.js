@@ -1,6 +1,4 @@
-//Utility functions ==========================================================
-
-
+'use strict';
 //JSON related ===================================================
 
 export function mergeExistingProperties(source, obj2) {

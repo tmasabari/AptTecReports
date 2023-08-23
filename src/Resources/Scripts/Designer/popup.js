@@ -1,6 +1,17 @@
+'use strict';
+//import { Button } from '../Common/Button.js'; 
 // Show the modal when the button is clicked
-export function ShowPopup(modalId, title, contenetSelector, primaryAction, successAction, dangerAction, infoAction)
-{
+export function ShowPopup(modalId, title, contenetSelector, primaryAction, successAction, dangerAction, infoAction) {
+    //  buttons, 
+    // const buttonParentClass = '#designerModal .modal-footer';
+    // const buttonParent = $(buttonParentClass);
+    // buttonParent.innerHTML = '';
+    // var buttonTags='';
+    // buttons.forEach(button => {
+    //     button.buttonParent = buttonParentClass;
+    //     button.add();
+    //     $(contenetSelector)[0][button.] = primaryAction; 
+    // });
     if (primaryAction)
         $(contenetSelector)[0].primaryAction = primaryAction;
     $('.modal .modal-footer .btn-primary').css('display', (primaryAction) ? 'block' : 'none');

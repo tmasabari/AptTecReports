@@ -1,5 +1,6 @@
 'use strict';
 import { getKendoSortedData } from '../Common/utilities.js';
+import { Button } from '../Common/Button.js';
 
 window.AptTecReporting = window.AptTecReporting || {};
 window.AptTecReporting.Kendo = {};
@@ -97,50 +98,32 @@ window.AptTecReporting.Integration = class AptTecIntegration {
      * @param {string} iconClass - The string to specify the CSS classes for the icon within the button. Optional.
      * @param {string} buttonText - You can leave this empty if you like to create tool bar button
      * @param {string} location - The value can be 'start, or 'end', to specify the location of the button within the parent
-     * @returns {object} AlreadyExists - true if the button already exists and the add logic is skipped, false if it is newly added. previewButton $(buttonParent + ' .AptTecPrintPreview')
+     * @returns {object} AlreadyExists - true if the button already exists and the add logic is skipped, false if it is newly added.
      */
-    addPreviewButton(reportId, buttonParent, attributesObject, dataSetter,
-        buttonClass = 'btn btn-success', iconClass = 'fa fa-print', buttonText = '', location = 'start') {
-
-        var buttonResult = this.#addPreviewButton(reportId, buttonParent, attributesObject,
+    addPreviewButton(reportId, buttonParent, attributesObject = {}, dataSetter = null,
+        buttonClass = 'btn btn-success', iconClass = 'fa fa-print', buttonText = '', location = 'start', buttonid=null)  {
+        var buttonResult = this.#addPreviewButton(buttonid, reportId, buttonParent, attributesObject,
             buttonClass, iconClass, buttonText, location);
-        this.HandlePreviewButton(buttonResult, dataSetter);
+        if (buttonResult.AlreadyExists) return;
+        this.#HandlePreviewButton(buttonResult, dataSetter);
         return buttonResult;
     }
-    #addPreviewButton(reportId, buttonParent, attributesObject, 
-        buttonClass, iconClass, buttonText, location)
-    {
-        var result = { previewButton: {}, AlreadyExists : false };
-        var element = $(buttonParent);
-        if (element.length === 0) throw 'Could not add a preview button. Please check buttonParent';
-
-        const currentPreviewButtonSelector = buttonParent + ' .AptTecPrintPreview';
-        result.previewButton = $(currentPreviewButtonSelector);
-        if (result.previewButton.length !== 0) { //if button already exists do not add again
-            result.AlreadyExists = true;
-            return result;
+    #addPreviewButton(buttonid, reportId, buttonParent, attributesObject, 
+        buttonClass, iconClass, buttonText, location) {
+        if (!(buttonid)) {
+            buttonid = reportId.replace(/[^a-zA-Z]/g, "") + 'PreviewButton';
         }
+
+        if (!(attributesObject)) attributesObject = {};
+        attributesObject['render-target'] = this.#previewFrameId;
+        attributesObject['report-id'] = reportId;
+        buttonClass += ' AptTecPrintPreview';
         const disabledAttrib = this.#isSourceUrlLoaded ? '' : 'disabled';
-
-        var attributesText = '';
-        if (attributesObject) {
-            for (const [key, value] of Object.entries(attributesObject)) {
-                attributesText += ` data-${key}='${value}'`;
-            }
-        }
-        const buttonTagText = `
-            <button data-render-target='${this.#previewFrameId}' data-report-id='${reportId}' 
-            data-parent-selector='${buttonParent}' ${attributesText} ${disabledAttrib} 
-            class='${buttonClass} AptTecPrintPreview' type='button' >
-                <i class='${iconClass}'></i>${buttonText}</button>`;
-
-        //data attributes must be lower case
-        if (location==='start')
-            element.prepend(buttonTagText);
-        else
-            element.append(buttonTagText);
-        result.previewButton = $(currentPreviewButtonSelector);
-        return result;
+        const button = new Button(buttonid, buttonParent, buttonClass, iconClass, buttonText, 
+            location, attributesObject, disabledAttrib);
+        // extraInformation =disabledAttrib, actions = {}, preventDuplicate = true
+        const buttonElement = button.add();
+        return { previewButton: buttonElement, AlreadyExists: button.AlreadyExists };;
     }
 
     /**
@@ -149,11 +132,10 @@ window.AptTecReporting.Integration = class AptTecIntegration {
      * @param {Object} dataSetter - Anyof "function" or "string" 
      *      if it is a function, the function will be called while rendering the preview.
      *      'direct' - the JSON data will be read directly from the aptTecData property
-     *      'kendo' - the JSON data will be read directly from the Kendo grid using data-id set using button
+     *      'kendoGrid' - the JSON data will be read directly from the Kendo grid using data-id set using button
      * @returns 
      */
-    HandlePreviewButton(buttonResult, dataSetter ) {
-        if (buttonResult.AlreadyExists) return;
+    #HandlePreviewButton(buttonResult, dataSetter ) {
         const aptIntegration = this;
         buttonResult.previewButton.click(function ()  
         //this is closure or inner function so it always rememebers the correct dataSetter

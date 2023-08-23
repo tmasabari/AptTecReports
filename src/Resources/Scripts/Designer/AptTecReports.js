@@ -143,7 +143,7 @@ export default class AptTecReports
     refreshReport() {
         if (!(this.reportId)) //if report id does not exist can't perform anything more.
             return;
-        
+        this.enableExport(true);
         var reportParamsUrl = this.templatesLocation + this.reportId + '.json';
         // Load the HTML template and parameters using fetch API (you can also use XMLHttpRequest)
         //https://developer.mozilla.org/en-US/docs/Web/API/fetch

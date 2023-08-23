@@ -1,5 +1,23 @@
 export class Downloader
 {
+    generateJsonUrlFromString(jsonString) {
+        const blob = new Blob([jsonString], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+        return url;
+    }
+    generateJsonUrlFromObject(object) {
+        const jsonString = JSON.stringify(object, null, 2);
+        //space (2): A string or number that's used to add whitespace to the output JSON string for formatting purposes.
+        return this.generateJsonUrlFromString(jsonString);
+    }
+
+    autoDownloadUrl(url, filename = 'data.json') {
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = filename;
+        a.click();
+    }
+
     /**
      * Calls the list of Urls to fetch the data and returns the results
      * @param {Array} urls to get the data

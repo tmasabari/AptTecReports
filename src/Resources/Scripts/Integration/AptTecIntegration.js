@@ -101,17 +101,17 @@ window.AptTecReporting.Integration = class AptTecIntegration {
      * @returns {object} AlreadyExists - true if the button already exists and the add logic is skipped, false if it is newly added.
      */
     addPreviewButton(reportId, buttonParent, attributesObject = {}, dataSetter = null,
-        buttonClass = 'btn btn-success', iconClass = 'fa fa-print', buttonText = '', location = 'start', buttonid=null)  {
+        buttonClass = 'btn btn-success', iconClass = 'fa fa-print', buttonText = '', location = 'start', buttonid=null, printHandler = null)  {
         var buttonResult = this.#addPreviewButton(buttonid, reportId, buttonParent, attributesObject,
             buttonClass, iconClass, buttonText, location);
         if (buttonResult.AlreadyExists) return;
-        this.#HandlePreviewButton(buttonResult, dataSetter);
+        this.#HandlePreviewButton(buttonResult, dataSetter, printHandler);
         return buttonResult;
     }
     #addPreviewButton(buttonid, reportId, buttonParent, attributesObject, 
         buttonClass, iconClass, buttonText, location) {
         if (!(buttonid)) {
-            buttonid = reportId.replace(/[^a-zA-Z]/g, "") + 'PreviewButton';
+            buttonid = reportId.replace(/[^a-zA-Z]/g, '') + 'PreviewButton';
         }
 
         if (!(attributesObject)) attributesObject = {};
@@ -123,7 +123,7 @@ window.AptTecReporting.Integration = class AptTecIntegration {
             location, attributesObject, disabledAttrib);
         // extraInformation =disabledAttrib, actions = {}, preventDuplicate = true
         const buttonElement = button.add();
-        return { previewButton: buttonElement, AlreadyExists: button.AlreadyExists };;
+        return { previewButton: buttonElement, AlreadyExists: button.AlreadyExists };
     }
 
     /**
@@ -135,14 +135,15 @@ window.AptTecReporting.Integration = class AptTecIntegration {
      *      'kendoGrid' - the JSON data will be read directly from the Kendo grid using data-id set using button
      * @returns 
      */
-    #HandlePreviewButton(buttonResult, dataSetter ) {
+    #HandlePreviewButton(buttonResult, dataSetter, printHandler ) {
         const aptIntegration = this;
         buttonResult.previewButton.click(function ()  
-        //this is closure or inner function so it always rememebers the correct dataSetter
+        //this is closure or inner function so it always rememebers the correct dataSetter, printHandler
         {
             const reportId = $(this).data('report-id');
             const gridId = $(this).data('grid-id');
             aptIntegration.#designerWindow.aptTecReports.reportId = reportId;
+            aptIntegration.#designerWindow.aptTecReports.printCallback = printHandler;
             if (typeof dataSetter === 'function') {
                 aptIntegration.#designerWindow.aptTecReports.dataGetter = dataSetter;
             }
@@ -186,5 +187,9 @@ window.AptTecReporting.Integration = class AptTecIntegration {
                     previewDataReject();  // when error
                 });
         }); 
+    }
+
+    print() {
+        this.#designerWindow.document.getElementById('reportIframe').contentWindow.print();
     }
 }; 

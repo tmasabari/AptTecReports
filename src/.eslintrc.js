@@ -4,6 +4,9 @@ module.exports = {
         'es2021': true,
         'jquery': true
     },
+    'ignorePatterns': ['webpack.config.js', 'notused/**', 'dist/**', 
+        'Scripts/printContent/pagedjs-repeat-table-header.js', 
+        'Scripts/Designer/html2canvas.min.js'],
     'plugins': ['compat'],
     'extends': ['plugin:compat/recommended', 'eslint:recommended'],
     'overrides': [
@@ -32,10 +35,10 @@ module.exports = {
         //     'error',
         //     'unix'
         // ],
-        'quotes': [
-            'error',
-            'single'
-        ],
+        // 'quotes': [
+        //     'error',
+        //     'single'
+        // ],
         'semi': [
             'error',
             'always'

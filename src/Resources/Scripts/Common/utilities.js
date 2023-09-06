@@ -24,6 +24,7 @@ export function loadStylesheet(url) {
     var link = document.createElement('link');
     link.rel = 'stylesheet';
     link.href = url;
+    // fontAwesomeLink.href = 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css';
     document.head.appendChild(link);
 }
 export function loadScript(url, callback, isDefer = false) {
@@ -49,17 +50,14 @@ export function getKendoSortedData(gridSelector) {
     var dataSource = grid.dataSource;
     var data = dataSource.data();
     var sort = dataSource.sort();
-    if (data.length > 0 && sort)
-    {  //sort throws error in case data length =0
+    if (data.length > 0 && sort) {  //sort throws error in case data length =0
         var query = new window.kendo.data.Query(data);
         var sortedData = query.sort(sort).data;
         result = sortedData;
     }
-    else
-    {
+    else {
         result = data;
     }
-
     return result;
 }
 

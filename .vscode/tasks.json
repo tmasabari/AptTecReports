@@ -1,0 +1,25 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "type": "npm",
+            "script": "build",
+            "path": "src",
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "problemMatcher": [],
+            "label": "web pack build",
+            "detail": "web pack build",
+            "dependsOn": "eslintFolder"
+        },
+        {
+            "type": "eslint",
+            "problemMatcher": [
+                "$eslint-stylish"
+            ],
+            "label": "eslintFolder"
+        }
+    ]
+}

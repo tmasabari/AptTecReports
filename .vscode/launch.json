@@ -5,10 +5,12 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "type": "msedge",
+            "type": "chrome",
             "request": "launch",
             "name": "Open main.html",
-            "file": "/mnt/DNTFS/GitHub/HTML Report Generator/src/Demo/Integration/builtindData.html"
+            "file": "http://127.0.0.1:5501/src/Demo/Integration/builtinData.html",
+            "webRoot": "${workspaceFolder}/src",
+            "preLaunchTask": "${defaultBuildTask}"
         }
     ]
 }

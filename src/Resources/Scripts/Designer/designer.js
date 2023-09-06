@@ -8,7 +8,7 @@ import DataTable from 'datatables.net-dt';
 import AptTecReports from './AptTecReports.js';
 import SchemaFormHandler from './SchemaFormHandler.js';
 import { ShowPopup } from './popup.js';
-import { AptTecExporter as Exporter } from './Exporter.js';
+//import { AptTecExporter as Exporter } from './Exporter.js';
 import { Downloader } from '../Common/Downloader.js';
 
 //add list items for rulers
@@ -54,8 +54,15 @@ const refreshData = () => {
 $('.refreshMenu').click(function () { refreshData(); return false; } ); 
 $('.optionsMenu').click(function () { ShowRulerPopup(); return false; });
 $('.closeMenu').click(function () { window.aptTecReports.closeAction(); return false; });
-function PrintReport() {
-    document.getElementById('reportIframe').contentWindow.print();
+function PrintReport(isPrint = false) {
+    //isPrint passed from client direct print or printHandler is not defined direct print
+    if (isPrint === true || (typeof window.aptTecReports.printCallback !== 'function') ) {
+        document.getElementById('reportIframe').contentWindow.print();
+    }
+    else {
+        if (typeof window.aptTecReports.printCallback === 'function')
+            window.aptTecReports.printCallback();
+    }
 }
 function ShowRulerPopup() {
     ShowPopup('designerModal', 'Ruler Settings', '.ruleEditor');
@@ -96,12 +103,12 @@ function showEditParamters() {
         saveParameters, null, resetParameters, toggleVariablesSection);
 }
 
-function ToCanvas() {
-    const sourceWindow = document.getElementById('reportIframe').contentWindow;
-    const exporter = new Exporter();
-    const options = exporter.getPdfOptions(window.aptTecReports.ReportParams);
-    exporter.generatePDF(sourceWindow, '.pagedjs_page', options);
-}
+// function ToCanvas() {
+//     const sourceWindow = document.getElementById('reportIframe').contentWindow;
+//     const exporter = new Exporter();
+//     const options = exporter.getPdfOptions(window.aptTecReports.ReportParams);
+//     exporter.generatePDF(sourceWindow, '.pagedjs_page', options);
+// }
 
 $(document).on('input', '.ruleEditor', function (eventData) {
     const element = eventData.target;
@@ -135,7 +142,7 @@ function buildVariablesSection() {
             { data: 'value', title: 'Value' }
         ]
     };
-    let dataTable = new DataTable('#templateVariableTable', dataTableConfig);    
+    new DataTable('#templateVariableTable', dataTableConfig);    //let dataTable = 
     // https://stackoverflow.com/questions/18007630/how-to-disable-warning-datatables-warning-requested-unknown-parameter-from-the-d
     //dataTable.ext.errMode = 'none'; //to suppress the warnings from data table library in case if a property is missing.
     $('.dataTable').on('error.dt', function (e, settings, techNote, message) {

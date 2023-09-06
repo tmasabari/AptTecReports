@@ -6,6 +6,7 @@ export default class AptTecReports
 {
     #previewPageUrl = '';
     #closeAction = null;
+    #printCallback = null;
     #templateToReplace = '{{SourceUrl}}';
     #internalCommonData = {
         'PI': '<span class=\'pageIndex\'>&nbsp;</span>',
@@ -45,6 +46,8 @@ export default class AptTecReports
         this.ServerParams = null;
         this.ReportTemplateSource = null;
         this.htmlTemplate = null;
+        this.htmlTemplate = null;
+        
         //https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/Locale#examples
         this.Locale = new Intl.Locale(locale);
         var dateOptionsUsed = (dateOptions) ? dateOptions : this.#dateTime24;
@@ -97,6 +100,13 @@ export default class AptTecReports
     set closeAction(x) {
         this.#closeAction = x;
         $('.closeMenu').show();
+    }
+
+    get printCallback() {
+        return this.#printCallback;
+    }
+    set printCallback(x) {
+        this.#printCallback = x;
     }
 
     enableExport(isVisible) {
@@ -169,8 +179,7 @@ export default class AptTecReports
     }
 
     // Function to fetch the JSON data and perform the replacement
-    refreshData()
-    {
+    refreshData() {
         if (typeof this.dataGetter === 'function')
         {
             var response = this.dataGetter(this.ReportParams.DataSource);
@@ -290,7 +299,7 @@ export default class AptTecReports
                                 // https://stackoverflow.com/questions/359788/how-to-execute-a-javascript-function-when-i-have-its-name-as-a-string/359910#359910
                                 //todo convert only function name to lower case if paramters are to be included
                                 var codeToExecute = 'return window.aptTecReports.customFunctions.' + stringFound.toLowerCase();
-                                if (!stringFound.endsWith(')')) codeToExecute += '();'; indexToSearch
+                                if (!stringFound.endsWith(')')) codeToExecute += '();';
                                 const tempFunction = new Function(codeToExecute);
                                 const returnValue = tempFunction();
                                 value = value.replace(functionStart + stringFound + functionEnd, returnValue);

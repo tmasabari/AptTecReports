@@ -103,6 +103,13 @@ export default class AptTecReports
         $('.closeMenu').show();
     }
 
+    showHideDesigner(isShow) {
+        const value = isShow ? 'inline-block': 'none';
+        document.querySelector("#stickyRow > button.btn.btn-primary.editMenu").style.display = value;
+        document.querySelector("#stickyRow > button.btn.btn-primary.exportMenu").style.display = value;
+        document.querySelector("#stickyRow > button.btn.btn-secondary.optionsMenu").style.display = value;
+    }
+
     raiseEvent(eventName, eventData) {
         const event = new Event(eventName, { "cancelable": true });
         event.details = {
@@ -125,13 +132,6 @@ export default class AptTecReports
         }
         window.parent.document.dispatchEvent(event);
         return event.defaultPrevented;
-    }
-
-    enableExport(isVisible) {
-        if (isVisible)
-            $('.exportMenu').show();
-        else
-            $('.exportMenu').hide();
     }
 
     #reportData = null;
@@ -166,7 +166,7 @@ export default class AptTecReports
     refreshReport() {
         if (!(this.reportId)) //if report id does not exist can't perform anything more.
             return;
-        this.enableExport(true);
+
         var reportParamsUrl = this.templatesLocation + this.reportId + '.json';
         // Load the HTML template and parameters using fetch API (you can also use XMLHttpRequest)
         //https://developer.mozilla.org/en-US/docs/Web/API/fetch

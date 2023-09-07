@@ -98,7 +98,7 @@
                 , 'btn btn-success', 'fa fa-print', 'Daily Totals', 'end'); 
         });
         
-        // Add an event listener to handle the chunkCompleted event.
+	    // Add an event listener to handle the AptTec Print button click event.
         document.addEventListener('print', (event) => {
             const eventDetails = event.details;
             alert(`${eventDetails.reportId} print clicked. pages =${eventDetails.eventData}`);

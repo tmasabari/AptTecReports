@@ -22,7 +22,6 @@ window.AptTecReporting.Integration = class AptTecIntegration {
     #allPreviewButtonSelector = '.AptTecPrintPreview';
     #frameElement = null;
     #isSourceUrlLoaded = false;
-    #designerWindow = null;
     #sourceUrl ='';
     #previewFrameId='';
     #templatesLocation='';
@@ -39,8 +38,11 @@ window.AptTecReporting.Integration = class AptTecIntegration {
      *      You can set different templatesLocation for different tenants/clients for multi-tenant scenarios.
      * @param {string} frameStyle - The styles to be applied for the preview frame.
      */
-    constructor(sourceUrl, previewFrameId,  templatesLocation, frameStyle){
+    constructor(sourceUrl, previewFrameId, templatesLocation, frameStyle, isPreviewTypeDesigner=false){
         this.aptTecData = { CommonData: {}, InstanceData: {}, Data: [] };
+
+        this.designerWindow = null;
+        this.isPreviewTypeDesigner = isPreviewTypeDesigner;
 
         this.#sourceUrl = sourceUrl.endsWith('/') ? sourceUrl : sourceUrl + '/' ;
         this.#previewFrameId = previewFrameId; 
@@ -49,7 +51,6 @@ window.AptTecReporting.Integration = class AptTecIntegration {
         this.#templatesLocation = templatesLocation;
         this.#loadSourceUrl();
     }
-
     #addIFrameTag(frameStyle) {
         const style = (frameStyle) ? frameStyle : this.#defaultFrameStyle;
         const iFrameTag = `
@@ -71,23 +72,24 @@ window.AptTecReporting.Integration = class AptTecIntegration {
                 this.#frameElement.onload = () => { this.#frameLoaded(); };
             })
             .catch(error => {
-                console.error('Error loading report template:', error);
+                console.error('Error loading the preview designer:', error);
             });
     }
 
     #frameLoaded() {
         this.#isSourceUrlLoaded = true;
         $(this.#allPreviewButtonSelector).prop('disabled', false); //enable all printpreview buttons
-        this.#designerWindow = document.getElementById(this.#previewFrameId).contentWindow;
-        this.#designerWindow.initilizePreview({
+        this.designerWindow = document.getElementById(this.#previewFrameId).contentWindow;
+        this.designerWindow.initilizePreview({
             templatesLocation: this.#templatesLocation,
             sourceUrl: this.#sourceUrl,
             closeAction: () => $('#' + this.#previewFrameId).hide()
         });
+        this.designerWindow.aptTecReports.showHideDesigner(this.isPreviewTypeDesigner);
     }
 
     get aptTecReports() {
-        return this.#designerWindow.aptTecReports;
+        return this.designerWindow.aptTecReports;
     }
     /**
      * Add the preview button
@@ -143,32 +145,32 @@ window.AptTecReporting.Integration = class AptTecIntegration {
         {
             const reportId = $(this).data('report-id');
             const gridId = $(this).data('grid-id');
-            aptIntegration.#designerWindow.aptTecReports.reportId = reportId;
+            aptIntegration.designerWindow.aptTecReports.reportId = reportId;
             if (typeof dataSetter === 'function') {
-                aptIntegration.#designerWindow.aptTecReports.dataGetter = dataSetter;
+                aptIntegration.designerWindow.aptTecReports.dataGetter = dataSetter;
             }
             else {
                 switch (dataSetter) {
                 case 'direct':
-                    aptIntegration.#designerWindow.aptTecReports.dataGetter = () => { 
+                    aptIntegration.designerWindow.aptTecReports.dataGetter = () => { 
                         aptIntegration.aptTecData.Data = buttonResult.previewButton[0].printData;
                         return aptIntegration.aptTecData; 
                     };
                     break;
                 case 'kendoGrid':
-                    aptIntegration.#designerWindow.aptTecReports.dataGetter = () => { 
+                    aptIntegration.designerWindow.aptTecReports.dataGetter = () => { 
                         aptIntegration.aptTecData.Data =  getKendoSortedData(gridId);
                         return aptIntegration.aptTecData; 
                     };
                     break;
                 default:
-                    aptIntegration.#designerWindow.aptTecReports.dataGetter = null;
+                    aptIntegration.designerWindow.aptTecReports.dataGetter = null;
                     break;
                 }
             }
             $('#' + aptIntegration.#previewFrameId).show();
             //this always loads the template from server and does entire refresh.
-            aptIntegration.#designerWindow.aptTecReports.refreshReport();
+            aptIntegration.designerWindow.aptTecReports.refreshReport();
         } );
     }
 
@@ -190,10 +192,10 @@ window.AptTecReporting.Integration = class AptTecIntegration {
     }
 
     print() {
-        this.#designerWindow.document.getElementById('reportIframe').contentWindow.print();
+        this.designerWindow.document.getElementById('reportIframe').contentWindow.print();
     }
     getPageCount() {
-        // const contentWindow = this.#designerWindow.document.getElementById('reportIframe').contentWindow;
+        // const contentWindow = this.designerWindow.document.getElementById('reportIframe').contentWindow;
         // const countString = contentWindow.getComputedStyle(
         //     contentWindow.document.querySelector(".pagedjs_pages"), null)
         //     .getPropertyValue("--pagedjs-page-count");
@@ -201,6 +203,6 @@ window.AptTecReporting.Integration = class AptTecIntegration {
         //     return parseInt(countString);
         // }
         // return -1;
-        return this.#designerWindow.aptTecReports.PagesCount;
+        return this.designerWindow.aptTecReports.PagesCount;
     }
 }; 

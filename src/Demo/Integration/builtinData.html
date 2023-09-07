@@ -55,54 +55,55 @@
         </script>
     <script>
         const baseLocation = '/';
-        var aptTecintegration;
+        var aptTecIntegration;
         //listen/register this handler first before any other body part loads
         document.addEventListener('DOMContentLoaded', () => {
             //this executes after all modules/deferred scripts are loaded
-            aptTecintegration = new window.AptTecReporting.Integration(baseLocation, 'builtinLocalDataFrame', baseLocation + 'Data/Templates/');
+            aptTecIntegration = new window.AptTecReporting.Integration(baseLocation, 'builtinLocalDataFrame', baseLocation + 'Data/Templates/');
 
-            const localJobQueueButtonResult = aptTecintegration.addPreviewButton(
-                'jobqueuereport', '.previewParent .jobqueue', null, null, 'btn btn-success', 'fa fa-print', 'Job Queue', 'start', null,
-                () => { 
-                    alert("job queue report print clicked"); 
-                    aptTecintegration.print(); 
-                });
+            const localJobQueueButtonResult = aptTecIntegration.addPreviewButton(
+                'jobqueuereport', '.previewParent .jobqueue', null, null, 
+                'btn btn-success', 'fa fa-print', 'Job Queue', 'start' );
 
-            const localLetterButtonResult = aptTecintegration.addPreviewButton('letter',
+            const localLetterButtonResult = aptTecIntegration.addPreviewButton('letter',
                 '.previewParent .letter', null,
                 () => fetch(baseLocation + 'Data/Samples/coverletter.json').then(response => response.json())
-                //aptTecintegration.fetchData(, 'CommonData', 'CommonData')
-                , 'btn btn-success', 'fa fa-print', 'Letter', 'end', null,
-                () => { 
-                    alert("letter print clicked"); 
-                    aptTecintegration.print(); 
-                }); 
+                //aptTecIntegration.fetchData(, 'CommonData', 'CommonData')
+                , 'btn btn-success', 'fa fa-print', 'Letter', 'end' ); 
 
-            const dailyTotalsButtonResult = aptTecintegration.addPreviewButton('dailyTotals',
+            const dailyTotalsButtonResult = aptTecIntegration.addPreviewButton('dailyTotals',
                 '.previewParent .dailyTotals', null,
                 () => fetch(baseLocation + 'Data/Samples/dailyTotalData.json')
                         .then(response => response.json())
                         .then(jsonObject => {
                             // do you custom logic here and populate the listDailyTotals
-                            aptTecintegration.aptTecData.CommonData = {
+                            aptTecIntegration.aptTecData.CommonData = {
                                 "OrgAddress1": 'Your Client Address Line 1',
                                 "OrgAddress2": 'Your Client Address Line 2',
                                 "OrgAddress3": 'Your Client Address Line 3',
                                 "ClientTitle": 'Your Client Title'
                             };
-                            aptTecintegration.aptTecData.InstanceData = {
+                            aptTecIntegration.aptTecData.InstanceData = {
                                 "ReportStartDate": '01/01/2023',
                                 "ReportEndDate": '01/01/2023' 
                             };
                             jsonObject.listDailyTotals.forEach(element => {
                                 element.orderDate = new Date(element.orderDate);
                             });
-                            aptTecintegration.aptTecData.Data = jsonObject.listDailyTotals;
-                            return aptTecintegration.aptTecData;
+                            aptTecIntegration.aptTecData.Data = jsonObject.listDailyTotals;
+                            return aptTecIntegration.aptTecData;
 
                         })
-                //aptTecintegration.fetchData(, 'CommonData', 'CommonData')
+                //aptTecIntegration.fetchData(, 'CommonData', 'CommonData')
                 , 'btn btn-success', 'fa fa-print', 'Daily Totals', 'end'); 
+        });
+        
+        // Add an event listener to handle the chunkCompleted event.
+        document.addEventListener('print', (event) => {
+            const eventDetails = event.details;
+            alert(`${eventDetails.reportId} print clicked. pages =${eventDetails.eventData}`);
+            //event.preventDefault();
+            ////aptTecIntegration.print(); 
         });
     </script>
 </body>

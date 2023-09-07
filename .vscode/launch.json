@@ -8,7 +8,7 @@
             "type": "chrome",
             "request": "launch",
             "name": "Open main.html",
-            "file": "http://127.0.0.1:5501/src/Demo/Integration/builtinData.html",
+            "url": "http://127.0.0.1:5501/Demo/Integration/builtinData.html",
             "webRoot": "${workspaceFolder}/src",
             "preLaunchTask": "${defaultBuildTask}"
         }

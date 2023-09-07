@@ -54,14 +54,10 @@ const refreshData = () => {
 $('.refreshMenu').click(function () { refreshData(); return false; } ); 
 $('.optionsMenu').click(function () { ShowRulerPopup(); return false; });
 $('.closeMenu').click(function () { window.aptTecReports.closeAction(); return false; });
-function PrintReport(isPrint = false) {
-    //isPrint passed from client direct print or printHandler is not defined direct print
-    if (isPrint === true || (typeof window.aptTecReports.printCallback !== 'function') ) {
+function PrintReport() {
+    const isHandled = window.aptTecReports.raiseEvent('print', window.aptTecReports.PagesCount);
+    if (!isHandled ) {
         document.getElementById('reportIframe').contentWindow.print();
-    }
-    else {
-        if (typeof window.aptTecReports.printCallback === 'function')
-            window.aptTecReports.printCallback();
     }
 }
 function ShowRulerPopup() {

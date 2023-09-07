@@ -6,7 +6,7 @@ export default class AptTecReports
 {
     #previewPageUrl = '';
     #closeAction = null;
-    #printCallback = null;
+
     #templateToReplace = '{{SourceUrl}}';
     #internalCommonData = {
         'PI': '<span class=\'pageIndex\'>&nbsp;</span>',
@@ -41,6 +41,7 @@ export default class AptTecReports
         this.reportId = reportId;
         this.reportFrameId = iFrameId;
 
+        this.PagesCount = -1;
         this.ReportSchema = null;
         this.ReportParams = null;
         this.ServerParams = null;
@@ -102,11 +103,28 @@ export default class AptTecReports
         $('.closeMenu').show();
     }
 
-    get printCallback() {
-        return this.#printCallback;
-    }
-    set printCallback(x) {
-        this.#printCallback = x;
+    raiseEvent(eventName, eventData) {
+        const event = new Event(eventName, { "cancelable": true });
+        event.details = {
+            reportId: this.reportId,
+            eventData: eventData
+        };
+
+        switch (eventName) {
+        case 'beforePreviewParsed':
+            this.PagesCount = -1;
+            $('.printMenu').attr('disabled', 'disabled');
+            break;
+        case 'afterPreviewRendered':
+            this.PagesCount = eventData.length;
+            $('.printMenu').removeAttr('disabled');
+            break;
+    
+        default:
+            break;
+        }
+        window.parent.document.dispatchEvent(event);
+        return event.defaultPrevented;
     }
 
     enableExport(isVisible) {
@@ -117,12 +135,10 @@ export default class AptTecReports
     }
 
     #reportData = null;
-    get reportData()
-    {
+    get reportData() {
         return this.#reportData;
     }
-    set reportData(data)
-    {
+    set reportData(data) {
         this.#reportData = data;
         //the values from caller will always override internal variables.
         this.#reportData.CommonData = { ...this.#internalCommonData , ...this.#reportData.CommonData } ;
@@ -131,20 +147,17 @@ export default class AptTecReports
     //methods
     //custom code to load the reports==========================================================
 
-    initializeDesigner(isRefreshReport)
-    {
+    initializeDesigner(isRefreshReport) {
         //convert json to schema https://codebeautify.org/json-to-json-schema-generator
         const schemaParamsUrl = this.sourceUrl + this.schemaLocation + 'ReportParametersSchema.json';
         fetch(schemaParamsUrl)
             .then(response => response.json())
-            .then(reportSchema =>
-            {
+            .then(reportSchema => {
                 this.ReportSchema = reportSchema;
                 if (isRefreshReport)
                     this.refreshReport();
             })
-            .catch(error =>
-            {
+            .catch(error => {
                 console.error('Error loading reports schema:', error);
             });
     }
@@ -180,71 +193,58 @@ export default class AptTecReports
 
     // Function to fetch the JSON data and perform the replacement
     refreshData() {
-        if (typeof this.dataGetter === 'function')
-        {
+        if (typeof this.dataGetter === 'function') {
             var response = this.dataGetter(this.ReportParams.DataSource);
-            if (response && typeof response.then === 'function' && typeof response.catch === 'function')
-            {
+            if (response && typeof response.then === 'function' && typeof response.catch === 'function') {
                 // It's a native Promise or a custom Promise-like object
-                response.then((result) =>
-                {
+                response.then((result) => {
                     console.log('Promise resolved with result:', result);
                     // Continue further operations here using the result value
                     this.reportData = result;     //assume it is a direct data.
                     this.onReportParametersChanged();
-                }).catch((error) =>
-                {
+                }).catch((error) => {
                     console.error('Promise rejected with error:', error);
                     // Handle errors or perform fallback actions here
                 });
             }
-            else
-            {
+            else {
                 this.reportData = response;     //assume it is a direct data.
                 this.onReportParametersChanged();
             }
         }
-        else
-        {
-            if (this.ReportParams.DataSource)
-            {
+        else {
+            if (this.ReportParams.DataSource) {
                 this.ReportParams.DataSource = this.ReportParams.DataSource.replace(
                     '{{dataLocation}}', this.sourceUrl + this.dataLocation);
                 fetch(this.ReportParams.DataSource)
                     .then(response => response.json())
-                    .then(data =>
-                    {
+                    .then(data => {
                         this.reportData = data;
                         this.onReportParametersChanged();
                     })
-                    .catch(error =>
-                    {
+                    .catch(error => {
                         console.error('Error loading report data:', error);
                     });
             }
         }
     }
 
-    onReportParametersChanged(forceRefresh)
-    {
-        if (forceRefresh || !(this.ReportTemplateSource) || this.ReportTemplateSource !== this.ReportParams.ReportTemplate)
-        {
+    onReportParametersChanged(forceRefresh) {
+        if (forceRefresh || !(this.ReportTemplateSource) 
+            || this.ReportTemplateSource !== this.ReportParams.ReportTemplate) {
             // Load the JSON data using fetch API (you can also use XMLHttpRequest)
             fetch(this.#previewPageUrl + this.ReportParams.ReportTemplate)
                 .then(response => response.text())
-                .then(html_template =>
-                {
+                .then(html_template => {
                     this.htmlTemplate = html_template;
                     this.ReportTemplateSource = this.#previewPageUrl + this.ReportParams.ReportTemplate;
                     this.loadReportTemplate();
                 })
-                .catch(error =>
-                {
+                .catch(error => {
                     console.error('Error loading report template:', error);
                 });
         }
-        else
-        {
+        else {
             this.loadReportTemplate();
         }
     }
@@ -252,8 +252,7 @@ export default class AptTecReports
         this.reportData.CommonData.CurrentDateTime = this.getFormattedDate();
     }
 
-    loadReportTemplate()
-    {
+    loadReportTemplate() {
         //Always refresh certain common parameters
         this.#refreshCommonParameters();
 
@@ -273,10 +272,8 @@ export default class AptTecReports
         window.SchemaFormHandler.initJsoneditor();
     }
     // Function to replace placeholders in the HTML template with JSON data
-    replacePlaceholders(html_template, reportDataParams)
-    {
-        for (const key in reportDataParams)
-        {
+    replacePlaceholders(html_template, reportDataParams) {
+        for (const key in reportDataParams) {
             try {
                 const placeholder = new RegExp('{{' + key + '}}', 'g');
                 var value = reportDataParams[key];
@@ -284,16 +281,13 @@ export default class AptTecReports
                     continue;
 
                 //value = value.replace("{PageNumber}", "<span class='currentPageNumber'></span>");
-                if (typeof value === 'string')
-                {
+                if (typeof value === 'string') {
                     const functionStart = '{@', functionEnd = '@}';
                     var indexToSearch = 0;
                     var nextIndex = value.indexOf(functionStart, indexToSearch);
-                    while (nextIndex >= 0)
-                    {
+                    while (nextIndex >= 0) {
                         var endIndex = value.indexOf(functionEnd, nextIndex);
-                        if (endIndex >= 0)
-                        {
+                        if (endIndex >= 0) {
                             const stringFound = value.substring(nextIndex + functionStart.length, endIndex);
                             try {
                                 // https://stackoverflow.com/questions/359788/how-to-execute-a-javascript-function-when-i-have-its-name-as-a-string/359910#359910

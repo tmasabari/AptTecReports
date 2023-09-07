@@ -18,6 +18,7 @@ module.exports = {
         // Entry point for preview content
         previewContent: [
             './Resources/Scripts/printContent/report.js',
+            './Resources/Scripts/printContent/pagedjs-hooks.js',
             './Resources/Scripts/printContent/pagedjs-repeat-table-header.js']
     } ,
 

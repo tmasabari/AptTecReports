@@ -101,11 +101,12 @@ window.AptTecReporting.Integration = class AptTecIntegration {
      * @returns {object} AlreadyExists - true if the button already exists and the add logic is skipped, false if it is newly added.
      */
     addPreviewButton(reportId, buttonParent, attributesObject = {}, dataSetter = null,
-        buttonClass = 'btn btn-success', iconClass = 'fa fa-print', buttonText = '', location = 'start', buttonid=null, printHandler = null)  {
+        buttonClass = 'btn btn-success', iconClass = 'fa fa-print', 
+        buttonText = '', location = 'start', buttonid=null )  {
         var buttonResult = this.#addPreviewButton(buttonid, reportId, buttonParent, attributesObject,
             buttonClass, iconClass, buttonText, location);
         if (buttonResult.AlreadyExists) return;
-        this.#HandlePreviewButton(buttonResult, dataSetter, printHandler);
+        this.#HandlePreviewButton(buttonResult, dataSetter);
         return buttonResult;
     }
     #addPreviewButton(buttonid, reportId, buttonParent, attributesObject, 
@@ -135,15 +136,14 @@ window.AptTecReporting.Integration = class AptTecIntegration {
      *      'kendoGrid' - the JSON data will be read directly from the Kendo grid using data-id set using button
      * @returns 
      */
-    #HandlePreviewButton(buttonResult, dataSetter, printHandler ) {
+    #HandlePreviewButton(buttonResult, dataSetter ) {
         const aptIntegration = this;
         buttonResult.previewButton.click(function ()  
-        //this is closure or inner function so it always rememebers the correct dataSetter, printHandler
+        //this is closure or inner function so it always rememebers the correct dataSetter
         {
             const reportId = $(this).data('report-id');
             const gridId = $(this).data('grid-id');
             aptIntegration.#designerWindow.aptTecReports.reportId = reportId;
-            aptIntegration.#designerWindow.aptTecReports.printCallback = printHandler;
             if (typeof dataSetter === 'function') {
                 aptIntegration.#designerWindow.aptTecReports.dataGetter = dataSetter;
             }
@@ -191,5 +191,16 @@ window.AptTecReporting.Integration = class AptTecIntegration {
 
     print() {
         this.#designerWindow.document.getElementById('reportIframe').contentWindow.print();
+    }
+    getPageCount() {
+        // const contentWindow = this.#designerWindow.document.getElementById('reportIframe').contentWindow;
+        // const countString = contentWindow.getComputedStyle(
+        //     contentWindow.document.querySelector(".pagedjs_pages"), null)
+        //     .getPropertyValue("--pagedjs-page-count");
+        // if (countString) {
+        //     return parseInt(countString);
+        // }
+        // return -1;
+        return this.#designerWindow.aptTecReports.PagesCount;
     }
 }; 

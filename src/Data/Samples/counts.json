@@ -1,0 +1,26 @@
+[
+    {
+        "Id": "9bb8dba6-72b5-42bc-8d0d-de41581da99b",
+        "Description": "Item Description 1",
+        "ReceiptsCount": 22,
+        "ReceiptsPercentage": 46.810000000000,
+        "ItemsCount": 49,
+        "ItemsPercentage": 61.250000000000,
+        "CorrectionCount": 1,
+        "CorrectionPercentage": 2.130000000000,
+        "BillsCount": 3,
+        "BillsPercentage": 16.670000000000
+    },
+    {
+        "Id": "700d6365-a221-470a-aec5-501bba62262a",
+        "Description": "Item Description 2",
+        "ReceiptsCount": 25,
+        "ReceiptsPercentage": 53.190000000000,
+        "ItemsCount": 31,
+        "ItemsPercentage": 38.750000000000,
+        "CorrectionCount": 19,
+        "CorrectionPercentage": 40.430000000000,
+        "BillsCount": 15,
+        "BillsPercentage": 83.330000000000
+    }
+]

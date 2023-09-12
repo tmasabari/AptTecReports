@@ -38,6 +38,9 @@
                     <div class="jobqueue"></div>
                     <div class="letter"></div>
                     <div class="dailyTotals"></div>
+                    <button title="Counts Report" id="countsReport"
+                        class="btn btn-success" onclick="javascript:printCountsReport();">
+                        Counts Report</button>
                 </td>
             </tr>
         </tbody>
@@ -105,6 +108,30 @@
             //event.preventDefault();
             ////aptTecIntegration.print(); 
         });
+
+        function printCountsReport() {
+            window.aptTecIntegration.designerWindow.aptTecReports.dataGetter = () => {
+                const url = baseLocation + 'Data/Samples/counts.json';
+                return fetch(url)
+                    .then(response => response.json())
+                    .then(jsonObject => {
+                        const printData = {};
+                        printData.CommonData = {
+                            "OrgAddress1": 'Your Client Address Line 1',
+                            "OrgAddress2": 'Your Client Address Line 2',
+                            "OrgAddress3": 'Your Client Address Line 3',
+                            "ClientTitle": 'Your Client Title'
+                        };
+                        printData.InstanceData = {
+                            "StartDate": '01/01/2022',
+                            "EndDate": '01/01/2023'
+                        };
+                        printData.Data = jsonObject;
+                        return printData;
+                    });
+            };
+            aptTecIntegration.showPreview('countsReport');
+        }
     </script>
 </body>
 </html>

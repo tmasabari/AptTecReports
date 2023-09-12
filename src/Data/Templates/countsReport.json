@@ -1,0 +1,123 @@
+{
+    "Layout": {
+        "PaperSize": "legal",
+        "PaperLayout": "landscape",
+        "Report-Top-Margin": 5,
+        "Report-Right-Margin": 5,
+        "Report-Bottom-Margin": 5,
+        "Report-Left-Margin": 5,
+        "Page-Header-Height": 30,
+        "Page-Footer-Height": 5,
+        "CustomStyle": ".content .dataTable td { border: 0px; }\n.content .dataTable th  { border-width: 1px 0px; }\n .content .dataTable { border-width: 0px 0px 1px 0px;}"
+    },
+    "Content": [
+        {
+            "TableContent": [
+                {
+                    "isPrint": true,
+                    "field": "Description",
+                    "displayName": "Description",
+                    "columnSize": "15ch",
+                    "format": "",
+                    "maxLength": 0,
+                    "TitleStyle": "text-align:left;",
+                    "ContentStyle": "text-align:left;"
+                },
+                {
+                    "isPrint": true,
+                    "field": "ReceiptsCount",
+                    "displayName": "Receipts",
+                    "columnSize": "5ch",
+                    "format": "",
+                    "maxLength": 0,
+                    "TitleStyle": "text-align:right",
+                    "ContentStyle": "text-align:right; ",
+                    "TotalCount": true
+                },
+                {
+                    "isPrint": true,
+                    "field": "ReceiptsPercentage",
+                    "displayName": "%",
+                    "columnSize": "3ch",
+                    "format": "",
+                    "maxLength": 0,
+                    "TitleStyle": "text-align:right",
+                    "ContentStyle": "text-align:right; ",
+                    "TotalCount": true
+                },
+                {
+                    "isPrint": true,
+                    "field": "ItemsCount",
+                    "displayName": "Items Count",
+                    "columnSize": "5ch",
+                    "format": "",
+                    "maxLength": 0,
+                    "TitleStyle": "text-align:right",
+                    "ContentStyle": "text-align:right; ",
+                    "TotalCount": true
+                },
+                {
+                    "isPrint": true,
+                    "field": "ItemsPercentage",
+                    "displayName": "%",
+                    "columnSize": "3ch",
+                    "format": "",
+                    "maxLength": 0,
+                    "TitleStyle": "text-align:right",
+                    "ContentStyle": "text-align:right; ",
+                    "TotalCount": true
+                },
+                {
+                    "isPrint": true,
+                    "field": "CorrectionCount",
+                    "displayName": "Correction",
+                    "columnSize": "5ch",
+                    "format": "",
+                    "maxLength": 0,
+                    "TitleStyle": "text-align:right",
+                    "ContentStyle": "text-align:right; ",
+                    "TotalCount": true
+                },
+                {
+                    "isPrint": true,
+                    "field": "CorrectionPercentage",
+                    "displayName": "%",
+                    "columnSize": "3ch",
+                    "format": "",
+                    "maxLength": 0,
+                    "TitleStyle": "text-align:right",
+                    "ContentStyle": "text-align:right; ",
+                    "TotalCount": true
+                },
+                {
+                    "isPrint": true,
+                    "field": "BillsCount",
+                    "displayName": "Bills Count",
+                    "columnSize": "5ch",
+                    "format": "",
+                    "maxLength": 0,
+                    "TitleStyle": "text-align:right",
+                    "ContentStyle": "text-align:right; ",
+                    "TotalCount": true
+                },
+                {
+                    "isPrint": true,
+                    "field": "BillsPercentage",
+                    "displayName": "%",
+                    "columnSize": "3ch",
+                    "format": "",
+                    "maxLength": 0,
+                    "TitleStyle": "text-align:right",
+                    "ContentStyle": "text-align:right; ",
+                    "TotalCount": true
+                }
+            ]
+        }
+    ],
+    "ReportTemplate": "paged.html",
+    "DataSource": "",
+    "PageHeadersHtml": "<table style=\"border-collapse:collapse;width: 100%;\">\n    <tbody>\n        <tr>\n            <td style=\"width: 20%;text-align:left;\">{{OrgAddress1}}<br>{{OrgAddress2}}<br>{{OrgAddress3}}</td>\n            <td style=\"width: 60%; text-align: center;\">{{ClientTitle}}<br><strong style=\"font-family: &quot;times new roman&quot;, times, serif; font-size: 24px;\">Productivity Report</strong><br>Report Date <strong>{{StartDate}} - {{EndDate}}</strong></td>\n            <td style=\"width: 20%;text-align:right;\">Page{{PI}} of {{PC}}<br>{{CurrentDateTime}}</td>\n        </tr>\n    </tbody>\n</table>",
+    "PageFootersHtml": "",
+    "ReportFootersHtml": "",
+    "ReportHeadersHtml": ""
+}

@@ -171,6 +171,16 @@
                 "ContentStyle": {
                     "type": "string",
                     "title": "Content Style"
+                },
+                "PageCount": {
+                    "type": "boolean",
+                    "format": "checkbox",
+                    "title": "Content Style"
+                },
+                "TotalCount": {
+                    "type": "boolean",
+                    "format": "checkbox",
+                    "title": "Content Style"
                 }
             },
             "required": [

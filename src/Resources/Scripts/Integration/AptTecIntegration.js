@@ -145,7 +145,6 @@ window.AptTecReporting.Integration = class AptTecIntegration {
         {
             const reportId = $(this).data('report-id');
             const gridId = $(this).data('grid-id');
-            aptIntegration.designerWindow.aptTecReports.reportId = reportId;
             if (typeof dataSetter === 'function') {
                 aptIntegration.designerWindow.aptTecReports.dataGetter = dataSetter;
             }
@@ -168,10 +167,15 @@ window.AptTecReporting.Integration = class AptTecIntegration {
                     break;
                 }
             }
-            $('#' + aptIntegration.#previewFrameId).show();
-            //this always loads the template from server and does entire refresh.
-            aptIntegration.designerWindow.aptTecReports.refreshReport();
+            aptIntegration.showPreview(reportId);
         } );
+    }
+
+    showPreview(reportId) {
+        this.designerWindow.aptTecReports.reportId = reportId;
+        $('#' + this.#previewFrameId).show();
+        //this always loads the template from server and does entire refresh.
+        this.designerWindow.aptTecReports.refreshReport();
     }
 
     //return aptTecintegration.sendTelerikData("#" + printableGridId, "/Office/Services/GetMaster.aspx?

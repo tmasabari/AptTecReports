@@ -126,7 +126,10 @@ function buildVariablesSection() {
     // eslint-disable-next-line quotes
     const tableTag = `<table id='templateVariableTable' class='dataTable display' style='width:100%'></table>`;
     document.querySelector('#divVariableContainer').innerHTML += tableTag;
-    const tableData = objectToArray(window.aptTecReports.reportData.CommonData);
+    const mergedParams = {  
+        ...window.aptTecReports.reportData.CommonData, 
+        ...window.aptTecReports.reportData.InstanceData };
+    const tableData = objectToArray(mergedParams);
     const dataTableConfig = {
         info: false, //hide footer Showing 1 to 79 of 79 entries
         ordering: false,

@@ -2,6 +2,11 @@
 # yarn lockfile v1
 
 
+"@apttec/utils@^1.0.7":
+  version "1.0.7"
+  resolved "https://registry.npmjs.org/@apttec/utils/-/utils-1.0.7.tgz"
+  integrity sha512-B7BJVkLH5C0Gql6rwVHw8iQpmbUjWWi3cU6CEMgDQuFYAcwgVQmaDybZ1G7DJ+hF0fX3vw0NV5TPORwWg1g3Fw==
+
 "@discoveryjs/json-ext@^0.5.0":
   version "0.5.7"
   resolved "https://registry.npmjs.org/@discoveryjs/json-ext/-/json-ext-0.5.7.tgz"

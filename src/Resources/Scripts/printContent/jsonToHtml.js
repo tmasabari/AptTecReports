@@ -1,5 +1,5 @@
 'use strict';
-import { firstNCharacters } from '../Common/utilities.js';
+import { firstNCharacters } from '@apttec/utils';
 export function appendJsonAsDataTable(aptTecReports, tableIndex, tableConfiguration, 
     tableDataSource, contentDOMElement) {
 
@@ -33,6 +33,7 @@ export function appendJsonAsDataTable(aptTecReports, tableIndex, tableConfigurat
         columns: mapProperties(aptTecReports, printableColumns),
     };
     if (countableColumns && countableColumns.length > 0) {
+        // https://datatables.net/examples/advanced_init/footer_callback.html
         dataTableConfig.footerCallback =  function () {  //row, data, start, end, display
             let api = this.api();
     

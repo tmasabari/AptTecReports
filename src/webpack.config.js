@@ -11,6 +11,9 @@ module.exports = {
     // Path to your entry point. From this file Webpack will begin its work
     // if you split the existing file please clean the dist folder first 
     entry: {
+        // Entry point for integration
+        AptTecIntegration: [
+            './Resources/Scripts/Integration/AptTecIntegration.js' ],
         // Entry point for designer
         designer: [
             './Resources/Scripts/Designer/designer.js',

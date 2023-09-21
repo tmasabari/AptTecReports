@@ -8,8 +8,7 @@ import DataTable from 'datatables.net-dt';
 import AptTecReports from './AptTecReports.js';
 import SchemaFormHandler from './SchemaFormHandler.js';
 import { ShowPopup } from './popup.js';
-//import { AptTecExporter as Exporter } from './Exporter.js';
-import { Downloader } from '../Common/Downloader.js';
+import { createUrlFromObject, autoDownloadUrl } from '@apttec/utils';
 
 //add list items for rulers
 addTags($(document)[0], '.ruler-x', '<li></li>', 50);
@@ -70,9 +69,8 @@ const saveParameters = () => {
     
 const exportParameters = () => {
     var reportParams = window.SchemaFormHandler.getCurrentParameters();
-    const downloader = new Downloader();
-    const url = downloader.generateJsonUrlFromObject(reportParams);
-    downloader.autoDownloadUrl(url, 'Export - report template -' + window.aptTecReports.reportId + '.json');
+    const url = createUrlFromObject(reportParams);
+    autoDownloadUrl(url, 'Export - report template -' + window.aptTecReports.reportId + '.json');
     URL.revokeObjectURL(url);
 };
 

@@ -1,5 +1,5 @@
 'use strict';
-import {  mergeExistingProperties } from '../Common/utilities.js';
+import { mergeExistingProperties } from '@apttec/utils';
 import * as dayjs from 'dayjs';
 // https://jsonformatter.curiousconcept.com/ to convert js code to json object
 export default class AptTecReports

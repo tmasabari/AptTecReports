@@ -38,9 +38,11 @@
                     <div class="jobqueue"></div>
                     <div class="letter"></div>
                     <div class="dailyTotals"></div>
-                    <button title="Counts Report" id="countsReport"
-                        class="btn btn-success" onclick="javascript:printCountsReport();">
-                        Counts Report</button>
+                    <div>
+                        <button title="Counts Report" id="countsReport" class="btn btn-success"
+                        onclick="javascript:printCountsReport();">
+                        <i class='fa fa-print'></i> Counts Report</button>
+                    </div>
                 </td>
             </tr>
         </tbody>
@@ -53,62 +55,14 @@
         src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/js/all.min.js"></script>  
 
-    <script src="/Resources/Scripts/Integration/AptTecIntegration.js" type="module"
+    <script src="/dist/AptTecIntegration.bundle.js" type="module"
         crossorigin="anonymous">
         </script>
     <script>
         const baseLocation = '/';
         var aptTecIntegration;
-        //listen/register this handler first before any other body part loads
-        document.addEventListener('DOMContentLoaded', () => {
-            //this executes after all modules/deferred scripts are loaded
-            aptTecIntegration = new window.AptTecReporting.Integration(baseLocation, 'builtinLocalDataFrame', baseLocation + 'Data/Templates/');
 
-            const localJobQueueButtonResult = aptTecIntegration.addPreviewButton(
-                'jobqueuereport', '.previewParent .jobqueue', null, null, 
-                'btn btn-success', 'fa fa-print', 'Job Queue', 'start' );
-
-            const localLetterButtonResult = aptTecIntegration.addPreviewButton('letter',
-                '.previewParent .letter', null,
-                () => fetch(baseLocation + 'Data/Samples/coverletter.json').then(response => response.json())
-                //aptTecIntegration.fetchData(, 'CommonData', 'CommonData')
-                , 'btn btn-success', 'fa fa-print', 'Letter', 'end' ); 
-
-            const dailyTotalsButtonResult = aptTecIntegration.addPreviewButton('dailyTotals',
-                '.previewParent .dailyTotals', null,
-                () => fetch(baseLocation + 'Data/Samples/dailyTotalData.json')
-                        .then(response => response.json())
-                        .then(jsonObject => {
-                            // do you custom logic here and populate the listDailyTotals
-                            aptTecIntegration.aptTecData.CommonData = {
-                                "OrgAddress1": 'Your Client Address Line 1',
-                                "OrgAddress2": 'Your Client Address Line 2',
-                                "OrgAddress3": 'Your Client Address Line 3',
-                                "ClientTitle": 'Your Client Title'
-                            };
-                            aptTecIntegration.aptTecData.InstanceData = {
-                                "ReportStartDate": '01/01/2023',
-                                "ReportEndDate": '01/01/2023' 
-                            };
-                            jsonObject.listDailyTotals.forEach(element => {
-                                element.orderDate = new Date(element.orderDate);
-                            });
-                            aptTecIntegration.aptTecData.Data = jsonObject.listDailyTotals;
-                            return aptTecIntegration.aptTecData;
-
-                        })
-                //aptTecIntegration.fetchData(, 'CommonData', 'CommonData')
-                , 'btn btn-success', 'fa fa-print', 'Daily Totals', 'end'); 
-        });
-        
-	    // Add an event listener to handle the AptTec Print button click event.
-        document.addEventListener('print', (event) => {
-            const eventDetails = event.details;
-            alert(`${eventDetails.reportId} print clicked. pages =${eventDetails.eventData}`);
-            //event.preventDefault();
-            ////aptTecIntegration.print(); 
-        });
-
+        //Integration option 1: direct set the data getter property and invoke the showPreview method
         function printCountsReport() {
             window.aptTecIntegration.designerWindow.aptTecReports.dataGetter = () => {
                 const url = baseLocation + 'Data/Samples/counts.json';
@@ -132,6 +86,77 @@
             };
             aptTecIntegration.showPreview('countsReport');
         }
+        
+        //listen/register this handler first before any other body part loads
+        document.addEventListener('DOMContentLoaded', () => {
+            //this executes after all modules/deferred scripts are loaded
+
+            aptTecIntegration = new window.AptTecReporting.Integration(
+                baseLocation, 'builtinLocalDataFrame', baseLocation + 'Data/Templates/', null , true);
+              
+
+            //Integration option 2: Get the data whenever the users clicks the button using a anonymous/arrow call back function
+            const dailyTotalsButtonResult = aptTecIntegration.addPreviewButton('dailyTotals',
+                '.previewParent .dailyTotals', null,
+                () => fetch(baseLocation + 'Data/Samples/dailyTotalData.json')
+                        .then(response => response.json())
+                        .then(jsonObject => {
+                            // do you custom logic here and populate the listDailyTotals
+                            const printData = {};
+                            printData.CommonData = {
+                                "OrgAddress1": 'Your Client Address Line 1',
+                                "OrgAddress2": 'Your Client Address Line 2',
+                                "OrgAddress3": 'Your Client Address Line 3',
+                                "ClientTitle": 'Your Client Title'
+                            };
+                            printData.InstanceData = {
+                                "ReportStartDate": '01/01/2023',
+                                "ReportEndDate": '01/01/2023' 
+                            };
+                            jsonObject.listDailyTotals.forEach(element => {
+                                element.orderDate = new Date(element.orderDate);
+                            });
+                            printData.Data = jsonObject.listDailyTotals;
+                            return printData;
+                        })
+                , 'btn btn-success', 'fa fa-print', ' Daily Totals', 'end'); 
+
+            //Integration option 3: RARE use this method only if there is no need to pass the parameters either from users or built in logic
+            //search the data in the URL specified in the template file "DataSource": "{{dataLocation}}/jobs.json",
+            const localJobQueueButtonResult = aptTecIntegration.addPreviewButton(
+                'jobqueuereport', '.previewParent .jobqueue', null, null,
+                'btn btn-success', 'fa fa-print', ' Job Queue', 'start');
+
+            //Integration option 4: RARE Suitable only for having one preview button per AptTecReporting.Integration object
+            //Use this method only if the data is already populated before generating the button
+            //Get the data first, Add the print preview button and Assign the data directly to the button
+            fetch(baseLocation + 'Data/Samples/coverletter.json')
+                .then(response => response.json())
+                .then(data =>
+                {
+                    const localLetterButtonResult = aptTecIntegration.addPreviewButton('letter',
+                        '.previewParent .letter', null, 'direct'
+                        , 'btn btn-success', 'fa fa-print', ' Letter', 'end');
+                    aptTecIntegration.aptTecData.CommonData = data.CommonData;
+                    aptTecIntegration.aptTecData.InstanceData = data.InstanceData;
+                    localLetterButtonResult.previewButton.printData = data.Data;
+                });
+
+            // Kendo open source does not provide option to test Grid
+            // https://github.com/telerik/kendo-ui-core
+        }); //DOMContentLoaded ends here
+
+
+        var printDisableToggle =false;
+   	    // Add an event listener to handle the AptTec Print button click event.
+        document.addEventListener('print', (event) => {
+            const eventDetails = event.details;
+            alert(`${eventDetails.reportId} print clicked. pages =${eventDetails.eventData}, 
+                Is your print disabled = ${printDisableToggle}`);
+            if(printDisableToggle) event.preventDefault(); //based on your logic you can prevent the print operation 
+            //if you do not call then it means you are allowing the user to take print out.
+            printDisableToggle = !printDisableToggle;
+        });   
     </script>
 </body>
 </html>

@@ -1,30 +1,24 @@
 //https://gist.github.com/theinvensi/e1aacc43bb5a3d852e2e85b08cf85c8a
-class RepeatTableHeadersHandler extends Paged.Handler
-{
-    constructor(chunker, polisher, caller)
-    {
+class RepeatTableHeadersHandler extends Paged.Handler {
+    constructor(chunker, polisher, caller) {
         super(chunker, polisher, caller);
         this.splitTablesRefs = [];
     }
 
-    afterPageLayout(pageElement, page, breakToken, chunker)
-    {
+    afterPageLayout(pageElement, page, breakToken, chunker) {
         this.chunker = chunker;
         this.splitTablesRefs = [];
 
-        if (breakToken)
-        {
+        if (breakToken) {
             const node = breakToken.node;
             const tables = this.findAllAncestors(node, 'table');
             if (node.tagName === 'TABLE') tables.push(node);
 
-            if (tables.length > 0)
-            {
+            if (tables.length > 0) {
                 this.splitTablesRefs = tables.map(t => t.dataset.ref);
 
                 let thead = node.tagName === 'THEAD' ? node : this.findFirstAncestor(node, 'thead');
-                if (thead)
-                {
+                if (thead) {
                     let lastTheadNode = thead.hasChildNodes() ? thead.lastChild : thead;
                     breakToken.node = this.nodeAfter(lastTheadNode, chunker.source);
                 }
@@ -34,21 +28,16 @@ class RepeatTableHeadersHandler extends Paged.Handler
         }
     }
 
-    hideEmptyTables(pageElement, breakTokenNode)
-    {
-        this.splitTablesRefs.forEach(ref =>
-        {
-            let table = pageElement.querySelector('[data-ref=\'' + ref + '\']');
-            if (table)
-            {
+    hideEmptyTables(pageElement, breakTokenNode) {
+        this.splitTablesRefs.forEach(ref => {
+            let table = pageElement.querySelector("[data-ref='" + ref + "']");
+            if (table) {
                 let sourceBody = table.querySelector('tbody > tr');
-                if (!sourceBody || this.refEquals(sourceBody.firstElementChild, breakTokenNode))
-                {
+                if (!sourceBody || this.refEquals(sourceBody.firstElementChild, breakTokenNode)) {
                     table.style.visibility = 'hidden';
                     table.style.position = 'absolute';
                     let lineSpacer = table.nextSibling;
-                    if (lineSpacer)
-                    {
+                    if (lineSpacer) {
                         lineSpacer.style.visibility = 'hidden';
                         lineSpacer.style.position = 'absolute';
                     }
@@ -57,41 +46,32 @@ class RepeatTableHeadersHandler extends Paged.Handler
         });
     }
 
-    refEquals(a, b)
-    {
+    refEquals(a, b) {
         return a && a.dataset && b && b.dataset && a.dataset.ref === b.dataset.ref;
     }
 
-    findFirstAncestor(element, selector)
-    {
-        while (element.parentNode && element.parentNode.nodeType === 1)
-        {
+    findFirstAncestor(element, selector) {
+        while (element.parentNode && element.parentNode.nodeType === 1) {
             if (element.parentNode.matches(selector)) return element.parentNode;
             element = element.parentNode;
         }
         return null;
     }
 
-    findAllAncestors(element, selector)
-    {
+    findAllAncestors(element, selector) {
         const ancestors = [];
-        while (element.parentNode && element.parentNode.nodeType === 1)
-        {
+        while (element.parentNode && element.parentNode.nodeType === 1) {
             if (element.parentNode.matches(selector)) ancestors.unshift(element.parentNode);
             element = element.parentNode;
         }
         return ancestors;
     }
 
-    layout(rendered, layout)
-    {
-        this.splitTablesRefs.forEach(ref =>
-        {
+    layout(rendered, layout) {
+        this.splitTablesRefs.forEach(ref => {
             const renderedTable = rendered.querySelector('[data-ref=\'' + ref + '\']');
-            if (renderedTable)
-            {
-                if (!renderedTable.getAttribute('repeated-headers'))
-                {
+            if (renderedTable) {
+                if (!renderedTable.getAttribute('repeated-headers')) {
                     const sourceTable = this.chunker.source.querySelector('[data-ref=\'' + ref + '\']');
                     this.repeatColgroup(sourceTable, renderedTable);
                     this.repeatTHead(sourceTable, renderedTable);
@@ -101,36 +81,29 @@ class RepeatTableHeadersHandler extends Paged.Handler
         });
     }
 
-    repeatColgroup(sourceTable, renderedTable)
-    {
+    repeatColgroup(sourceTable, renderedTable) {
         let colgroup = sourceTable.querySelectorAll('colgroup');
         let firstChild = renderedTable.firstChild;
-        colgroup.forEach((colgroup) =>
-        {
+        colgroup.forEach((colgroup) => {
             let clonedColgroup = colgroup.cloneNode(true);
             renderedTable.insertBefore(clonedColgroup, firstChild);
         });
     }
 
-    repeatTHead(sourceTable, renderedTable)
-    {
+    repeatTHead(sourceTable, renderedTable) {
         let thead = sourceTable.querySelector('thead');
-        if (thead)
-        {
+        if (thead) {
             let clonedThead = thead.cloneNode(true);
             renderedTable.insertBefore(clonedThead, renderedTable.firstChild);
         }
     }
 
-    nodeAfter(node, limiter)
-    {
+    nodeAfter(node, limiter) {
         if (limiter && node === limiter) return;
         let significantNode = this.nextSignificantNode(node);
         if (significantNode) return significantNode;
-        if (node.parentNode)
-        {
-            while ((node = node.parentNode))
-            {
+        if (node.parentNode) {
+            while ((node = node.parentNode)) {
                 if (limiter && node === limiter) return;
                 significantNode = this.nextSignificantNode(node);
                 if (significantNode) return significantNode;
@@ -138,22 +111,19 @@ class RepeatTableHeadersHandler extends Paged.Handler
         }
     }
 
-    nextSignificantNode(sib)
-    {
+    nextSignificantNode(sib) {
         while ((sib = sib.nextSibling)) { if (!this.isIgnorable(sib)) return sib; }
         return null;
     }
 
-    isIgnorable(node)
-    {
+    isIgnorable(node) {
         return (
             (node.nodeType === 8)
             || ((node.nodeType === 3) && this.isAllWhitespace(node))
         );
     }
 
-    isAllWhitespace(node)
-    {
+    isAllWhitespace(node) {
         return !(/[^\t\n\r ]/.test(node.textContent));
     }
 }

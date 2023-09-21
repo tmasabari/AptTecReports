@@ -1,6 +1,5 @@
 'use strict';
-import { getKendoSortedData } from '../Common/utilities.js';
-import { Button } from '../Common/Button.js';
+import { getKendoSortedData, createButtonAtParent } from '@apttec/utils';
 
 window.AptTecReporting = window.AptTecReporting || {};
 window.AptTecReporting.Kendo = {};
@@ -63,7 +62,7 @@ window.AptTecReporting.Integration = class AptTecIntegration {
 
     #loadSourceUrl() {
         const designerHTMLUrl = this.#sourceUrl + this.#designerHTMLPath;
-        fetch(designerHTMLUrl)  //new Downloader().download([designerHTMLUrl], this.isCors)
+        fetch(designerHTMLUrl)
             .then(response => response.text())       //response[0].text()
             .then(html_template => {
                 var modified_html = html_template.replace(
@@ -122,11 +121,10 @@ window.AptTecReporting.Integration = class AptTecIntegration {
         attributesObject['report-id'] = reportId;
         buttonClass += ' AptTecPrintPreview';
         const disabledAttrib = this.#isSourceUrlLoaded ? '' : 'disabled';
-        const button = new Button(buttonid, buttonParent, buttonClass, iconClass, buttonText, 
+        const result = createButtonAtParent(buttonid, buttonParent, buttonClass, iconClass, buttonText,
             location, attributesObject, disabledAttrib);
-        // extraInformation =disabledAttrib, actions = {}, preventDuplicate = true
-        const buttonElement = button.add();
-        return { previewButton: buttonElement, AlreadyExists: button.AlreadyExists };
+        // extraInformation =disabledAttrib,  preventDuplicate = true
+        return { previewButton: result.ButtonObject, AlreadyExists: result.AlreadyExists };
     }
 
     /**
@@ -140,11 +138,8 @@ window.AptTecReporting.Integration = class AptTecIntegration {
      */
     #HandlePreviewButton(buttonResult, dataSetter ) {
         const aptIntegration = this;
-        buttonResult.previewButton.click(function ()  
-        //this is closure or inner function so it always rememebers the correct dataSetter
-        {
-            const reportId = $(this).data('report-id');
-            const gridId = $(this).data('grid-id');
+        buttonResult.previewButton.addEventListener('click', () => {
+            //this is closure or inner function so it always rememebers the correct dataSetter
             if (typeof dataSetter === 'function') {
                 aptIntegration.designerWindow.aptTecReports.dataGetter = dataSetter;
             }
@@ -152,13 +147,14 @@ window.AptTecReporting.Integration = class AptTecIntegration {
                 switch (dataSetter) {
                 case 'direct':
                     aptIntegration.designerWindow.aptTecReports.dataGetter = () => { 
-                        aptIntegration.aptTecData.Data = buttonResult.previewButton[0].printData;
+                        aptIntegration.aptTecData.Data = buttonResult.previewButton.printData;
                         return aptIntegration.aptTecData; 
                     };
                     break;
                 case 'kendoGrid':
                     aptIntegration.designerWindow.aptTecReports.dataGetter = () => { 
-                        aptIntegration.aptTecData.Data =  getKendoSortedData(gridId);
+                        aptIntegration.aptTecData.Data = 
+                            getKendoSortedData(buttonResult.previewButton.dataset.gridId);
                         return aptIntegration.aptTecData; 
                     };
                     break;
@@ -167,8 +163,9 @@ window.AptTecReporting.Integration = class AptTecIntegration {
                     break;
                 }
             }
-            aptIntegration.showPreview(reportId);
-        } );
+            // https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes note that dashes are converted to camel case
+            aptIntegration.showPreview(buttonResult.previewButton.dataset.reportId);
+        });
     }
 
     showPreview(reportId) {
@@ -182,7 +179,7 @@ window.AptTecReporting.Integration = class AptTecIntegration {
     fetchData(Url, aptTecDataPropertyName, sourcePropertyName) {
         const thisIntegration = this;
         return new Promise(function (previewDataResolve, previewDataReject) {
-            fetch(Url) // new Downloader.download([Url], isCors)
+            fetch(Url)
                 .then(response => response.json())
                 .then(data => {
                     thisIntegration.aptTecData[aptTecDataPropertyName] = 

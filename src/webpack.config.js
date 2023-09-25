@@ -22,7 +22,13 @@ module.exports = {
         previewContent: [
             './Resources/Scripts/printContent/report.js',
             './Resources/Scripts/printContent/pagedjs-hooks.js',
-            './Resources/Scripts/printContent/pagedjs-repeat-table-header.js']
+            './Resources/Scripts/printContent/pagedjs-repeat-table-header.js'
+        ],
+        // not working as webpack removes the global variable assignments
+        // pagedPolyfill: [
+        //     './Resources/Scripts/printContent/paged.polyfill.js'
+        // ]
+
     } ,
 
     // Path and filename of your result bundle.

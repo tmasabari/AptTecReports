@@ -100,14 +100,46 @@ apply only the content portion table */
   vertical-align: text-top;
   padding: 1mm;
 }
+/* This is not required after the latest fixes from 
+https://github.com/pagedjs/pagedjs/issues/154
+https://github.com/pagedjs/pagedjs/pull/155/files
+https://github.com/pagedjs/pagedjs/pull/158/files?diff=split&w=1 
+ the overflown content entirely hides the row 
+this affects only the screen not the Save As PDF option (printer)
+Please set the bottom margin and page footer to at least 20 mm(0.78 inch). We discussed this already the printers expect the minimum spaces in the margins.
+After setting the minimum margin at the bottom the lines are not truncated at the bottom. 
+do not use @media screen {} the pagedjs removes the styles
+*/
+.content .dataTable tbody tr:last-child td {
+    overflow-y: hidden;
+}
+
+/* remove empty rows Not working
+.content .dataTable tbody tr:last-child:empty {  display: none; }
+*/
 
 /* 
  page-break-inside: avoid creates the empty page when contents of rows goes over than 2 pages
  The entire row becomes invisible as well.
- monitor for fix the table rows which are getting hidden 
-.content .dataTable td {
-  page-break-inside: avoid;
-}*/
+
+ 2023/09/22 
+ cannot use below selectors the table is not split before applying the pagination.
+    .content .dataTable tbody tr:not(:first-child),
+    .content .dataTable tbody tr:not(:first-child) td 
+
+    apply the break-inside: avoid not for the first row in the body.
+    not working properly for the last row the row is disapearing.
+
+
+  Repeat table headers in print mode 
+    src\Resources\Scripts\notused\paged.polyfill.js line number 1949
+    // honor break-inside="avoid" in parent tbody/thead
+    Chrome finally supports repeated table headers for print media. This is enabled if the th has break-inside:avoid, and can be disabled with break:inside: auto. See https://codereview.chromium.org/2021703002/#ps20001
+*/
+/* .content .dataTable tbody tr,
+.content .dataTable tbody td  {
+  break-inside: avoid;
+} */
 
 /* not working workaround adjust proper header and footer height params
 

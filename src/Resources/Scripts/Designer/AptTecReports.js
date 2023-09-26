@@ -35,7 +35,7 @@ export default class AptTecReports
         this.dataLocation = dataLocation;
 
         this.sourceUrl = sourceUrl;
-        this.#previewPageUrl = (sourceUrl) ? sourceUrl + 'Pages/' : null;
+        this.#previewPageUrl = (sourceUrl) ? sourceUrl  : null;
         this.closeAction = closeAction;
         this.dataGetter = dataGetter;
         this.reportId = reportId;

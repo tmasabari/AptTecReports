@@ -1,4 +1,3 @@
-//https://gist.github.com/theinvensi/e1aacc43bb5a3d852e2e85b08cf85c8a
 class PagedJsHooks extends window.Paged.Handler {
     constructor(chunker, polisher, caller) {
         super(chunker, polisher, caller);

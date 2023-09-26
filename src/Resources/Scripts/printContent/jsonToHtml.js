@@ -41,7 +41,7 @@ export function appendJsonAsDataTable(aptTecReports, tableIndex, tableConfigurat
             // https://cdn.datatables.net/plug-ins/1.12.1/api/sum().js
             let numValue = function (i) {
                 return typeof i === 'string'
-                    ? i.replace(/[^\d.-]/g, '') * 1     // /[\$,]/g, ''
+                    ? i.replace(/[^\d.-]/g, '') * 1
                     : typeof i === 'number' ? i : 0;
             };
     

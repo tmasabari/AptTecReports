@@ -36,6 +36,8 @@
   "devDependencies": {
     "css-loader": "^6.8.1",
     "css-minimizer-webpack-plugin": "^5.0.1",
+    "eslint": "^8.50.0",
+    "html-minimizer-webpack-plugin": "^4.4.0",
     "mini-css-extract-plugin": "^2.7.6",
     "style-loader": "^3.3.3",
     "webpack": "^5.88.2",

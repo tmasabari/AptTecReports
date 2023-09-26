@@ -39,7 +39,7 @@ window.onload = function ()
     }
 };
 window.initilizePreview = function (reportParams) {
-    window.aptTecReports = new AptTecReports('reportIframe', reportParams.reportId, 'Data/Schema/',
+    window.aptTecReports = new AptTecReports('reportIframe', reportParams.reportId, '',
         reportParams.templatesLocation, 'Data/Samples/', reportParams.sourceUrl,
         reportParams.closeAction, reportParams.dataGetter);
     window.aptTecReports.initializeDesigner(false);

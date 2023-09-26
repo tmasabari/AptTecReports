@@ -1,5 +1,7 @@
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const CssMinimizerPlugin = require("css-minimizer-webpack-plugin");
+const HtmlMinimizerPlugin = require("html-minimizer-webpack-plugin");
+const CopyPlugin = require("copy-webpack-plugin");
 
 // Webpack uses this to work with directories
 const path = require('path');
@@ -34,7 +36,7 @@ module.exports = {
     // Path and filename of your result bundle.
     // Webpack will bundle all JavaScript into this file
     output: {
-        path: path.resolve(__dirname, 'dist'),
+        path: path.resolve(__dirname, '..', 'dist'),
         //publicPath: '',
         //[name] is a placeholder that gets replaced with the entry point key (designer, previewContent, etc.) to generate dynamic filenames for the output bundles.
         filename: '[name].bundle.js'
@@ -51,6 +53,7 @@ module.exports = {
     //Css minifier https://webpack.js.org/plugins/css-minimizer-webpack-plugin/
     module: {
         rules: [
+            //css minifier
             {
                 //The test line tells webpack where to look for files that match a certain file type
                 test: /.s?css$/,
@@ -59,6 +62,12 @@ module.exports = {
                     { loader: "css-loader", options: { sourceMap: true } },
                     //{ loader: "sass-loader", options: { sourceMap: true } },
                 ],
+            },
+
+            //html minifier
+            {
+                test: /\.html$/i,
+                type: "asset/resource",
             },
         ],
     },
@@ -77,7 +86,40 @@ module.exports = {
                     ],
                 },
             }),
+
+            // For `html-minifier-terser`:
+            //
+            new HtmlMinimizerPlugin({
+                parallel: true,
+                minimizerOptions: {
+                    collapseWhitespace: true,
+                    removeComments:true,
+                    //do not minify css within the html which breaks templated css styles.
+                    minifyCSS:false,
+                    minifyJS:true
+                }
+            }),
+            
         ],
     },
-    plugins: [new MiniCssExtractPlugin()],
+    plugins: [
+        new MiniCssExtractPlugin(),
+        new CopyPlugin({
+            patterns: [
+                //{ from: "source", to: "dest" },
+                {
+                    context: path.resolve(__dirname, "Pages"),
+                    from: "./*.html",
+                },
+                {
+                    context: path.resolve(__dirname, '..',  "Utils"),
+                    from: "./*.html",
+                },
+                {
+                    context: path.resolve(__dirname, "Schema"),
+                    from: "./*.json",
+                },
+            ]
+        }),
+    ],
 };

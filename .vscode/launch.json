@@ -8,8 +8,8 @@
             "type": "chrome",
             "request": "launch",
             "name": "Open main.html",
-            "url": "http://127.0.0.1:5501/Demo/Integration/builtinData.html",
-            "webRoot": "${workspaceFolder}/src",
+            "url": "http://127.0.0.1:5502/test/Demo/Integration/builtinData.html",
+            "webRoot": "${workspaceFolder}",
             "preLaunchTask": "${defaultBuildTask}"
         }
     ]

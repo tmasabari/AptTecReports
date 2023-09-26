@@ -1,6 +1,6 @@
 {
   "files.eol": "\n",
   "sarif-viewer.connectToGithubCodeScanning": "off",
-  "liveServer.settings.root": "/src",
+  //"liveServer.settings.root": "/src",
   "liveServer.settings.port": 5502,
 } 

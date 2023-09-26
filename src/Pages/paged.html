@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <link rel="stylesheet" href="{{SourceUrl}}dist/previewContent.css" type="text/css" crossorigin="anonymous">
+    <link rel="stylesheet" href="{{SourceUrl}}previewContent.css" type="text/css" crossorigin="anonymous">
     
     <style>
         @media print{
@@ -65,10 +65,9 @@
                 auto: false
             };
     </script>
-    <!-- pagedPolyfill shoule be loaded first. dont use bundle or module option load in sync and first
-    <script src="{{SourceUrl}}dist/pagedPolyfill.bundle.js" type="module" async="false" defer="false"></script>-->
-    <script src="{{SourceUrl}}dist/paged.polyfill.js" ></script>
-    <script src="{{SourceUrl}}dist/previewContent.bundle.js" type="module"></script>
+    <!-- pagedPolyfill shoule be loaded first. dont use bundle or module option load in sync and first -->
+    <script src="{{SourceUrl}}paged.polyfill.js" ></script>
+    <script src="{{SourceUrl}}previewContent.bundle.js" type="module"></script>
     
     <script src="https://cdn.datatables.net/1.13.5/js/jquery.dataTables.min.js"></script>
 </body>

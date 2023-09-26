@@ -31,5 +31,3 @@ jobs:
       run: |
         cd src
         npx webpack
-
-    

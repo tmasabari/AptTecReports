@@ -1,14 +1,14 @@
 'use strict';
 //css
-import '../../css/Designer/designer.css';
-import '../../css/Designer/ruler.css';
+import './css/designer.css';
+import './css/ruler.css';
 import DataTable from 'datatables.net-dt';
+import { createUrlFromObject, autoDownloadUrl } from '@apttec/utils';
 
 //scripts
-import AptTecReports from './AptTecReports.js';
-import SchemaFormHandler from './SchemaFormHandler.js';
-import { ShowPopup } from './popup.js';
-import { createUrlFromObject, autoDownloadUrl } from '@apttec/utils';
+import { ShowPopup } from '../../components/popup.js';
+import AptTecReports from './js/AptTecReports.js';
+import SchemaFormHandler from './js/SchemaFormHandler.js';
 
 //add list items for rulers
 addTags($(document)[0], '.ruler-x', '<li></li>', 50);
@@ -27,20 +27,20 @@ window.onload = function ()
     window.SchemaFormHandler = new SchemaFormHandler('paramEditorDiv');
     if (window.self === window.top)
     {
-        var reportId = null;
+        var reportId = null, templatesLocation = null, dataLocation = null;
         //https://stackoverflow.com/questions/7731778/get-query-string-parameters-url-values-with-jquery-javascript-querystring
         var urlParams = new URLSearchParams(window.location.search);
-        if (urlParams.has('report')) {
-            reportId = urlParams.get('report');
-        }
-        window.aptTecReports = new AptTecReports('reportIframe', reportId, '../Data/Schema/', 
-            '../Data/Templates/', '../Data/Samples/');
+        if (urlParams.has('reportId')) reportId = urlParams.get('reportId');
+        if (urlParams.has('template')) reportId = urlParams.get('template');
+        if (urlParams.has('data')) dataLocation = urlParams.get('data'); 
+        window.aptTecReports = new AptTecReports('reportIframe', reportId, '', 
+            templatesLocation, dataLocation);
         window.aptTecReports.initializeDesigner();
     }
 };
 window.initilizePreview = function (reportParams) {
     window.aptTecReports = new AptTecReports('reportIframe', reportParams.reportId, '',
-        reportParams.templatesLocation, 'Data/Samples/', reportParams.sourceUrl,
+        reportParams.templatesLocation, reportParams.dataLocation, reportParams.sourceUrl,
         reportParams.closeAction, reportParams.dataGetter);
     window.aptTecReports.initializeDesigner(false);
 };
@@ -97,6 +97,7 @@ function showEditParamters() {
         saveParameters, null, resetParameters, toggleVariablesSection);
 }
 
+//Todo
 // function ToCanvas() {
 //     const sourceWindow = document.getElementById('reportIframe').contentWindow;
 //     const exporter = new Exporter();

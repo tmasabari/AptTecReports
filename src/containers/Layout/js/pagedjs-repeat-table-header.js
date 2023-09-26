@@ -1,5 +1,6 @@
+'use strict';
 //https://gist.github.com/theinvensi/e1aacc43bb5a3d852e2e85b08cf85c8a
-class RepeatTableHeadersHandler extends Paged.Handler {
+export class RepeatTableHeadersHandler extends globalThis.Paged.Handler {
     constructor(chunker, polisher, caller) {
         super(chunker, polisher, caller);
         this.splitTablesRefs = [];
@@ -66,7 +67,7 @@ class RepeatTableHeadersHandler extends Paged.Handler {
         }
         return ancestors;
     }
-
+    /* eslint-disable no-unused-vars */
     layout(rendered, layout) {
         this.splitTablesRefs.forEach(ref => {
             const renderedTable = rendered.querySelector('[data-ref=\'' + ref + '\']');
@@ -127,5 +128,3 @@ class RepeatTableHeadersHandler extends Paged.Handler {
         return !(/[^\t\n\r ]/.test(node.textContent));
     }
 }
-
-Paged.registerHandlers(RepeatTableHeadersHandler);

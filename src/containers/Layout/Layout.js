@@ -1,12 +1,17 @@
 'use strict';
 //css
-import '../../css/printContent/pagedjsTable.css';
-import '../../css/printContent/paper.css';
+import './css/pagedjsTable.css';
+import './css/paper.css';
 //scripts
-import { appendJsonAsDataTable } from './jsonToHtml.js';
-var aptTecReports = window.parent.aptTecReports;
+import { appendJsonAsDataTable } from './js/jsonToHtml.js';
+import { PagedJsHandler } from './js/pagedjs-handler.js';
+import { RepeatTableHeadersHandler } from './js/pagedjs-repeat-table-header.js';
+var aptTecReports = globalThis.parent.aptTecReports;
 // Call the loadAndReplace function when the page loads
-window.onload = function () {
+globalThis.onload = function () {
+    globalThis.Paged.registerHandlers(PagedJsHandler);
+    globalThis.Paged.registerHandlers(RepeatTableHeadersHandler);
+
     // https://stackoverflow.com/questions/18007630/how-to-disable-warning-datatables-warning-requested-unknown-parameter-from-the-d
     $.fn.dataTable.ext.errMode = 'none'; //to suppress the warnings from data table library in case if a property is missing.
     $('.content .dataTable').on('error.dt', function (e, settings, techNote, message) {
@@ -40,5 +45,5 @@ window.onload = function () {
         }
     }
 
-    window.PagedPolyfill.preview(); //render the print preview
+    globalThis.PagedPolyfill.preview(); //render the print preview
 };

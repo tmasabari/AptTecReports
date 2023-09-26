@@ -5,7 +5,7 @@ window.AptTecReporting = window.AptTecReporting || {};
 window.AptTecReporting.Kendo = {};
 window.AptTecReporting.Kendo.getSortedData = getKendoSortedData;
 window.AptTecReporting.Integration = class AptTecIntegration {
-    #designerHTMLPath = 'designer.html';
+    #designerHTMLPath = 'Designer/Designer.html';
     #templateToReplace ='{{SourceUrl}}';
     #defaultFrameStyle =`
                 position: absolute;
@@ -24,6 +24,7 @@ window.AptTecReporting.Integration = class AptTecIntegration {
     #sourceUrl ='';
     #previewFrameId='';
     #templatesLocation='';
+    #dataLocation='';
     /**
      * This integration is using the IFrame tag to avoid the css and scripts conflicts between the caller and library
      * There will be clear separation of concerns
@@ -37,7 +38,8 @@ window.AptTecReporting.Integration = class AptTecIntegration {
      *      You can set different templatesLocation for different tenants/clients for multi-tenant scenarios.
      * @param {string} frameStyle - The styles to be applied for the preview frame.
      */
-    constructor(sourceUrl, previewFrameId, templatesLocation, frameStyle, isPreviewTypeDesigner=false){
+    constructor(sourceUrl, previewFrameId, templatesLocation, frameStyle, 
+        isPreviewTypeDesigner = false, dataLocation = 'Data/Samples/'){
         this.aptTecData = { CommonData: {}, InstanceData: {}, Data: [] };
 
         this.designerWindow = null;
@@ -48,6 +50,7 @@ window.AptTecReporting.Integration = class AptTecIntegration {
         this.#addIFrameTag(frameStyle);
         this.#frameElement = document.getElementById(this.#previewFrameId);
         this.#templatesLocation = templatesLocation;
+        this.#dataLocation = dataLocation;
         this.#loadSourceUrl();
     }
     #addIFrameTag(frameStyle) {
@@ -81,6 +84,7 @@ window.AptTecReporting.Integration = class AptTecIntegration {
         this.designerWindow = document.getElementById(this.#previewFrameId).contentWindow;
         this.designerWindow.initilizePreview({
             templatesLocation: this.#templatesLocation,
+            dataLocation: this.#dataLocation,
             sourceUrl: this.#sourceUrl,
             closeAction: () => $('#' + this.#previewFrameId).hide()
         });

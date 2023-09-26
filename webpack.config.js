@@ -15,28 +15,23 @@ module.exports = {
     entry: {
         // Entry point for integration
         AptTecIntegration: [
-            './Resources/Scripts/Integration/AptTecIntegration.js' ],
+            './src/containers/Integration/AptTecIntegration.js' ],
+
         // Entry point for designer
         designer: [
-            './Resources/Scripts/Designer/designer.js',
-            './Resources/Scripts/Designer/html2canvas.min.js'],
+            './src/containers/Designer/Designer.js'],
+            //'./src/components/3rdParty/html2canvas.min.js'],
+
         // Entry point for preview content
         previewContent: [
-            './Resources/Scripts/printContent/report.js',
-            './Resources/Scripts/printContent/pagedjs-hooks.js',
-            './Resources/Scripts/printContent/pagedjs-repeat-table-header.js'
+            './src/containers/Layout/Layout.js'
         ],
-        // not working as webpack removes the global variable assignments
-        // pagedPolyfill: [
-        //     './Resources/Scripts/printContent/paged.polyfill.js'
-        // ]
-
     } ,
 
     // Path and filename of your result bundle.
     // Webpack will bundle all JavaScript into this file
     output: {
-        path: path.resolve(__dirname, '..', 'dist'),
+        path: path.resolve(__dirname,  'dist'),
         //publicPath: '',
         //[name] is a placeholder that gets replaced with the entry point key (designer, previewContent, etc.) to generate dynamic filenames for the output bundles.
         filename: '[name].bundle.js'
@@ -108,15 +103,19 @@ module.exports = {
             patterns: [
                 //{ from: "source", to: "dest" },
                 {
-                    context: path.resolve(__dirname, "Pages"),
+                    context: path.resolve(__dirname, "src", "components","3rdParty"),
+                    from: "./*.js",
+                },
+                {
+                    context: path.resolve(__dirname, "src", "containers"),
+                    from: "./**/*.html",
+                },
+                {
+                    context: path.resolve(__dirname, "Utils"),
                     from: "./*.html",
                 },
                 {
-                    context: path.resolve(__dirname, '..',  "Utils"),
-                    from: "./*.html",
-                },
-                {
-                    context: path.resolve(__dirname, "Schema"),
+                    context: path.resolve(__dirname, "src", "Schema"),
                     from: "./*.json",
                 },
             ]

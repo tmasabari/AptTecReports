@@ -1,6 +1,6 @@
 {
   "name": "@apttec/reports",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "Browser based open source reporting engine",
   "author": "Sabarinathan Arthanari",
   "license": "MIT",
@@ -36,6 +36,7 @@
   "devDependencies": {
     "css-loader": "^6.8.1",
     "css-minimizer-webpack-plugin": "^5.0.1",
+    "dayjs": "^1.11.10",
     "eslint": "^8.50.0",
     "html-minimizer-webpack-plugin": "^4.4.0",
     "mini-css-extract-plugin": "^2.7.6",
@@ -43,9 +44,11 @@
     "webpack": "^5.88.2",
     "webpack-cli": "^5.1.4"
   },
+  "directories": {
+    "test": "test"
+  },
   "dependencies": {
     "@apttec/utils": "^1.0.7",
-    "datatables.net-dt": "^1.13.6",
-    "dayjs": "^1.11.9"
+    "datatables.net-dt": "^1.13.6"
   }
 }

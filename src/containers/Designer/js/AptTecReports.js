@@ -35,7 +35,7 @@ export default class AptTecReports
         this.dataLocation = dataLocation;
 
         this.sourceUrl = sourceUrl;
-        this.#previewPageUrl = (sourceUrl) ? sourceUrl  : null;
+        this.#previewPageUrl = (sourceUrl) ? sourceUrl + 'Layout/'  : null;
         this.closeAction = closeAction;
         this.dataGetter = dataGetter;
         this.reportId = reportId;
@@ -215,7 +215,7 @@ export default class AptTecReports
         else {
             if (this.ReportParams.DataSource) {
                 this.ReportParams.DataSource = this.ReportParams.DataSource.replace(
-                    '{{dataLocation}}', this.sourceUrl + this.dataLocation);
+                    '{{dataLocation}}',  this.dataLocation);
                 fetch(this.ReportParams.DataSource)
                     .then(response => response.json())
                     .then(data => {

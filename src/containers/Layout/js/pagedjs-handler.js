@@ -1,4 +1,5 @@
-class PagedJsHooks extends window.Paged.Handler {
+'use strict'; 
+export class PagedJsHandler extends globalThis.Paged.Handler {
     constructor(chunker, polisher, caller) {
         super(chunker, polisher, caller);
     }
@@ -8,7 +9,7 @@ class PagedJsHooks extends window.Paged.Handler {
      * @param {*} content | → document-fragment made from the original DOM
      */
     beforeParsed(content) {
-        window.parent.aptTecReports.raiseEvent('beforePreviewParsed', content);
+        globalThis.parent.aptTecReports.raiseEvent('beforePreviewParsed', content);
     }
  
     /**
@@ -16,8 +17,6 @@ class PagedJsHooks extends window.Paged.Handler {
      * @param {*} pages | → array that contains all page nodes
      */
     afterRendered(pages) {
-        window.parent.aptTecReports.raiseEvent('afterPreviewRendered', pages);
+        globalThis.parent.aptTecReports.raiseEvent('afterPreviewRendered', pages);
     }    
 }
-
-window.Paged.registerHandlers(PagedJsHooks);

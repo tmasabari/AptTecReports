@@ -92,7 +92,9 @@
             //this executes after all modules/deferred scripts are loaded
 
             aptTecIntegration = new window.AptTecReporting.Integration(
-                baseLocation + 'dist/', 'builtinLocalDataFrame', baseLocation + 'test/Data/Templates/', null , true);
+                baseLocation + 'dist/', 'builtinLocalDataFrame', 
+                baseLocation + 'test/Data/Templates/', null , true,
+                baseLocation + 'test/Data/Samples/');
               
 
             //Integration option 2: Get the data whenever the users clicks the button using a anonymous/arrow call back function

@@ -1,0 +1,9 @@
+# Ignore everything https://stackoverflow.com/questions/987142/make-gitignore-ignore-everything-except-a-few-files
+*
+# But not these files...
+#An optional prefix ! which negates the pattern; any matching file excluded by a previous pattern will become included again.
+!dist/**
+!src/**
+!Utils/**
+!LICENSE
+!*.md

@@ -1,7 +1,7 @@
 {
   "name": "@apttec/reports",
-  "version": "2.0.0",
-  "description": "Browser based open source reporting engine",
+  "version": "2.0.3",
+  "description": "Web based open source reporting engine",
   "author": "Sabarinathan Arthanari",
   "license": "MIT",
   "keywords": [
@@ -11,7 +11,8 @@
     "print",
     "printer",
     "preview",
-    "browser"
+    "browser",
+    "web"
   ],
   "repository": {
     "type": "git",
@@ -22,8 +23,9 @@
     "url": "https://github.com/tmasabari/AptTecReports/issues"
   },
   "files": [
-    "dist/*",
-    "Pages/*.html"
+    "dist/**/*",
+    "src/**/*",
+    "diagrams/**/*"
   ],
   "main": ".eslintrc.js",
   "browserslist": [

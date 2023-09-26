@@ -1,6 +1,7 @@
 //Editor =================================================== Refer https://github.com/json-editor/json-editor
 export default class SchemaFormHandler {
     constructor(containerId) {
+        this.containerId = containerId;
         this.jsonEditorForm = document.getElementById(containerId);
         this.isValidData = true;
         this.designerValidationErrors = '';
@@ -26,11 +27,18 @@ export default class SchemaFormHandler {
         };
     }
     initJsoneditor() {
-        if (this.jsoneditor)
-        { //if jsoneditor is already loaded just set the new values to designer.
-            //jsoneditor.destroy(); // destroy old JSONEditor instance if exists
-            this.jsoneditor.setValue(window.aptTecReports.ReportParams);
-            return;
+        if (this.jsoneditor) {
+            // //the form reset is clearling all he basic fields except the HTML fields.
+            // document.querySelector('#' + this.containerId).reset();
+            // //if jsoneditor is already loaded just set the new values to designer.
+            // //The only time you need to destroy and create again is if the schema or any options change. Otherwise, you can just use setValue.
+            // //This is not working properly. this.jsoneditor.setValue(null);
+            // this.jsoneditor.setValue(window.aptTecReports.ReportParams);
+            // return;
+
+            // destroy old JSONEditor instance if exists and load the new values 
+            // this is the only method works well
+            this.jsoneditor.destroy(); 
         }
         this.paramEditorOptions.schema = window.aptTecReports.ReportSchema;
 
@@ -39,16 +47,11 @@ export default class SchemaFormHandler {
         // we can enable/disable entire form or part of the form as well
         //editor.getEditor('root.location').disable();
 
-        this.jsoneditor.on('ready', () =>    //if it is loaded for the first time, try to get the values from global object
-        {
+        //if it is loaded for the first time, try to get the values from global object
+        this.jsoneditor.on('ready', () => {
             // Now the api methods will be available
             this.jsoneditor.setValue(window.aptTecReports.ReportParams);
         });
-
-        // listen for changes
-        //this.jsoneditor.on('change', function () {
-        //    saveParameters();
-        //});
     }
     getCurrentParameters() {
         return this.jsoneditor.getValue();
@@ -56,30 +59,30 @@ export default class SchemaFormHandler {
     saveParameters() {
         // validate
         var validationErrors = this.jsoneditor.validate();
-        if (validationErrors.length)
-        {
-            this.isValidData = false;
-            // this.designerValidationErrors is an array of objects, each with a `path`, `property`, and `message` parameter
-            // `property` is the schema keyword that triggered the validation error (e.g. "minLength")
-            // `path` is a dot separated path into the JSON object (e.g. "root.path.to.field")
-            this.designerValidationErrors = JSON.stringify(validationErrors, null, 2);
-            alert(this.designerValidationErrors);
-        } else
-        {
-            this.isValidData = true;
-            // output
-            var reportParams = this.jsoneditor.getValue();
-            localStorage.setItem(window.aptTecReports.reportId, JSON.stringify(reportParams));
-            window.aptTecReports.ReportParams = reportParams;
-            //refreshReport('reportIframe', window.aptTecReports.reportId);
-            window.aptTecReports.onReportParametersChanged('reportIframe', true);
-            //modifiedParams = JSON.stringify(json, null, 2); 
+        this.isValidData = !(validationErrors.length);  //true if length=0
+        if (this.isValidData) {
+            var designParams = this.jsoneditor.getValue();  // output
+            this.#savePassedParamsRefresh(designParams);
+            return;
         }
+
+        // this.designerValidationErrors is an array of objects, each with a `path`, `property`, and `message` parameter
+        // `property` is the schema keyword that triggered the validation error (e.g. "minLength")
+        // `path` is a dot separated path into the JSON object (e.g. "root.path.to.field")
+        this.designerValidationErrors = JSON.stringify(validationErrors, null, 2);
+        alert(this.designerValidationErrors);
     }
+
     resetParameters() {
         localStorage.removeItem(window.aptTecReports.reportId);    //remove local report configuration
-        //window.aptTecReports.ReportParams = window.aptTecReports.ServerParams; do not set the ReportParams other refresh will be skipped
-        this.jsoneditor.setValue(window.aptTecReports.ServerParams);
-        this.saveParameters();
+        //window.aptTecReports.ReportParams = window.aptTecReports.ServerParams; do not set the ReportParams other refresh will be skipped 
+        this.#savePassedParamsRefresh(window.aptTecReports.ServerParams);
+        this.initJsoneditor();
+    }
+
+    #savePassedParamsRefresh(modifiedParams) {
+        localStorage.setItem(window.aptTecReports.reportId, JSON.stringify(modifiedParams));
+        window.aptTecReports.ReportParams = modifiedParams;
+        window.aptTecReports.onReportParametersChanged('reportIframe', true);
     }
 }

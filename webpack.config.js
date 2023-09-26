@@ -18,7 +18,7 @@ module.exports = {
             './src/containers/Integration/AptTecIntegration.js' ],
 
         // Entry point for designer
-        designer: [
+        Designer: [
             './src/containers/Designer/Designer.js'],
             //'./src/components/3rdParty/html2canvas.min.js'],
 

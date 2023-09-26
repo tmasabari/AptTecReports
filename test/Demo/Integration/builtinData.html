@@ -59,13 +59,16 @@
         crossorigin="anonymous">
         </script>
     <script>
-        const baseLocation = 'http://127.0.0.1:5502/';
+        const baseLocation = 
+            //'https://cdn.jsdelivr.net/npm/@apttec/reports@2.0.3/';
+            'http://127.0.0.1:5502/';
         var aptTecIntegration;
 
+        const dataLocation = '/test/Data/';
         //Integration option 1: direct set the data getter property and invoke the showPreview method
         function printCountsReport() {
             window.aptTecIntegration.designerWindow.aptTecReports.dataGetter = () => {
-                const url = baseLocation + 'test/Data/Samples/counts.json';
+                const url = dataLocation + 'Samples/counts.json';
                 return fetch(url)
                     .then(response => response.json())
                     .then(jsonObject => {
@@ -93,14 +96,14 @@
 
             aptTecIntegration = new window.AptTecReporting.Integration(
                 baseLocation + 'dist/', 'builtinLocalDataFrame', 
-                baseLocation + 'test/Data/Templates/', null , true,
-                baseLocation + 'test/Data/Samples/');
+                dataLocation + 'Templates/', null , true,
+                dataLocation + 'Samples/');
               
 
             //Integration option 2: Get the data whenever the users clicks the button using a anonymous/arrow call back function
             const dailyTotalsButtonResult = aptTecIntegration.addPreviewButton('dailyTotals',
                 '.previewParent .dailyTotals', null,
-                () => fetch(baseLocation + 'test/Data/Samples/dailyTotalData.json')
+                () => fetch(dataLocation + 'Samples/dailyTotalData.json')
                         .then(response => response.json())
                         .then(jsonObject => {
                             // do you custom logic here and populate the listDailyTotals
@@ -132,7 +135,7 @@
             //Integration option 4: RARE Suitable only for having one preview button per AptTecReporting.Integration object
             //Use this method only if the data is already populated before generating the button
             //Get the data first, Add the print preview button and Assign the data directly to the button
-            fetch(baseLocation + 'test/Data/Samples/coverletter.json')
+            fetch(dataLocation + 'Samples/coverletter.json')
                 .then(response => response.json())
                 .then(data =>
                 {

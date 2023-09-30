@@ -1,6 +1,6 @@
 {
   "name": "@apttec/reports",
-  "version": "2.0.3",
+  "version": "2.0.5",
   "description": "Web based open source reporting engine",
   "author": "Sabarinathan Arthanari",
   "license": "MIT",
@@ -50,7 +50,7 @@
     "test": "test"
   },
   "dependencies": {
-    "@apttec/utils": "^1.0.7",
+    "@apttec/utils": "^1.0.8",
     "datatables.net-dt": "^1.13.6"
   }
 }

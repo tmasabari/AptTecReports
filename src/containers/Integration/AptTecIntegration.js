@@ -52,6 +52,21 @@ window.AptTecReporting.Integration = class AptTecIntegration {
         this.#templatesLocation = templatesLocation;
         this.#dataLocation = dataLocation;
         this.#loadSourceUrl();
+        this.#windowZoomEventBind();
+    }
+    #windowZoomEventBind() {
+        const aptIntegration = this;
+        window.addEventListener('resize', function() {
+            // Check if the zoom level has changed
+            if (window.innerWidth !== window.outerWidth) {
+                //console.log('Zoom event detected!');// Your code here to respond to the zoom event
+                // ${ window.innerWidth } ${ window.outerWidth }
+                // 100 % Zoom '1280 1280' 90 % Zoom '1422 1280' 80 % Zoom '1600 1280' 67 % Zoom '1920 1280'
+                if (aptIntegration.designerWindow && aptIntegration.designerWindow.aptTecReports) {
+                    aptIntegration.designerWindow.aptTecReports.refreshData('reportIframe');
+                }
+            }
+        });
     }
     #addIFrameTag(frameStyle) {
         const style = (frameStyle) ? frameStyle : this.#defaultFrameStyle;

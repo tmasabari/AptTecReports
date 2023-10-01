@@ -60,7 +60,7 @@
         </script>
     <script>
         const baseLocation = 
-            //'https://cdn.jsdelivr.net/npm/@apttec/reports@2.0.3/';
+            //'https://cdn.jsdelivr.net/npm/@apttec/reports@2.0.8/';
             'http://127.0.0.1:5502/';
         var aptTecIntegration;
 
@@ -100,7 +100,7 @@
                 dataLocation + 'Samples/');
               
 
-            //Integration option 2: Get the data whenever the users clicks the button using a anonymous/arrow call back function
+            //Integration option 2: Create a custom preview button and get the data whenever the users clicks the button using a anonymous/arrow call back function
             const dailyTotalsButtonResult = aptTecIntegration.addPreviewButton('dailyTotals',
                 '.previewParent .dailyTotals', null,
                 () => fetch(dataLocation + 'Samples/dailyTotalData.json')

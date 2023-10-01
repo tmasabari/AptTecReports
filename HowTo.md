@@ -2,31 +2,29 @@
 
 **Step 1:** Include the library in your page or master layout or index page depending upon your application design.
 
-1. You can download the source code directly from the repository and include it as part of our website. OR
-2. You can host this module as a separate static website. All the requests to this library are marked with crossorigin="anonymous" so that it will support anonymous CORS.
+1. You can directly use the CDN. (**preferred**)
+   ```
+   <script src='https://cdn.jsdelivr.net/npm/@apttec/reports@2.0.8/dist/AptTecIntegration.bundle.js' type="module" crossorigin="anonymous"></script>
+   ```
+2. You can download the source code directly from the repository and include it as part of our website or as a separate static website.
 
 ```html
-    <script src="<HostedLocation>/Resources/Scripts/Integration/AptTecIntegration.js" type="module" crossorigin="anonymous"></script>
+    <script src="<HostedLocation>/dist/AptTecIntegration.bundle.js" type="module" crossorigin="anonymous"></script>
 ```
 
-Please note that AptTecIntegration.js is just a starter. It will download additional supporting files whenever required.
+Please note that /dist/AptTecIntegration.bundle.js is just a starter. It will download additional supporting files whenever required.
 
-**Step 2:** The AptTecIntegration.js module will create a namespace object window.AptTecReporting. It would be used to further communicate with the module. The Js modules are loaded asynchronously by default. So listen for DOMContentLoaded and once the module is loaded further continue the setup.
+**Step 2:** The /dist/AptTecIntegration.bundle.js module will create a namespace object window.AptTecReporting. It would be used to further communicate with the module. The Js modules are loaded asynchronously by default. So listen for DOMContentLoaded and once the module is loaded further continue the setup.
 
-**Step 3:** Create an object for the window.AptTecReporting.Integration class. The constructor parameters are below
-
-1. The first parameter tells where to access the module "HostedLocation". For example, if you placed the library in the reports subfolder on your website, use '/reports'. If you hosted as as a separate website use the full path 'https://yoursite.com/reports'
-2. The preview will be rendered as a separate IFrame. The second parameter is to provide an id to this IFrame element.
-3. Specify the locations of the default report templates using the third parameter. It can be a static folder location or any endpoint that supports GET requests. *It is recommended to use the separate location to store the template files and not to be combined with the code.*
-
-```javascript
+```
         var aptTecintegration;
         document.addEventListener('DOMContentLoaded',  () => {
             //this executes after all modules/deferred scripts are loaded
-            aptTecintegration = new window.AptTecReporting.Integration (
-               '/reports', 
-               'aptTecReportsPreviewFrame',  
-               '/Demo/reports/Templates/' );
+
+            aptTecIntegration = new window.AptTecReporting.Integration(
+                baseLocation + 'dist/', 'builtinLocalDataFrame', 
+                dataLocation + 'Templates/', null , true,
+                dataLocation + 'Samples/');
 
             aptTecintegration.aptTecData.CommonData = {
                "Parameter1" : 'Value1',
@@ -36,11 +34,48 @@ Please note that AptTecIntegration.js is just a starter. It will download additi
         } );
 ```
 
-**Step 4:** The object aptTecintegration.aptTecData provides the option to specify the data to be printed.
+**Step 3:** Create an object for the window.AptTecReporting.Integration class. The constructor parameters are below
 
-The developers can load the common data that will be static for all the reports like product name, client name, client address, etc using aptTecintegration.aptTecData.CommonData property. It is just a set of Key-Value pairs. The Keys will be replaced by the values using the template engine.
+1. The first parameter tells where to access the module "HostedLocation". For example, if you placed the library in the reports subfolder on your website, use '/reports'. If you hosted as as a separate website use the full path 'https://yoursite.com/reports'
+2. The preview will be rendered as a separate IFrame. The second parameter is to provide an id to this IFrame element.
+3. Specify the locations of the default report templates using the third parameter. It can be a static folder location or any endpoint that supports GET requests.
+   *It is recommended to use the separate location to store the template files and not to be combined with the code.*
 
-**Step 5:** Include the common code to create the print preview buttons in your master page or index page. You can call this function from your individual pages/modules to show the buttons on a particular location.
+## Print Report
+
+**Step 4:** Whenever you want to invoke and show the report just assign the method to the
+
+```
+window.aptTecIntegration.designerWindow.aptTecReports.dataGetter= () => { your logic here };
+```
+
+ and call the
+
+```
+aptTecIntegration.showPreview('<reportId>').
+```
+
+reportId - specifies the report id to fetch the report template from the template location. The product will use the URL aptTecintegration.templatesLocation + '/' + reportId. For example '/Demo/reports/Templates/MyReport'
+
+
+The dataGetter method can return any one of the following
+
+1. returns an object which contains the data to be printed or
+2. returns a promise that returns the data in following format.
+
+```
+{ CommonData: {}, InstanceData: {}, Data: [] }
+```
+
+* Data property - the actual data to be bound to the table.
+* CommonData property (optional) - The developers can load the common data that will be static for all the reports like product name, client name, client address, etc. It is just a set of Key-Value pairs. The Keys will be replaced by the values using the template engine.
+* InstanceData property - Similar to CommonData. It is a set of Key-Value pairs. To provide the template paramters specific to the report.
+
+## Alternate approach: You can create a custom print preview button in the code
+
+The object aptTecintegration.aptTecData provides the option to specify the data to be printed.
+
+Include the common code to create the print preview buttons in your master page or index page. You can call this function from your individual pages/modules to show the buttons on a particular location.
 
 ```javascript
         function enableAddPrintPreview(reportId, buttonParent, integrationMethod, 
@@ -59,18 +94,17 @@ The developers can load the common data that will be static for all the reports 
         }
 ```
 
-## Parameters
+### Parameters
 
-1. reportId - specifies the report id to fetch the report template from the template location. The product will use the URL aptTecintegration.templatesLocation + '/' + reportId. For example '/Demo/reports/Templates/MyReport'
-2. buttonParent - the CSS selector to identify the parent within the page to place the preview button
-3. attributesObject - The object with the set of additional data attributes to be included in the button. It is an optional parameter
-4. integrationMethod - Please refer below.
-5. buttonClass - The string to specify the CSS classes for the button. Optional.
-6. iconClass - The string to specify the CSS classes for the icon within the button. Optional.
-7. buttonText - You can leave this empty if you like to create tool bar button
-8. location - The value can be 'start, or 'end', to specify the location of the button within the parent
+1. buttonParent - the CSS selector to identify the parent within the page to place the preview button
+2. attributesObject - The object with the set of additional data attributes to be included in the button. It is an optional parameter
+3. integrationMethod - Please refer below.
+4. buttonClass - The string to specify the CSS classes for the button. Optional.
+5. iconClass - The string to specify the CSS classes for the icon within the button. Optional.
+6. buttonText - You can leave this empty if you like to create tool bar button
+7. location - The value can be 'start, or 'end', to specify the location of the button within the parent
 
-### **The integration method parameter**
+#### **The integration method parameter**
 
 This parameter provides an option for the developer to specify how the data is to be retrieved when the user clicks the print preview button.
 

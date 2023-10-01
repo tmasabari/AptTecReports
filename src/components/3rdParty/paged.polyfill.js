@@ -2008,10 +2008,15 @@
 
 						if (isText(node) && node.textContent.trim().length) {
 							range = document.createRange();
-							range.selectNode(node);
+							if (tableRow && tableRow.firstChild === insideTableCell) {
+								//if it is the first column in the table and start of the text node itself does not fit
+								// move the entire row
+								range.setStartBefore(tableRow);
+							} else {
+								range.selectNode(node);
+							}
 							break;
 						}
-
 					}
 
 					if (!range && isText(node) &&
@@ -2089,13 +2094,18 @@
 							// The text node overflows the current print page so it needs to be split.
 							range = document.createRange();
 							offset = this.textBreak(node, (end - extraRightSpace), (vEnd - extraBottomSpace) );
-
+							if(offset < 0 ) {
+								// offset = -1 means could not identify the word break. 
+								//but range= undefiend creates a infinite loop in certain scenarios. 
+								//So just consider to move the entire node if unable to detect the word break. 
+								//Similar to offset = 0
+								offset =0;
+							}
 							// Undefined offset or offset = -1 is unexpected 
 							// because we know that the text node is not empty (not even blank, because we check node.textContent.trim().length above).
-							if (offset <= 0 ) {
+							if (offset === 0 ) {
 								// offset = 0 means not even a single character from the text node fits the current print page so the text
 								// node needs to be moved to the next print page.
-								// offset = -1 means could not identify the word break. but range= undefiend creates a infinite loop in certain scenarios. So just consider to move the entire node if unable to detect the word break. Similar to offsert = 0
 								if (insideTableCell ) {
 									// But we take the whole row, not just the cell that is causing the break.
 									range.setStartBefore(insideTableCell.parentElement);
@@ -2103,7 +2113,6 @@
 								else {
 									range.setStartBefore(node);
 								}
-
 							} else {
 								// Only the text before the offset fits the current print page. The rest needs to be moved
 								// to the next print page.
@@ -2119,9 +2128,7 @@
 						if (next) {
 							walker = walk$2(next, rendered);
 						}
-
 					}
-
 				}
 			}
 

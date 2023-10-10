@@ -71,7 +71,7 @@ The dataGetter method can return any one of the following
 * CommonData property (optional) - The developers can load the common data that will be static for all the reports like product name, client name, client address, etc. It is just a set of Key-Value pairs. The Keys will be replaced by the values using the template engine.
 * InstanceData property - Similar to CommonData. It is a set of Key-Value pairs. To provide the template paramters specific to the report.
 
-## Alternate approach: You can create a custom print preview button in the code
+## Alternate approach: Create a custom print preview button
 
 The object aptTecintegration.aptTecData provides the option to specify the data to be printed.
 

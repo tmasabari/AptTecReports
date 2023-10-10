@@ -62,7 +62,8 @@ window.AptTecReporting.Integration = class AptTecIntegration {
                 //console.log('Zoom event detected!');// Your code here to respond to the zoom event
                 // ${ window.innerWidth } ${ window.outerWidth }
                 // 100 % Zoom '1280 1280' 90 % Zoom '1422 1280' 80 % Zoom '1600 1280' 67 % Zoom '1920 1280'
-                if (aptIntegration.designerWindow && aptIntegration.designerWindow.aptTecReports) {
+                if (aptIntegration.designerWindow && aptIntegration.designerWindow.aptTecReports 
+                    && window.getComputedStyle(aptIntegration.#frameElement, null).display !== 'none' ) {
                     aptIntegration.designerWindow.aptTecReports.refreshData('reportIframe');
                 }
             }
@@ -125,7 +126,8 @@ window.AptTecReporting.Integration = class AptTecIntegration {
         buttonText = '', location = 'start', buttonid=null )  {
         var buttonResult = this.#addPreviewButton(buttonid, reportId, buttonParent, attributesObject,
             buttonClass, iconClass, buttonText, location);
-        if (buttonResult.AlreadyExists) return;
+        if (buttonResult.AlreadyExists)
+            return buttonResult;
         this.#HandlePreviewButton(buttonResult, dataSetter);
         return buttonResult;
     }

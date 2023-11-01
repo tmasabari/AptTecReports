@@ -1393,7 +1393,7 @@
 	}
 
 	const MAX_CHARS_PER_BREAK = 1500;
-
+	const EXTRA_PIXELS = 5; //5 pixels for zoom adjustment
 	/**
 	 * Layout
 	 * @class
@@ -1891,8 +1891,8 @@
 			//this is to make sure there are no overflows
 			let finalWidth = Math.ceil(Math.max(width, scrollWidth));
 			let finalHeight = Math.ceil(Math.max(height, scrollHeight));
-			return (finalWidth > 0 && ( finalWidth > Math.floor(bounds.width) ) ) ||
-				(finalHeight > 0 && ( finalHeight > Math.floor(bounds.height) ) );
+			return (finalWidth > 0 && (finalWidth >= Math.floor(bounds.width - EXTRA_PIXELS) ) ) ||
+				(finalHeight > 0 && (finalHeight >= Math.floor(bounds.height - EXTRA_PIXELS) ) );
 		}
 
 		findOverflow(rendered, bounds = this.bounds, gap = this.gap) {
@@ -2090,7 +2090,8 @@
 						//(we check for the top and left boundary of the letter). We should instead check 
 						//if the letter is fully inside the boundaries of the current print page 
 						//by looking at the bottom and right letter boundaries.
-						if (right > (end - extraRightSpace) || bottom > (vEnd - extraBottomSpace)) {
+						if (right >= (end - extraRightSpace - EXTRA_PIXELS) 
+							|| bottom >= (vEnd - extraBottomSpace - EXTRA_PIXELS)) {
 							// The text node overflows the current print page so it needs to be split.
 							range = document.createRange();
 							offset = this.textBreak(node, (end - extraRightSpace), (vEnd - extraBottomSpace) );
@@ -2212,7 +2213,7 @@
 					break;
 				}
 
-				if (right > end || bottom > vEnd) {
+				if (right >= (end - EXTRA_PIXELS) || bottom >= (vEnd - EXTRA_PIXELS) ) {
 					// The word is partially outside the print page (e.g. a word could be split / hyphenated on two lines of
 					// text and only the first part fits into the current print page; or simply because the end of the page
 					// truncates vertically the word). We need to see if any of its letters fit into the current print page.
@@ -2235,10 +2236,9 @@
 						bottom = Math.floor(pos.bottom);
 
 						// Stop if the letter exceeds the bounds of the print page. We need to break before it.
-						if (right > end || bottom > vEnd) {
+						if (right >= (end - EXTRA_PIXELS) || bottom >= (vEnd - EXTRA_PIXELS) ) {
 							offset = letter.startOffset;
 							done = true;
-
 							break;
 						}
 					}

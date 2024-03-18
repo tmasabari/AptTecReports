@@ -1,5 +1,5 @@
 /**
- * @license Paged.js v0.4.2 | MIT | https://gitlab.coko.foundation/pagedjs/pagedjs
+ * @license Paged.js v0.4.3 | MIT | https://gitlab.coko.foundation/pagedjs/pagedjs
  */
 
 (function (global, factory) {

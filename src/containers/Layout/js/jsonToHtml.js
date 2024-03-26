@@ -1,5 +1,4 @@
 'use strict';
-import { firstNCharacters } from '@apttec/utils';
 export function appendJsonAsDataTable(aptTecReports, tableIndex, tableConfiguration, 
     tableDataSource, contentDOMElement) {
 
@@ -191,3 +190,28 @@ function sanitizeForPagedJsMaxCharsIssue(inputArray, printableColumns) {
 
     return outputArray;
 }
+
+function firstNCharacters(jsonArray, propertyToModify, n) {
+    jsonArray.forEach(item => {
+        if ( (item[propertyToModify]) && item[propertyToModify].length > n) {
+            item[propertyToModify] = item[propertyToModify].substring(0, n);
+        }
+    });
+    return jsonArray;
+}
+//the below code tries to chunk the data using span elements. However alternate logic is implemented
+//reverted back below code
+// function firstNCharacters(jsonArray, propertyToModify, n) {
+//     jsonArray.forEach(item => {
+//         if ( (item[propertyToModify]) && item[propertyToModify].length > n) {
+//             var processedLength = 0;
+//             var text = "";
+//             while (processedLength < item[propertyToModify].length) {
+//                 text = text + "<span>" + item[propertyToModify].substring(processedLength, n) + "</span>";
+//                 processedLength += n;
+//             }
+//             item[propertyToModify] = text;
+//         }
+//     });
+//     return jsonArray;
+// }

@@ -1393,7 +1393,7 @@
 	}
 
 	const MAX_CHARS_PER_BREAK = 150000;
-	const EXTRA_PIXELS = 10; //10 pixels for zoom adjustment
+	const EXTRA_PIXELS = 17; //17 pixels for zoom adjustment
 	/**
 	 * Layout
 	 * @class
@@ -1932,7 +1932,7 @@
 					//	top position exceeds the page height
 					//this checks the overflow at the element level (the next block checks at the text level)
 					//so for large table this blocks checks overflow at the row level.
-					if (!range && (left >= end || top >= vEnd)) {
+					if (!range && (left >= (end - EXTRA_PIXELS) || top >= (vEnd - EXTRA_PIXELS))) {
 						// Check if it is a float
 						let isFloat = false;
 
@@ -2124,7 +2124,7 @@
 					}
 
 					// Skip children
-					if (skip || (right <= end && bottom <= vEnd)) {
+					if (skip || (right <= (end - EXTRA_PIXELS) && bottom <= (vEnd - EXTRA_PIXELS))) {
 						next = nodeAfter(node, rendered);
 						if (next) {
 							walker = walk$2(next, rendered);
@@ -2207,7 +2207,7 @@
 				top = Math.floor(pos.top);
 				bottom = Math.floor(pos.bottom);
 
-				if (left >= end || top >= vEnd) {
+				if (left >= (end - EXTRA_PIXELS) || top >= (vEnd - EXTRA_PIXELS)) {
 					// The word is completely outside the bounds of the print page. We need to break before it.
 					offset = word.startOffset;
 					break;

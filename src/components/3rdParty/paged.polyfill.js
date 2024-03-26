@@ -1392,8 +1392,8 @@
 		}
 	}
 
-	const MAX_CHARS_PER_BREAK = 1500;
-	const EXTRA_PIXELS = 5; //5 pixels for zoom adjustment
+	const MAX_CHARS_PER_BREAK = 150000;
+	const EXTRA_PIXELS = 10; //10 pixels for zoom adjustment
 	/**
 	 * Layout
 	 * @class

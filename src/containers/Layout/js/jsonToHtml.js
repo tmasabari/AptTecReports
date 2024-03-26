@@ -13,13 +13,14 @@ export function appendJsonAsDataTable(aptTecReports, tableIndex, tableConfigurat
     contentDOMElement.append(tableTag);
     const tableData = (tableDataSource) ? aptTecReports.reportData.Data[tableDataSource] 
         : aptTecReports.reportData.Data;
+    var sanitizedData = sanitizeForPagedJsMaxCharsIssue(tableData, printableColumns);
 
     //filter is equivalent to WHERE
     var colMaxLengthDefined = printableColumns.filter(function (colConfig) {
         return (colConfig.maxLength) && colConfig.maxLength > 0;
     });
     colMaxLengthDefined.forEach((colConfig) => {
-        firstNCharacters(tableData, colConfig.field, colConfig.maxLength);
+        firstNCharacters(sanitizedData, colConfig.field, colConfig.maxLength);
     });
     const countableColumns = tableConfiguration.filter(function (column) {
         return column.TotalCount === true;
@@ -29,9 +30,11 @@ export function appendJsonAsDataTable(aptTecReports, tableIndex, tableConfigurat
         ordering: false,
         paging: false,
         searching: false,
-        data: tableData,
+        data: sanitizedData,
         columns: mapProperties(aptTecReports, printableColumns),
     };
+
+    //calculate page total and report totals and append as table footer
     if (countableColumns && countableColumns.length > 0) {
         // https://datatables.net/examples/advanced_init/footer_callback.html
         dataTableConfig.footerCallback =  function () {  //row, data, start, end, display
@@ -72,6 +75,8 @@ export function appendJsonAsDataTable(aptTecReports, tableIndex, tableConfigurat
         const footerHtml = `<tfoot><tr> ${columnCell.repeat(printableColumns.length)}</tr></tfoot>`;
         $('#' + tableId).append(footerHtml);
     }
+
+    //Generate columns styles and append to the DOM directly
     var columnStylesTag = '<Style>';
     $('#' + tableId).DataTable(dataTableConfig);
     for (let index = 0; index < printableColumns.length; index++) {
@@ -118,4 +123,71 @@ function mapProperties(aptTecReports, properties) {
     }
 
     return properties;
+}
+
+
+function sanitizeForPagedJsMaxCharsIssue(inputArray, printableColumns) {
+    let outputArray = [];
+    // If property value exceeds chunkSize characters, split it
+    let chunkSize = 1000;
+
+    for (let i = 0; i < inputArray.length; i++)
+    {
+        let originalObject = inputArray[i];
+        let newObject = { ...originalObject }; // Clone the original object
+        let isModified = false; // Flag to track modifications
+        let propertyChunks = {};
+        let maxChunks = 0;
+
+        var printableProps = printableColumns.map(function(obj) {
+            return obj.field;
+        });
+        // Check each [printable] property. Split and save the overflowing data to chunks. 
+        // Take only first chunk in the newObject
+        for (let l = 0; l < printableProps.length; l++) {
+            //check is any one of the [printable] property exceeds character limit
+            let prop = printableProps[l];
+            if (newObject[prop] && newObject[prop].length > chunkSize) {
+                let chunks = [];
+                for (let j = 0; j < newObject[prop].length; j += chunkSize) 
+                    chunks.push(newObject[prop].substring(j, j + chunkSize)); 
+
+                // Update the property value in the original object
+                newObject[prop] = chunks[0] + ' (continued)'; // Keep the first chunk in the original object 
+                propertyChunks[prop] = chunks;
+                if (chunks.length > maxChunks)
+                    maxChunks = chunks.length;
+
+                isModified = true;
+            }
+        }
+
+        // If any property was modified, add the new object to the output array
+        if (isModified) {
+            outputArray.push(newObject);
+            // Create additional objects for subsequent chunks
+            for (let k = 1; k < maxChunks; k++) {
+                let additionalObject = { }; // just copy the property names not the values
+                Object.getOwnPropertyNames(originalObject).forEach((key) => {
+                    additionalObject[key] = undefined;
+                });
+                // Set the property value for subsequent chunks
+                for (let propChunk in propertyChunks) {
+                    let chunkArray = propertyChunks[propChunk];
+                    if(k < chunkArray.length ) {
+                        let value = chunkArray[k]; 
+                        if(k !== chunkArray.length-1)
+                            value += ' (continued)';
+                        additionalObject[propChunk] = value;
+                    }
+                }
+                outputArray.push(additionalObject);
+            }
+        } 
+        else { // Otherwise, keep the original object
+            outputArray.push(originalObject);
+        }
+    }
+
+    return outputArray;
 }

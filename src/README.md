@@ -1,6 +1,6 @@
 # How-to
 
-* [Integrate to your website ](HowTo.md "How to integrate")
+* [Integrate to your website](DeveloperGuide.md "How to integrate")
 * [Report Designer](ReportDesigner.md "Report designer section")
 * [Customize the report templates](HowToTemplate.md "Customize the report templates")
 
@@ -36,7 +36,7 @@ Experience the future of reporting, where your reports are not just static docum
 3. The settings set on the template files will be the default settings applied for all the users.
 4. Please refer the [Customize report templates Section](HowToTemplate.md "Customize report templates Section") page for further information.
 
-**Print Time Configuration** : 
+**Print Time Configuration** :
 
 The end users has full control over the page layout, table designer, WYSIWYG editors for different sections, etc allowed by the developers & BAs at the time of printing. Please refer the [Report Designer section](ReportDesigner.md "Report designer section") page for further information.
 

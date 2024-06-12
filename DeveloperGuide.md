@@ -1,5 +1,7 @@
 # How-To use AptTec Reports
 
+![Alt text](https://file+.vscode-resource.vscode-cdn.net/d%3A/GitHub/HTML%20Report%20Generator/diagrams/ClientReportingFlow.drawio.svg?raw=true&sanitize=true "Solution")
+
 **Step 1:** Include the library in your page or master layout or index page depending upon your application design.
 
 1. You can directly use the CDN. (**preferred**)
@@ -9,14 +11,14 @@
 2. You can download the source code directly from the repository and include it as part of our website or as a separate static website.
 
 ```html
-    <script src="<HostedLocation>/dist/AptTecIntegration.bundle.js" type="module" crossorigin="anonymous"></script>
+<script src="<HostedLocation>/dist/AptTecIntegration.bundle.js" type="module" crossorigin="anonymous"></script>
 ```
 
 Please note that /dist/AptTecIntegration.bundle.js is just a starter. It will download additional supporting files whenever required.
 
 **Step 2:** The /dist/AptTecIntegration.bundle.js module will create a namespace object window.AptTecReporting. It would be used to further communicate with the module. The Js modules are loaded asynchronously by default. So listen for DOMContentLoaded and once the module is loaded further continue the setup.
 
-```
+```js
         var aptTecintegration;
         document.addEventListener('DOMContentLoaded',  () => {
             //this executes after all modules/deferred scripts are loaded
@@ -25,12 +27,15 @@ Please note that /dist/AptTecIntegration.bundle.js is just a starter. It will do
                 baseLocation + 'dist/', 'builtinLocalDataFrame', 
                 dataLocation + 'Templates/', null , true,
                 dataLocation + 'Samples/');
-
+/* assign the CommonData either directly or from the REST URL
             aptTecintegration.aptTecData.CommonData = {
                "Parameter1" : 'Value1',
                "Parameter2" : 'Value2',
                "ParameterN" : 'Value3'
             };
+*/
+            aptTecIntegration.fetchData("<ServiceEndPoint>", 'CommonData', 'CommonData');
+
         } );
 ```
 
@@ -40,6 +45,22 @@ Please note that /dist/AptTecIntegration.bundle.js is just a starter. It will do
 2. The preview will be rendered as a separate IFrame. The second parameter is to provide an id to this IFrame element.
 3. Specify the locations of the default report templates using the third parameter. It can be a static folder location or any endpoint that supports GET requests.
    *It is recommended to use the separate location to store the template files and not to be combined with the code.*
+4. The fourth paramter allows the developer to apply the CSS styles to the IFrame. You can leave it as null.
+5. The fifth paramter allows the developer to enable or disable the designer for the end users. If developer set this value to false the designer button will not be visible for the end users.
+
+The JSON response for the aptTecIntegration.fetchData should be similar to the below. The object returned under "CommonData" property will be assigned to CommonData of the reports. This data can be used to replace placeholders/mailmerge fields.
+
+```json
+{
+    "CommonData": {
+        "User.FirstName": "First Name",
+        "User.LastName": "Last Name",
+        "User.Initials": "FL",
+        "User.Email": "Support@Domain.Com"
+    }
+}
+```
+
 
 ## Print Report
 
@@ -56,7 +77,6 @@ aptTecIntegration.showPreview('<reportId>').
 ```
 
 reportId - specifies the report id to fetch the report template from the template location. The product will use the URL aptTecintegration.templatesLocation + '/' + reportId. For example '/Demo/reports/Templates/MyReport'
-
 
 The dataGetter method can return any one of the following
 

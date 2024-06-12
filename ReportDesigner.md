@@ -16,20 +16,13 @@ This helps to setup the printable portion of the paper.
 * Report footer - users can configure HTML content that appears at the **bottom of the report** using the WYSIWYG editor
 
 ![Alt text](./diagrams/LayoutDesigner.drawio.svg?raw=true&sanitize=true "Layout Designer")
+
 ## Table Designer
 
-1. To select whether a column to appear on the report or not
-2. Heading/Title of the column
-3. Column width. All the standard CSS width units are supported  [CSS values and units - Learn web development | MDN (mozilla.org)](https://developer.mozilla.org/en-US/docs/Learn/CSS/Building_blocks/Values_and_units)
-4. Format - Js functions to be invoked to format the data. The developers can add their own js functions.
-   1. ShortDateTime - The value can be either JS Date or MS Date time stamp. This will be shown as **M/D/YYYY HH:MM:ss**. The developers can add their custom functions.
-   2. Decimal
-   3. Percent
-   4. Currency
-   5. DateTime24 - "12/19/2012, 19:00:00"
-5. To print only the first N characters from a column. The rest of of the characters will be ignored. Specify 0 to include all the characters.
+Refer: [How To Create Template section](HowToTemplate.md) to understand the 'Table Designer'
 
 ![Alt text](./diagrams/TableDesigner.drawio.svg?raw=true&sanitize=true "Table Designer")
+
 ## WYSIWYG HTML Editors
 
 * Standard text edit tool bar - Bold, Italics, Underline, alignments, styles, etc

@@ -9,20 +9,32 @@
 ## Report template structure
 
 * The report template is just a JSON file.
+
   * The developers/BAs can either configure the JSON file fully from the scratch or
   * they can use start with the base template and use the Report designer page
-* "ReportTemplate" - string value. "paged.html" is the only supported value as of now
-* "DataSource" -string value. Leave it blank to specify the custom data
+* "ReportTemplate" - string value. "paged.html" is the only supported value. This can be expanded to support more templates in future.
+* "DataSource" -string value. Endpoint for the data. Leave it blank to specify the custom data using the client side code.
 * "PageHeadersHtml", "PageFootersHtml", "ReportFootersHtml", "ReportHeadersHtml": HTML Code
-* "Content" - **Array of content sections.** The section can be a "TableContent" or "ContentHtml" . **This is powerful option to fully customize the reports. You can add multiple tables and html contents**
-  * "TableContent" - indicates it is going to render the table data. The developer has to specify the list of column definitions.
+* "Content" - **Array of content sections.** The section can be a "TableContent" or "ContentHtml". **This is powerful option to fully customize the reports. You can add multiple tables and html contents**
 
-    * "field" - string value that specify the "jsonPropertyName" to be associated with the datasource
-    * "displayName" -  string value that specify the "Column Title"
-    * "columnSize": string value that specify the "Column width" in css units
-    * "format": string value that specify the "formatter function". This is case insensitive name.
+  * "TableContent" - indicates it is going to render the table data. The developer has to specify the list of column definitions.
+    * "field" - string value that specify the "jsonPropertyName" to be associated with the datasource. This is not visible in the table designer.
     * "isPrint": boolean value that specify the column is to printed by default or not.
-    * "maxLength":number value. To spcficy the default number of characters to be printed. To print only the first N characters from a column. The rest of of the characters will be ignored. Specify 0 to include all the characters.
+    * "displayName" -  string value that specify the "Column Title" to be printed on table headers.
+    * "columnSize": string value that specify the "Column width" in css units. [CSS values and units - Learn web development | MDN (mozilla.org)](https://developer.mozilla.org/en-US/docs/Learn/CSS/Building_blocks/Values_and_units)
+    * "format": string value that specify the "formatter function". This is case insensitive name.
+      * ShortDateTime - The value can be either JS Date or MS Date time stamp. This will be shown as **M/D/YYYY HH:MM:ss**.
+      * Decimal
+      * Percent
+      * Currency
+      * DateTime24 - "12/19/2012, 19:00:00"
+      * The developers can add their custom functions.
+    * "maxLength":number value. To spcficy the maximum number of characters to be printed. To print only the first N characters from a column. The rest of of the characters will be ignored. Specify 0 to include all the characters.
+    * "TitleStyle": list of css styles to format the column header cells
+    * "ContentStyle": list of css styles to format the column content cells
+    * "TotalCount": true/false to instruct the report engine to generate the report total row or not.
+
+![Alt text](./diagrams/TableDesigner.drawio.svg?raw=true&sanitize=true "Table Designer")
 
 ## Base layout file
 
@@ -51,11 +63,15 @@
             "TableContent": 
 		[
                 	{
-                    	"field": "jsonPropertyName",
-                    	"displayName": "Column Title",
-                    	"columnSize": "10ch/10em/10mm",
-                    	"format": "USShortDateTime",
-                    	"isPrint": true/false
+                    		"isPrint": true/false,
+                    		"field": "jsonPropertyName",
+                    		"displayName": "Column Title",
+                    		"columnSize": "10ch/10em/10mm",
+                    		"format": "USShortDateTime/ShortDateTime/Decimal/Percent/Currency/DateTime24",
+                    		"maxLength": 0,
+                    		"TitleStyle": "",
+                   		"ContentStyle": "",
+                    		"TotalCount": true/false
                 	}  
 		]
         },
